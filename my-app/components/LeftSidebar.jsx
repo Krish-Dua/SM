@@ -10,7 +10,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const items = [
-  { title: "Home", url: "#", icon: Home },
+  { title: "Home", url: "/", icon: Home },
   { title: "Search", url: "#", icon: Search },
   { title: "Explore", url: "#", icon: Inbox },
   { title: "Reels", url: "#", icon: Inbox },

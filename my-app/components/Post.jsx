@@ -19,7 +19,7 @@ const Post = () => {
 
       {/* header */}
 
-      <div className="flex justify-between px-1 items-center">
+      <div className="flex justify-between px-2 items-center">
         <div className="flex gap-4 items-center">
           <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
             <img

@@ -1,5 +1,5 @@
 import React from 'react'
-import Signup from '../components/signup'
+import Signup from '../components/Signup'
 import Login from '../components/Login'
 const Authpage = () => {
 const [login,setlogin]=React.useState(true)
