@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "Search", url: "#", icon: Search },
-  { title: "Explore", url: "#", icon: Inbox },
+  { title: "Explore", url: "/explore", icon: Inbox },
   { title: "Reels", url: "#", icon: Inbox },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },

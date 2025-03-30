@@ -50,11 +50,11 @@ const UserProfile = () => {
   };
 
   return (
-    <main className="max-w-4xl py-6 px-4 h-max mx-auto ">
+    <main className="max-w-4xl py-8 px-1 sm:px-4 h-max mx-auto ">
 
-<header className="w-full flex mb-20">
+<header className="w-full flex mb-8 sm:mb-20 items-center  justify-around">
         {/* profile image  */}
-        <div className="h-42 w-42 shrink-0 rounded-full my-auto overflow-hidden mr-20">
+        <div className=" h-18 w-18 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden mr-2 sm:mr-10 md:mr-20">
           <img
             src={user.avatar}
             className="object-cover w-full h-full"
@@ -65,37 +65,45 @@ const UserProfile = () => {
         {/* details  */}
         <section className="flex flex-col gap-6">
 
-          <div className="flex gap-6 ">
+          <div className=" hidden sm:flex  gap-6 ">
             <span className="text-lg py-1 font-medium px-4">{user.username}</span>
-            <button className="py-1 px-4 rounded-lg bg-gray-800">follow</button>
-            <div className="py-1 px-4 rounded-lg bg-gray-800">message</div>
+            <button className=" py-1 px-4 rounded-lg bg-gray-800">follow</button>
+            <button className="py-1  px-4 rounded-lg bg-gray-800">message</button>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8" >
-            <div>
-              <span className="mr-2">{user.posts}</span>
+          <div className="flex  gap-8" >
+            <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
+              <span className="">{user.posts}</span>
               <span className="text-gray-400">Posts</span>
             </div>
-            <div>
-              <span className="mr-2">{user.followers}</span>
+            <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
+              <span className="">{user.followers}</span>
               <span className="text-gray-400">followers</span>
             </div>
-            <div>
-              <span className="mr-2">{user.following}</span>
+            <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
+              <span className="">{user.following}</span>
               <span className="text-gray-400">following</span>
             </div>
           </div>
 
-        <div>
+        <div className="sm:block hidden">
           <p className="font-bold">{user.name}</p>
           <p className="text-gray-300">{user.bio}</p>
         </div>
 
-
-
-
         </section>
       </header>
+
+      <div className="sm:hidden">
+          <p className="font-bold">{user.name}</p>
+          <p className="text-gray-300">{user.bio}</p>
+        </div>
+
+      <div className="sm:hidden mt-6 flex gap-6 ">
+            <button className="py-1  rounded-lg w-full bg-gray-800">follow</button>
+            <button className="py-1  rounded-lg w-full bg-gray-800">message</button>
+          </div>
+
    
 {/* tabs section */}
 <section className="tabs h-20 w-full mb-5 ">
@@ -121,7 +129,7 @@ const UserProfile = () => {
 <section className="grid grid-cols-3 w-full gap-1 ">
 {userposts.map((post,index)=>{
 return (
-  <img key={index} className="w-full h-[15vh] md:h-[25vh] xl:h-[40vh] object-center " src={post} alt="" />
+  <img key={index} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post} alt="" />
 )
 })}
 

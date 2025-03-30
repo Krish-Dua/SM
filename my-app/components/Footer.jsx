@@ -31,7 +31,7 @@ const Footer = () => {
                   className="flex items-center p-1"
                 >  
                   <item.icon
-                    size={24}
+                    size={28}
                     className="text-black dark:text-gray-300"
                   />
                 </Link>
