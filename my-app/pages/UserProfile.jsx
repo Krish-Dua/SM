@@ -2,7 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import {Grid,PlaySquare,Save} from "lucide-react"
 import useUserStore from "../store/user";
-
 const UserProfile = () => {
   const userStore = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
@@ -58,6 +57,7 @@ const UserProfile = () => {
   return (
     <main className="max-w-4xl py-8 px-1 sm:px-4 h-max mx-auto ">
 
+
 <header className="w-full flex mb-8 sm:mb-20 items-center  justify-around">
         {/* profile image  */}
         <div className=" h-18 w-18 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden mr-2 sm:mr-10 md:mr-20">
@@ -75,7 +75,7 @@ const UserProfile = () => {
           <div className=" hidden sm:flex  gap-6 ">
 <span className="text-lg py-1 font-medium px-4">{user.username}</span>
 <button className=" py-1 px-4 rounded-lg bg-gray-800">Edit profile</button>
-<button className="py-1  px-4 rounded-lg bg-gray-800">Settin</button>
+<button className="py-1  px-4 rounded-lg bg-gray-800">Settings</button>
 </div>
 :
 <div className=" hidden sm:flex  gap-6 ">
