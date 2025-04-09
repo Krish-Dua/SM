@@ -1,8 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import {Grid,PlaySquare,Save} from "lucide-react"
+import useUserStore from "../store/user";
+
 const UserProfile = () => {
+  const userStore = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const { username } = useParams();
+  console.log(username   , userStore,userStore.username===username
+  )
   const userposts=[
     "https://www.ktmindia.com/-/media/images/ktm/ktm-bikes/ktmcardimages/ktm-bike-angle-5pm_500-x-498/webp/rc-390.webp?iar=0&hash=B5BF5D7B4B3D2FEC180C85267CC9C373",
     "https://www.ktmindia.com/-/media/images/ktm/ktm-bikes/ktmcardimages/ktm-bike-angle-5pm_500-x-498/webp/rc-390.webp?iar=0&hash=B5BF5D7B4B3D2FEC180C85267CC9C373",
@@ -65,11 +71,20 @@ const UserProfile = () => {
         {/* details  */}
         <section className="flex flex-col gap-6">
 
+        {userStore.username==username?
           <div className=" hidden sm:flex  gap-6 ">
-            <span className="text-lg py-1 font-medium px-4">{user.username}</span>
-            <button className=" py-1 px-4 rounded-lg bg-gray-800">follow</button>
-            <button className="py-1  px-4 rounded-lg bg-gray-800">message</button>
-          </div>
+<span className="text-lg py-1 font-medium px-4">{user.username}</span>
+<button className=" py-1 px-4 rounded-lg bg-gray-800">Edit profile</button>
+<button className="py-1  px-4 rounded-lg bg-gray-800">Settin</button>
+</div>
+:
+<div className=" hidden sm:flex  gap-6 ">
+<span className="text-lg py-1 font-medium px-4">{user.username}</span>
+<button className=" py-1 px-4 rounded-lg bg-gray-800">follow</button>
+<button className="py-1  px-4 rounded-lg bg-gray-800">message</button>
+</div>
+}
+      
 
           <div className="flex  gap-8" >
             <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
@@ -98,11 +113,17 @@ const UserProfile = () => {
           <p className="font-bold">{user.name}</p>
           <p className="text-gray-300">{user.bio}</p>
         </div>
-
-      <div className="sm:hidden mt-6 flex gap-6 ">
-            <button className="py-1  rounded-lg w-full bg-gray-800">follow</button>
-            <button className="py-1  rounded-lg w-full bg-gray-800">message</button>
-          </div>
+{userStore.username==username?
+ <div className="sm:hidden mt-6 flex gap-6 ">
+ <button className="py-1  rounded-lg w-full bg-gray-800">Edit Profile</button>
+ <button className="py-1  rounded-lg w-full bg-gray-800">Settings</button>
+</div>:
+ <div className="sm:hidden mt-6 flex gap-6 ">
+ <button className="py-1  rounded-lg w-full bg-gray-800">follow</button>
+ <button className="py-1  rounded-lg w-full bg-gray-800">message</button>
+</div>
+}
+     
 
    
 {/* tabs section */}
