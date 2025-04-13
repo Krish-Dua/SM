@@ -7,7 +7,7 @@ import UserProfile from '../pages/UserProfile'
 import useUserStore from '../store/user'
 import { Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
-import Explore from '../components/Explore'
+import Explore from '../pages/Explore'
 function App() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);

@@ -3,11 +3,14 @@ import {
   Home,
   Inbox,
   Search,
-  Settings,
   MessageCircleCode,
 } from "lucide-react";
+
 import React from "react";
 import { Link } from "react-router-dom";
+
+import CreateBtn from "./CreateBtn";
+
 
 const items = [
   { title: "Home", url: "/", icon: Home },
@@ -16,7 +19,6 @@ const items = [
   { title: "Reels", url: "#", icon: Inbox },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },
-  { title: "Create", url: "#", icon: Settings },
 ];
 
 function AppSidebar() {
@@ -68,6 +70,16 @@ function AppSidebar() {
                 </Link>
               </li>
             ))}
+            
+               <li                   
+                className=" hover:bg-gray-200 dark:hover:bg-gray-800 rounded-xl mb-3 transition"
+              >
+               <CreateBtn/>
+              </li>
+
+
+
+
           </ul>
         </div>
       </aside>
