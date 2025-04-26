@@ -40,7 +40,7 @@ const CreateBtn = () => {
       <DialogTrigger asChild>
         <button className="mb-2 px-6 py-1 hover:bg-gray-700 rounded-xl">Post</button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0 opacity-90 text-white">
+      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0  text-white">
         <DialogTitle>
  Create Post 
         </DialogTitle>
@@ -56,7 +56,7 @@ const CreateBtn = () => {
       <DialogTrigger asChild>
         <button className="mb-2 px-6 py-1 hover:bg-gray-700 rounded-xl">Reel</button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0 opacity-90 text-white">
+      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0  text-white">
         <DialogTitle>
  Create Reel 
         </DialogTitle>

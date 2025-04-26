@@ -5,30 +5,58 @@ const PostModal = () => {
   const [preview, setpreview] = useState(null)
   const [caption, setCaption] = useState("");
 const [file,setFile]= useState(null)
+const [error,setError]= useState(null)
 
   const handleFileInput =(e)=>{
-    const file = e.target.files[0]
-console.log(file)
-setFile(file)
-setpreview(URL.createObjectURL(file))
-  }
+    const selectedFile = e.target.files[0]
+    if (!selectedFile) return;
+
+    const type = selectedFile.type;
+
+    if (
+      !type.startsWith("image/") &&
+      !type.startsWith("video/")
+    ) {
+      setError("Only image or video files are allowed.");
+      setFile(null);
+      setpreview(null);
+      return;
+    }
+
+    setError(null);
+    setFile(selectedFile);
+    setpreview(URL.createObjectURL(selectedFile));
+  };
+  
+
+
+
+
+
+
+
+
 
   return (
     <main className="w-full flex flex-col gap-6">
       {/* file input  */}
       <div className="flex items-center justify-center w-full">
 {
-preview?
 
+
+preview?
 <div className="w-full ">
 <button className="text-blue-800 cursor-pointer" onClick={()=>{
   console.log(preview)
   setpreview(null)
-
 }}>Discard</button>
+{
+file.type.startsWith("image/")?
 <img src={preview} className="h-70 object-cover w-full aspect-square" alt="" />
+:
+<video className="h-70 object-cover w-full aspect-square" autoPlay muted controls controlsList="nodownload nofullscreen noremoteplayback"  src={preview}></video>
+}
 </div>
-
 :
 <label
 htmlFor="dropzone-file"
@@ -54,10 +82,10 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
     <span className="font-semibold">Click to upload</span>
   </p>
   <p className="text-xs text-gray-500 dark:text-gray-400">
-    upload image only (jpg , png)
+    upload image or video  only
   </p>
 </div>
-<input id="dropzone-file" required accept="image/*" onChange={(e)=>{
+<input id="dropzone-file" required accept="image/*,video/*" onChange={(e)=>{
   handleFileInput(e)
 }} type="file"  className="hidden" />
 </label>
@@ -80,6 +108,10 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
         ></textarea>
       </div>
 
+      {error && <p className="text-red-500">{error}</p>}
+
+
+
       {/* submit btn  */}
       <div className="flex justify-end">
         <Button type="submit" onClick={()=>{
@@ -92,6 +124,7 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
 
     </main>
   );
-};
+}
+
 
 export default PostModal;

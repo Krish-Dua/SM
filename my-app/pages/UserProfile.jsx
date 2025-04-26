@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import {Grid,PlaySquare,Save} from "lucide-react"
 import useUserStore from "../store/user";
+import EditProfileBtn from "../components/EditProfileBtn";
 const UserProfile = () => {
   const userStore = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
@@ -74,7 +75,7 @@ const UserProfile = () => {
         {userStore.username==username?
           <div className=" hidden sm:flex  gap-6 ">
 <span className="text-lg py-1 font-medium px-4">{user.username}</span>
-<button className=" py-1 px-4 rounded-lg bg-gray-800">Edit profile</button>
+<EditProfileBtn/>
 <button className="py-1  px-4 rounded-lg bg-gray-800">Settings</button>
 </div>
 :
@@ -115,7 +116,7 @@ const UserProfile = () => {
         </div>
 {userStore.username==username?
  <div className="sm:hidden mt-6 flex gap-6 ">
- <button className="py-1  rounded-lg w-full bg-gray-800">Edit Profile</button>
+  <EditProfileBtn className="w-full" />
  <button className="py-1  rounded-lg w-full bg-gray-800">Settings</button>
 </div>:
  <div className="sm:hidden mt-6 flex gap-6 ">
