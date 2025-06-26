@@ -1,8 +1,9 @@
 import {
   Calendar,
   Home,
-  Inbox,
-  Search,
+  LucideCompass,
+  MonitorPlay,
+  Settings,
   MessageCircleCode,
 } from "lucide-react";
 
@@ -14,11 +15,11 @@ import CreateBtn from "./CreateBtn";
 
 const items = [
   { title: "Home", url: "/", icon: Home },
-  { title: "Search", url: "#", icon: Search },
-  { title: "Explore", url: "/explore", icon: Inbox },
-  { title: "Reels", url: "#", icon: Inbox },
+  { title: "Explore", url: "/explore", icon: LucideCompass },
+  { title: "Reels", url: "#", icon: MonitorPlay },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },
+  { title: "Settings", url: "#", icon:Settings },
 ];
 
 function AppSidebar() {

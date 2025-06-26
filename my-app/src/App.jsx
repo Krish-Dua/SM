@@ -8,33 +8,35 @@ import useUserStore from '../store/user'
 import { Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Explore from '../pages/Explore'
+import { Import } from 'lucide-react'
 function App() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [loading, setloading] = useState(false);
 
 
-//   useEffect( () => {
-//     setloading(true);
-//     const fetchUser=async ()=>{
-//       const response = await fetch("http://localhost:3000/api/auth/me", {
-//         method: "POST",
-//         credentials: "include",
-//         headers: { "Content-Type": "application/json" },
-//       });
-//       const data = await response.json();
-//       if(!data.success) {
-// // toast
-//       }
-//       else{
-//         console.log(data);
-//         setUser(data.data);
-//       }
-//       setloading(false);
-//     }
-//     fetchUser();
-//   }, [])
-
+  useEffect( () => {
+  
+    // setloading(true);
+    // const fetchUser=async ()=>{
+    //   const response = await fetch("http://localhost:3000/api/auth/me", {
+    //     method: "POST",
+    //     credentials: "include",
+    //     headers: { "Content-Type": "application/json" },
+    //   });
+    //   const data = await response.json();
+    //   if(!data.success) {
+// toast
+    //   }
+    //   else{
+    //     console.log(data);
+    //     setUser(data.data);
+    //   }
+    //   setloading(false);
+    // }
+    // fetchUser();
+  }, [])
+  
 
   return (
   <>

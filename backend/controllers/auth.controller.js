@@ -212,3 +212,23 @@ export const getUserProfile = async(req,res) => {
   
  }
 }
+
+export const searchUser = async(req,res) => {
+  try {
+    const {username} = req.params;
+    const users = await User.find({
+      username: { $regex: username, $options: "i" }
+    }).select("-password -followers -following").limit(10);
+    console.log(users)
+    
+    if(users.length === 0) {
+      return res.status(404).json({ success: false, message: "No users found" });
+    }
+    res.json({ success: true, data: users });
+  } catch(error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error", error });
+  }
+}
