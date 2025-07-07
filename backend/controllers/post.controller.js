@@ -1,5 +1,7 @@
 import Post from "../models/post.model.js";
 import Comment from "../models/comment.model.js"
+import User from "../models/user.model.js";
+
 
 export const createPost = async (req, res) => {
   const postedBy = req.user.userId;
@@ -136,5 +138,16 @@ export const getComments = async (req,res)=>{
   } catch (error) {
     console.log(error)
     return res.status(500).json({success: false, message: "server error at get comments"})
+  }
+}
+
+export const getFeed = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const posts = await Post.find({}).limit(10).populate("postedBy", "username profilePicture");
+    res.json({ success: true, data: posts });
+  } catch (error) { 
+    console.log(error);
+    return res.status(500).json({ success: false, message: "server error at get feed" });
   }
 }

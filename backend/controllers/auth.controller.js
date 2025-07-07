@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { genTokenAndSetCookie } from "../services/genTokenAndSetCookie.js";
-
+import mongoose from "mongoose";
 export const signupUser = async (req, res) => {
   const { email, password, username, name } = req.body;
   try {
@@ -232,3 +232,28 @@ export const searchUser = async(req,res) => {
       .json({ success: false, message: "Internal server error", error });
   }
 }
+
+export const getSuggestions = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const size = req.query.size ? parseInt(req.query.size) : 6;
+    const user = await User.findById(userId).select("following");
+    const excludeIds = [...user.following,new mongoose.Types.ObjectId(userId)];
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+
+   const suggestions = await User.aggregate([
+      { $match: { _id: { $nin: excludeIds },
+} },
+      { $sample: { size} },
+    ]);
+
+    res.json({ success: true, data: suggestions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error at getting suggestions" });
+  }
+};  

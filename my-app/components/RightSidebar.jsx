@@ -1,11 +1,6 @@
 
 
- function RightSidebar() {
-  const suggestedUsers = [
-    { name: "Jane Smith", username: "@janesmith", avatar: "/placeholder.svg?height=40&width=40" },
-    { name: "Alex Johnson", username: "@alexj", avatar: "/placeholder.svg?height=40&width=40" },
-    { name: "Sam Wilson", username: "@samwilson", avatar: "/placeholder.svg?height=40&width=40" },
-  ]
+ function RightSidebar({suggestedUsers}) {
 
   return (
     <aside className="hidden xl:flex w-80  p-4">
@@ -17,7 +12,7 @@
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
                   <img 
-                    src={user.avatar} 
+                    src={user.avatar || "/default-avatar.png"} 
                     alt={user.name} 
                     className="h-full w-full object-cover" 
                   />
@@ -27,7 +22,7 @@
                   <p className="text-xs text-gray-300">{user.username}</p>
                 </div>
               </div>
-              <button className="text-xs px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+              <button className="text-xs px-3 py-1 border  border-gray-300 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300">
                 Follow
               </button>
             </div>

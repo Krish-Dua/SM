@@ -18,7 +18,7 @@ const Login = ({ setlogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch("http://localhost:3000/api/user/login", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

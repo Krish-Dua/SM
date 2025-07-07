@@ -1,7 +1,7 @@
 import React from 'react'
 import Post from './Post'
 
-const HomeMainContent = () => {
+const HomeMainContent = ({posts}) => {
   return (
     <div className='max-w-2xl h-max  mx-auto'>
 
@@ -10,13 +10,10 @@ const HomeMainContent = () => {
           </div>
 <div className=''>
 
-
-<Post/>
-<Post/>
-<Post/>
-<Post/>
-<Post/>
-<Post/>
+{posts.map((post)=>{ 
+  return(
+<Post post={post} key={post._id}/>)
+})}
 
 </div>
 
