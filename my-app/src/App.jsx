@@ -44,8 +44,11 @@ function App() {
         {/* Protected Routes with Sidebar */}
         <Route path="/" element={user ? <Layout /> : <Navigate to="/auth" />}>
           <Route index element={<Home />} />
-          <Route path="explore" element={<Explore />} />
+          <Route path="explore" element={
+            <Explore />
+        } />
           <Route path=':username' element={<UserProfile/>}/>
+
           {/* <Route path="suggestions" element={<Suggestions />} /> */}
         </Route>
 

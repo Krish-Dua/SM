@@ -4,9 +4,6 @@ import CommentDrawer from "./CommentDrawer";
 
 const Post = ({ post }) => {
 
-useEffect(()=>{
-  console.log(post)
-})
 
   const [comment, setComment] = useState("");
 

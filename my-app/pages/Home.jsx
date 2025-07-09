@@ -23,7 +23,6 @@ const fetchPosts=async ()=>{
 alert(data.message)
       }
       else{
-        console.log(data);
        SetPosts(data.data)
       }
       // setloading(false);
@@ -40,7 +39,6 @@ alert(data.message)
 alert(data.message)
       }
       else{
-        console.log(data);
        SetSuggestedUsers(data.data)
       }
  }   

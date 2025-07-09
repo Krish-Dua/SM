@@ -16,7 +16,7 @@ import CreateBtn from "./CreateBtn";
 const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "Explore", url: "/explore", icon: LucideCompass },
-  { title: "Reels", url: "#", icon: MonitorPlay },
+  { title: "Reels", url: "/eagle_07", icon: MonitorPlay },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },
   { title: "Settings", url: "#", icon:Settings },

@@ -215,10 +215,10 @@ export const getUserProfile = async(req,res) => {
 
 export const searchUser = async(req,res) => {
   try {
-    const {username} = req.params;
+    const {username} = req.query;
     const users = await User.find({
       username: { $regex: username, $options: "i" }
-    }).select("-password -followers -following").limit(10);
+    }).select("avatar name username").limit(10);
     console.log(users)
     
     if(users.length === 0) {
@@ -257,3 +257,30 @@ export const getSuggestions = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error at getting suggestions" });
   }
 };  
+
+export const savePost= async (req, res) => {
+  const { postId } = req.params;
+  try {
+    if (!postId) {
+      return res.status(400).json({ success: false, message: "Post ID is required" });
+    }
+
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    if (user.saved.includes(postId)) {
+      return res.status(400).json({ success: false, message: "Post already saved" });
+    }
+
+    user.saved.push(postId);
+    await user.save();
+
+    res.json({ success: true, message: "Post saved successfully", data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error at saving post" });
+  }
+};

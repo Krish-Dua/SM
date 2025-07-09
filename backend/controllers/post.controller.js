@@ -1,7 +1,7 @@
 import Post from "../models/post.model.js";
-import Comment from "../models/comment.model.js"
+import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
-
+import mongoose from "mongoose";
 
 export const createPost = async (req, res) => {
   const postedBy = req.user.userId;
@@ -82,13 +82,11 @@ export const likeUnlikePost = async (req, res) => {
       return res.status(200).json({ success: true, message: "post unliked" });
     } else {
       //like
-      await Post.findByIdAndUpdate(postId,{
-        $push:{likes:userId}
-      })
+      await Post.findByIdAndUpdate(postId, {
+        $push: { likes: userId },
+      });
       return res.status(200).json({ success: true, message: "post liked" });
     }
-
-    
   } catch (error) {
     console.log(error);
     return res
@@ -97,57 +95,111 @@ export const likeUnlikePost = async (req, res) => {
   }
 };
 
-export const createComment = async (req,res)=>{
-try {
-  const {toPost,content}= req.body
-  const commentedBy= req.user.userId;
-const comment = await Comment.create({
-  commentedBy,
-  toPost,
-  content
-})
+export const createComment = async (req, res) => {
+  try {
+    const { toPost, content } = req.body;
+    const commentedBy = req.user.userId;
+    const comment = await Comment.create({
+      commentedBy,
+      toPost,
+      content,
+    });
 
-res.json({success: true, data: comment})
-  
-
-} catch (error) {
-  console.log(error)
-  return res.status(500).json({success: false, message: "server error at comment"})
-}
+    res.json({ success: true, data: comment });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at comment" });
+  }
 };
 
-export const deleteComment = async (req,res)=>{
+export const deleteComment = async (req, res) => {
   try {
-    const commentId = req.params.id
-    const comment = await Comment.findByIdAndDelete(commentId)
-    if(!comment){
-      return res.status(404).json({success: false, message: "comment not found"})
+    const commentId = req.params.id;
+    const comment = await Comment.findByIdAndDelete(commentId);
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ success: false, message: "comment not found" });
     }
-    res.json({success: true, message: "comment deleted successfully"})
+    res.json({ success: true, message: "comment deleted successfully" });
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({success: false, message: "server error at delete comment"})
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at delete comment" });
   }
-}
+};
 
-export const getComments = async (req,res)=>{
+export const getComments = async (req, res) => {
   try {
-    const postId = req.params.id
-    const comments = await Comment.find({toPost: postId})
-    res.json({success: true, data: comments})
+    const postId = req.params.id;
+    const comments = await Comment.find({ toPost: postId });
+    res.json({ success: true, data: comments });
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({success: false, message: "server error at get comments"})
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at get comments" });
   }
-}
+};
 
 export const getFeed = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const posts = await Post.find({}).limit(10).populate("postedBy", "username profilePicture");
+    const posts = await Post.find({})
+      .limit(10)
+      .populate("postedBy", "username profilePicture");
     res.json({ success: true, data: posts });
-  } catch (error) { 
+  } catch (error) {
     console.log(error);
-    return res.status(500).json({ success: false, message: "server error at get feed" });
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at get feed" });
+  }
+};
+export const getExploreFeed = async (req, res) => {
+  try {
+    const posts = await Post.aggregate([
+      {
+        $match: {
+         postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
+      },
+      },
+      { $sample: { size: 21 } },
+
+    ]);
+    res.json({ success: true, data: posts });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at get explore feed" });
+  }
+};
+
+export const getPostByUsername = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne ({ username }).select("_id");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "user not found" });
+    }
+    const query = { postedBy: user._id };
+    if (req.query.type) {
+      query.postType = req.query.type;
+    }
+
+    const posts = await Post.find(query)
+      .sort({ createdAt: -1 });
+    res.json({ success: true, data: posts,user});
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at get post by username" });
   }
 }

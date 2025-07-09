@@ -29,18 +29,31 @@ const dummyUserIds = [
 const mainUserId = "686955278a7f27267bf42376";
 
 const createDummyPosts = async () => {
-  for (const userId of [...dummyUserIds, mainUserId]) {
-    for (let i = 0; i < 3; i++) {
+  // for (const userId of [...dummyUserIds, mainUserId]) {
+  //   for (let i = 0; i < 3; i++) {
+  //     await Post.create({
+  //       postedBy: userId,
+  //       postType: "post",
+  //       media: `https://picsum.photos/seed/${userId}${i}150/150`,
+  //       caption: `Test post ${i + 1} by user ${userId}`,
+  //     });
+  //   }
+  // }
+  for (let i = 3; i < 6; i++) {
       await Post.create({
-        postedBy: userId,
-        postType: "post",
-        media: `https://picsum.photos/seed/${userId}${i}150/150`,
-        caption: `Test post ${i + 1} by user ${userId}`,
+        postedBy: mainUserId,
+        postType: "reel",
+        media: `https://picsum.photos/seed/${mainUserId}${i}150/150`,
+        caption: `Test post ${i + 1} by user ${mainUserId}`,
       });
     }
-  }
+
+
   console.log("Dummy posts created 🎉");
+
 };
+
+
 
 
 

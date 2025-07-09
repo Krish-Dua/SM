@@ -15,6 +15,11 @@ required:true
     type: String,
     required: true,
   },
+mediaType: {
+    type: String,
+    enum: ["image", "video"],
+    required: true,
+  },
   caption: {
     type: String,
     required: true,
