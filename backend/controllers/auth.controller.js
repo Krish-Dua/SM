@@ -107,6 +107,11 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const { name, bio, avatar, username } = req.body;
   try {
+  if (!name && !bio && !avatar && !username) {
+    return res
+      .status(400)
+      .json({ success: false, message: "No fields to update" });
+  }
     if(username){
       const existingUserWithUsername = await User.findOne({ username });
       if(existingUserWithUsername) {

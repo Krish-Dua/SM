@@ -136,7 +136,7 @@ useEffect(() => {
         {/* profile image  */}
         <div className=" h-18 w-18 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden mr-2 sm:mr-10 md:mr-20">
           <img
-            src={"https://tse4.mm.bing.net/th/id/OIP.552H59xFSVS4Ppphb8jkaQHaE8?pid=Api&P=0&h=180"|| "/default-avatar.png"}
+            src={user.avatar|| "/default-avatar.png"}
             className="object-cover w-full h-full"
             alt=""
           />

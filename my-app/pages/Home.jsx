@@ -46,7 +46,7 @@ alert(data.message)
 useEffect( () => {
   fetchPosts();
   fetchSuggestedUsers();
-    
+
   }, [])
 
   return (
