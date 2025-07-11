@@ -2,6 +2,9 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { genTokenAndSetCookie } from "../services/genTokenAndSetCookie.js";
 import mongoose from "mongoose";
+import {v2 as cloudinary} from 'cloudinary';
+
+
 export const signupUser = async (req, res) => {
   const { email, password, username, name } = req.body;
   try {
@@ -105,9 +108,14 @@ export const getUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { name, bio, avatar, username } = req.body;
+  const { name, bio, username } = req.body;
+  console.log("Update User Request:", req.body);
+  console.log("File in Request:", req.file);
+console.log("API_KEY", process.env.CLOUDINARY_API_KEY);
+console.log("Config loaded", cloudinary.config());
+
   try {
-  if (!name && !bio && !avatar && !username) {
+  if (!name && !bio && !req.file && !username) {
     return res
       .status(400)
       .json({ success: false, message: "No fields to update" });
@@ -131,9 +139,36 @@ export const updateUser = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
+
+    if (req.file) {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: "econn/avatars",
+              resource_type: "image",
+            },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+
+          stream.end(req.file.buffer); // Push buffer into stream
+        });
+      };
+
+      const result = await streamUpload();
+      if (user.avatar) {
+        let publicId = user.avatar.split("upload/")[1].split("/").slice(1).join("/").split(".")[0];
+        await cloudinary.uploader.destroy(publicId);
+        
+      }
+      user.avatar = result.secure_url;
+    }
+
     user.name = name || user.name;
     user.bio = bio || user.bio;
-    user.avatar = avatar || user.avatar;
     user.username = username || user.username;
 
     user = await user.save();

@@ -30,9 +30,23 @@ const EditProfileBtn = ({ className }) => {
   const [file, setFile] = useState(null);
   //yoyo
 
-  const handleSaveChanges = async (e) => {
+  const handleSaveChanges = async () => {
+
+    if (loading) return;
+
     console.log("Saving changes", formData);
     console.log("Changed fields", changedFields);
+
+
+const hasChanges =
+    Object.values(changedFields).some(Boolean) || !!file;
+
+  if (!hasChanges) {
+    setloading(false);
+    return;
+  }
+
+
     setloading(true);
 
     const updatedData = new FormData();
@@ -48,6 +62,9 @@ const EditProfileBtn = ({ className }) => {
     if (file) {
       updatedData.append("avatar", file);
     }
+
+
+
     const response = await fetch("http://localhost:3000/api/user/update", {
       method: "PATCH",
       body: updatedData,
@@ -105,6 +122,9 @@ else{
       });
       setProfilePic(userStore.avatar);
       setChangedFields({});
+      setFile(null);
+      setError(null);
+      setloading(false);
     }
   }, [open, userStore]);
 

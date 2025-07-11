@@ -7,12 +7,20 @@ import authRouter from './routes/auth.route.js'
 import postRouter from './routes/post.route.js'
 import User from './models/user.model.js';
 import Post from './models/post.model.js';
-
+import {v2 as cloudinary} from 'cloudinary';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const dummyUserIds = [
   "685ae5f5a1e556bb43a10997",
   "685d912b7ad8c2cadae6f6b3",
@@ -52,6 +60,7 @@ const createDummyPosts = async () => {
   console.log("Dummy posts created 🎉");
 
 };
+
 
 
 
