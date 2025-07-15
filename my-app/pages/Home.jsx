@@ -25,7 +25,7 @@ alert(data.message)
       else{
        SetPosts(data.data)
       }
-      // setloading(false);
+      // setLoading(false);
     }
 
  const fetchSuggestedUsers=async()=>{

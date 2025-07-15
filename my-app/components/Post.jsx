@@ -1,11 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Heart, MessageCircleMore, Save, Dot } from "lucide-react";
+import React from "react";
+import { Heart, Save, Dot } from "lucide-react";
 import CommentDrawer from "./CommentDrawer";
+import PostCommentBtn from "./PostCommentBtn";
+import LikeBtn from "./LikeBtn";
+import useUserStore from "../store/user";
+
 
 const Post = ({ post }) => {
+ const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+  const [commentCount, setCommentCount] = React.useState(0);
+   const [likes, setLikes] = React.useState(post.likes);
 
+  React.useEffect(() => {
+    const fetchCommentCount = async () => {
+      const res = await fetch(`http://localhost:3000/api/post/comments/${post._id}?countOnly=true`,{
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      if (data.success) setCommentCount(data.data);
 
-  const [comment, setComment] = useState("");
+    };
+    fetchCommentCount();
+  }, [post._id]);
+
 
   return (
     <div className="w-full flex flex-col gap-3 py-8 border-b-1 border-slate-400">
@@ -30,17 +50,15 @@ const Post = ({ post }) => {
           src={post.media}
           alt={post.postedBy.username}
           className="w-full object-cover"
-          style={{ aspectRatio: "auto", maxHeight: "600px" }}
+          style={{ aspectRatio: "auto", maxHeight: "550px" }}
         />
       </div>
 
       {/* L and c  */}
       <div className="flex justify-between items-center px-2">
         <div className="flex gap-9">
-          <div title="like">
-            <Heart />
-          </div>
-          <CommentDrawer />
+          <LikeBtn liked={likes.includes(user._id)} setLikes={setLikes} postId={post._id} />
+          <CommentDrawer setCommentCount={setCommentCount} postId={post._id} />
         </div>
         <Save />
       </div>
@@ -48,9 +66,9 @@ const Post = ({ post }) => {
       {/* L and C count  */}
       <div>
         <div className="flex gap-2 px-2">
-          <p>{post.likes.length} Likes</p>
+          <p>{likes.length} Likes</p>
           <Dot />
-          <p>{post.comments ? post.comments.length : 0} Comments</p>
+          <p>{commentCount ? commentCount : 0} Comments</p>
         </div>
       </div>
 
@@ -60,16 +78,7 @@ const Post = ({ post }) => {
       </div>
 
       {/* add comment  */}
-      <div className="md:flex items-center p-2 hidden ">
-        <input
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Add a comment"
-          type="text"
-          className="outline-none flex-1 dark:border-gray-600 border-black border-b-1"
-        />
-        {comment.trim() && <button className="px-4">Post</button>}
-      </div>
+     <PostCommentBtn setCommentCount={setCommentCount} postId={post._id} />
     </div>
   );
 };

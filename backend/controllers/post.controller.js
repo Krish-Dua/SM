@@ -79,13 +79,13 @@ export const likeUnlikePost = async (req, res) => {
       await Post.findByIdAndUpdate(postId, {
         $pull: { likes: userId },
       });
-      return res.status(200).json({ success: true, message: "post unliked" });
+      return res.status(200).json({ success: true, message: "unliked" });
     } else {
       //like
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: userId },
       });
-      return res.status(200).json({ success: true, message: "post liked" });
+      return res.status(200).json({ success: true, message: "liked" });
     }
   } catch (error) {
     console.log(error);
@@ -99,12 +99,12 @@ export const createComment = async (req, res) => {
   try {
     const { toPost, content } = req.body;
     const commentedBy = req.user.userId;
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       commentedBy,
       toPost,
       content,
     });
-
+    comment = await comment.populate("commentedBy", "username avatar");
     res.json({ success: true, data: comment });
   } catch (error) {
     console.log(error);
@@ -135,7 +135,12 @@ export const deleteComment = async (req, res) => {
 export const getComments = async (req, res) => {
   try {
     const postId = req.params.id;
-    const comments = await Comment.find({ toPost: postId });
+    const countOnly = req.query.countOnly === "true";
+    if (countOnly) {
+      const count = await Comment.countDocuments({ toPost: postId });
+      return res.json({ success: true, data:count  });
+    }
+    const comments = await Comment.find({ toPost: postId }).populate("commentedBy", "username avatar");
     res.json({ success: true, data: comments });
   } catch (error) {
     console.log(error);

@@ -1,49 +1,34 @@
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useState } from "react";
-import {API} from "../src/lib/utils"; // your axios setup
 import { MessageCircleMore } from "lucide-react";
 import "../src/App.css"
+import PostCommentBtn from "./PostCommentBtn";
 
 
-const CommentDrawer = ({ postId }) => {
-  const [comments, setComments] = useState([
-    {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  },
-   {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  }, {
-    username:"aryan.5",
-    comment:"bada hokr ek aryan 5 lunga"
-  },
-
-]);
+const CommentDrawer = ({ postId ,setCommentCount}) => {
+  const [comments, setComments] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setloading] = useState(false);
 
-  const fetchComments = () => {
-    // API.get(`/api/comments/${postId}`)
-    //   .then(res => setComments(res.data.comments))
-    //   .catch(err => console.log(err));
+
+
+  const fetchComments =async  () => {
+     setloading(true);
+      const response = await fetch(`http://localhost:3000/api/post/comments/${postId}`, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if(!data.success) {
+alert(data.message)
+      }
+      else{
+        console.log(data.data)
+       setComments(data.data)
+      }
+      setloading(false);
+  
    
   };
 
@@ -64,16 +49,16 @@ const CommentDrawer = ({ postId }) => {
           comments.map((c,ind) => (
             <div key={ind} className="mb-3 p-2 flex items-center  justify-between last:mb-0  rounded-lg">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
+                <div className="h-12 w-12 rounded-full overflow-hidden bg-slate-200">
                   <img 
-                    // src={c.avatar} 
-                    // alt={user.name} 
+                    src={c.commentedBy.avatar} 
+                    alt={c.commentedBy.username} 
                     className="h-full w-full object-cover" 
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium dark:text-white text-black">{c.username}</p>
-                  <p className="text-xs text-gray-300">{c.comment}</p>
+                  <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p>
+                  <p className="text-sm text-gray-300">{c.content}</p>
                 </div>
               </div>
              
@@ -84,6 +69,9 @@ const CommentDrawer = ({ postId }) => {
         ): (
           <p>No comments yet.</p>
         )}
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+        <PostCommentBtn setCommentCount={setCommentCount} setComments={setComments}  postId={postId} />
         </div>
       </DrawerContent>
     </Drawer>

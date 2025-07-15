@@ -151,7 +151,9 @@ fetchSearchedUsers(debouncedSearch);
                   <div className="flex items-center gap-6">
                     <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
                       <img
-                        src={user.avatar}
+                        src={user.avatar || 
+                          "/default-avatar.png"
+                        }
                         alt={user.name}
                         className="h-full w-full object-cover"
                       />
