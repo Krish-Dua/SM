@@ -298,27 +298,30 @@ export const getSuggestions = async (req, res) => {
   }
 };  
 
-export const savePost= async (req, res) => {
-  const { postId } = req.params;
+export const saveUnsavePost= async (req, res) => {
   try {
-    if (!postId) {
-      return res.status(400).json({ success: false, message: "Post ID is required" });
+    const userId = req.user.userId;
+    const postId = req.params.postId;
+console.log(postId)
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ success: false, message: "Invalid post ID" });
     }
 
-    const user = await User.findById(req.user.userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
     if (user.saved.includes(postId)) {
-      return res.status(400).json({ success: false, message: "Post already saved" });
+      user.saved = user.saved.filter(id => id.toString() !== postId);
+      await user.save();
+      return res.status(200).json({ success: true, message: "unsaved" });
+    } else {
+      user.saved.push(postId);
+      await user.save();
+      return res.status(200).json({ success: true, message: "saved" });
     }
-
-    user.saved.push(postId);
-    await user.save();
-
-    res.json({ success: true, message: "Post saved successfully", data: user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error at saving post" });

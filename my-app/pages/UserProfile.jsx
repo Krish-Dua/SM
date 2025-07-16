@@ -16,6 +16,7 @@ const [user,setUser] = React.useState({
   avatar: "",
   saved: [],
 });
+const [userSavedPosts,setUserSavedPosts] = React.useState([]);
 const [allUserPosts,setAllUserPosts] = React.useState([]);
 const [userReels,setUserReels] = React.useState([]);
 const [selectedTab,setSelectedTab] = React.useState("all");
@@ -34,7 +35,6 @@ if(!data.success){
   alert(data.message);
 }
 else{
-  console.log(data)
   setUser(data.data)
 }
 
@@ -52,7 +52,6 @@ const data = await response.json();
 if(!data.success){
   alert(data.message);
 } else {
-  console.log(data.data);
   setAllUserPosts(data.data);
 
 }
@@ -69,14 +68,30 @@ const data = await response.json();
 if(!data.success){
   alert(data.message);
 } else {
-  console.log(data.data);
   setUserReels(data.data);
 
 }
 }
 
+const fetchUserSavedPosts = async()=>{
+const response = await fetch(`http://localhost:3000/api/post/saved`,{
+  method: "GET",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
+const data = await response.json();
+if(!data.success){
+  alert(data.message);
+} else {
+  console.log(data.data)
+  setUserSavedPosts(data.data);
+}
+}
+
+
 useEffect(() => {
-  console.log("run")
   fetchUserProfile();
   fetchUserPosts();
 }, [username]);
@@ -128,7 +143,6 @@ useEffect(() => {
 //   };
 
   return (
-    // <p>hellooooooo</p>
     <main className="max-w-4xl py-8 px-1 sm:px-4 h-max mx-auto ">
 
 
@@ -221,7 +235,11 @@ useEffect(() => {
 </button>
 {userStore.username==username&&
 <button  onClick={()=>{
-  setSelectedTab("saved");  
+  setSelectedTab("saved"); 
+  if (!userSavedPosts.length) {
+    console.log("yo")
+    fetchUserSavedPosts();
+  } 
 }}  className={`flex gap-2 h-full items-center justify-center ${selectedTab==="saved"?"border-b-1":""}`}>
 <Save/>
 <span className="hidden md:block">saved</span>
@@ -250,7 +268,7 @@ return (
 )
 })}
 
-{selectedTab==="saved"&&user.saved.map((post)=>{
+{selectedTab==="saved"&&userSavedPosts.map((post)=>{
   if(!post.media) return null; 
 return (
   <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />

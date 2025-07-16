@@ -8,10 +8,6 @@ const LikeBtn = ({postId,liked,setLikes}) => {
     const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
 
-    useEffect(()=>{
-        console.log(liked)
-    })
-
       const handleClick = async () => {
     const res = await fetch(`http://localhost:3000/api/post/lul/${postId}`, {
       method: "PATCH",

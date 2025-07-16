@@ -150,6 +150,7 @@ export const getComments = async (req, res) => {
   }
 };
 
+
 export const getFeed = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -208,3 +209,25 @@ export const getPostByUsername = async (req, res) => {
       .json({ success: false, message: "server error at get post by username" });
   }
 }
+
+export const getUserSavedPosts = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await User.findById(userId)
+      .populate({
+        path: "saved",
+        select: "media mediaType",
+      })
+      .select("saved"); // Only select the saved field
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, data: user.saved }); // Return only the saved posts
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "server error at get user saved posts" });
+  }
+};

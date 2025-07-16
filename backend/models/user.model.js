@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     bio: { type: String },
     saved: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "post",
+      ref: "Post",
       default: [],
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useUserStore from "../store/user";
 const Login = ({ setlogin }) => {
-  const [hidePass, sethidePass] = useState(false);
+  const [hidePass, sethidePass] = useState(true);
    const [loading, setloading] = useState(false);
     const [userFormData, setuserFormData] = useState({
       email: "",

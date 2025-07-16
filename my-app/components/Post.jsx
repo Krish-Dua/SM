@@ -1,9 +1,11 @@
 import React from "react";
-import { Heart, Save, Dot } from "lucide-react";
+import { Dot } from "lucide-react";
 import CommentDrawer from "./CommentDrawer";
 import PostCommentBtn from "./PostCommentBtn";
 import LikeBtn from "./LikeBtn";
 import useUserStore from "../store/user";
+import { Link } from "react-router-dom";
+import SaveBtn from "./SaveBtn";
 
 
 const Post = ({ post }) => {
@@ -11,9 +13,9 @@ const Post = ({ post }) => {
   const setUser = useUserStore((state) => state.setUser);
   const [commentCount, setCommentCount] = React.useState(0);
    const [likes, setLikes] = React.useState(post.likes);
+   const [saved, setSaved] = React.useState(post.saved);
 
-  React.useEffect(() => {
-    const fetchCommentCount = async () => {
+   const fetchCommentCount = async () => {
       const res = await fetch(`http://localhost:3000/api/post/comments/${post._id}?countOnly=true`,{
         method: "GET",
         credentials: "include",
@@ -23,6 +25,8 @@ const Post = ({ post }) => {
       if (data.success) setCommentCount(data.data);
 
     };
+
+  React.useEffect(() => {
     fetchCommentCount();
   }, [post._id]);
 
@@ -31,6 +35,7 @@ const Post = ({ post }) => {
     <div className="w-full flex flex-col gap-3 py-8 border-b-1 border-slate-400">
       {/* header */}
       <div className="flex justify-between px-2 items-center">
+<Link to={`/${post.postedBy.username}`} >
         <div className="flex gap-4 items-center">
           <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
             <img
@@ -41,6 +46,8 @@ const Post = ({ post }) => {
           </div>
           <p>{post.postedBy.username}</p>
         </div>
+</Link>
+
         <div className="cursor-pointer">. . .</div>
       </div>
 
@@ -60,7 +67,7 @@ const Post = ({ post }) => {
           <LikeBtn liked={likes.includes(user._id)} setLikes={setLikes} postId={post._id} />
           <CommentDrawer setCommentCount={setCommentCount} postId={post._id} />
         </div>
-        <Save />
+        <SaveBtn  postId={post._id} />
       </div>
 
       {/* L and C count  */}
