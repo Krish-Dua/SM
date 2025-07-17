@@ -3,19 +3,53 @@ import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
 
+import {v2 as cloudinary} from 'cloudinary';
+
+
 export const createPost = async (req, res) => {
   const postedBy = req.user.userId;
-  const { postType, media, caption } = req.body;
+  const { mediaType, caption ,postType} = req.body;
+  let media = req.file
+  console.log(mediaType, media, caption, postType);
   try {
-    if (!postType || !media || !caption) {
+    if (!mediaType || !media || !caption || !postType) {
       return res
         .status(400)
-        .json({ success: false, message: "all fields required" });
+        .json({ success: false, message: "All fields required" });
     }
+
+
+     if (req.file) {
+          const streamUpload = () => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                {
+                  folder: "econn/media",
+                  resource_type: mediaType,
+                },
+                (error, result) => {
+                  if (error) return reject(error);
+                  resolve(result);
+                }
+              );
+    
+              stream.end(req.file.buffer); // Push buffer into stream
+            });
+          };
+    
+          const result = await streamUpload();
+        
+          media = result.secure_url;
+        }
+    
+
+
+
 
     const newPost = await Post.create({
       postedBy,
       postType,
+      mediaType,
       media,
       caption,
     });
@@ -155,8 +189,8 @@ export const getFeed = async (req, res) => {
   try {
     const userId = req.user.userId;
     const posts = await Post.find({})
-      .limit(10)
-      .populate("postedBy", "username profilePicture");
+      .limit(10).sort({ createdAt: -1 })
+      .populate("postedBy", "username avatar");
     res.json({ success: true, data: posts });
   } catch (error) {
     console.log(error);

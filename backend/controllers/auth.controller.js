@@ -109,10 +109,6 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { name, bio, username } = req.body;
-  console.log("Update User Request:", req.body);
-  console.log("File in Request:", req.file);
-console.log("API_KEY", process.env.CLOUDINARY_API_KEY);
-console.log("Config loaded", cloudinary.config());
 
   try {
   if (!name && !bio && !req.file && !username) {

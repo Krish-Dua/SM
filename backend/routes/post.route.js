@@ -1,13 +1,18 @@
 import express from 'express';
 import {createPost,getPost,deletePost,likeUnlikePost,deleteComment,createComment,getUserSavedPosts,getComments, getFeed, getExploreFeed, getPostByUsername} from '../controllers/post.controller.js'
 import {authenticateUser} from '../middlewares/authenticateUser.js'
+import multer from 'multer';
 const route = express.Router()
 
+
+const upload = multer({
+    storage:multer.memoryStorage()
+})
 
 
 route.get('/exploreFeed',authenticateUser,getExploreFeed)
 route.get('/feed',authenticateUser,getFeed)
-route.post('/create',authenticateUser,createPost)
+route.post('/create',authenticateUser,upload.single("media"),createPost)
 route.post('/comment',authenticateUser,createComment)
 route.patch('/lul/:id',authenticateUser,likeUnlikePost)
 route.delete('/comment/:id',deleteComment)

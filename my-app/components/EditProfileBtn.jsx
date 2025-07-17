@@ -34,8 +34,6 @@ const EditProfileBtn = ({ className }) => {
 
     if (loading) return;
 
-    console.log("Saving changes", formData);
-    console.log("Changed fields", changedFields);
 
 
 const hasChanges =

@@ -1,16 +1,53 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
+import LoaderSpinner from "./LoaderSpinner";
+const MAX_SIZE_MB = 50;
+const MAX_DURATION_SECONDS = 60;
+
 
 const PostModal = () => {
   const [preview, setpreview] = useState(null)
   const [caption, setCaption] = useState("");
 const [file,setFile]= useState(null)
 const [error,setError]= useState(null)
+const [loading ,setLoading]= useState(false)
+
+
+  const handleSubmit = async (e) => {
+if(!file || !caption.trim()){
+  setError("Please select a file and enter a caption.");
+  return;
+}
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("media", file); 
+    formData.append("caption", caption);
+    formData.append("mediaType", file.type.startsWith("video/") ? "video" : "image");
+    formData.append("postType", "post"); 
+    const response = await fetch("http://localhost:3000/api/post/create", {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    });
+    const data = await response.json();
+    if (!data.success) {
+      setError(data.message || "Failed to create post.");
+      return;
+    }
+    setCaption("");
+    setFile(null);
+    setpreview(null);
+    setError(null);
+    alert("Post created successfully!");
+    setLoading(false);
+
+  }
+
 
   const handleFileInput =(e)=>{
     const selectedFile = e.target.files[0]
     if (!selectedFile) return;
-
+console.log(selectedFile)
     const type = selectedFile.type;
 
     if (
@@ -22,16 +59,34 @@ const [error,setError]= useState(null)
       setpreview(null);
       return;
     }
+     if (selectedFile.size / 1024 / 1024 > MAX_SIZE_MB) {
+    setError(`File size should not exceed ${MAX_SIZE_MB} MB.`);
+    setFile(null);
+    setpreview(null);
+    return;
+  }
+  if (type.startsWith("video/")) {
+    const video = document.createElement("video");
+    video.preload = "metadata";
 
-    setError(null);
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+
+      if (video.duration > MAX_DURATION_SECONDS) {
+        setError(`Video duration exceeds ${MAX_DURATION_SECONDS} seconds.`);
+        setFile(null);
+        setpreview(null);
+        return;
+      }
+
+  };
+
+  }
+setError(null);
+
     setFile(selectedFile);
     setpreview(URL.createObjectURL(selectedFile));
-  };
-  
-
-
-
-
+}
 
 
 
@@ -47,8 +102,8 @@ const [error,setError]= useState(null)
 preview?
 <div className="w-full ">
 <button className="text-blue-800 cursor-pointer" onClick={()=>{
-  console.log(preview)
   setpreview(null)
+  setFile(null)
 }}>Discard</button>
 {
 file.type.startsWith("image/")?
@@ -115,8 +170,17 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
       {/* submit btn  */}
       <div className="flex justify-end">
         <Button type="submit" onClick={()=>{
-
-        }} className="dark:bg-white dark:hover:bg-white dark:text-black">Post</Button>
+handleSubmit()
+        }} className="dark:bg-white dark:hover:bg-white dark:text-black">
+           {loading ? (
+    <span className="flex items-center gap-2">
+      <LoaderSpinner />
+      Creating...
+    </span>
+  ) : (
+    "Post"
+  )}
+          </Button>
       </div>
 
 
