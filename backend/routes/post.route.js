@@ -19,8 +19,8 @@ route.delete('/comment/:id',deleteComment)
 route.get('/comments/:id',authenticateUser,getComments)
 route.get('/postedBy/:username',authenticateUser,getPostByUsername)
 route.get('/saved',authenticateUser,getUserSavedPosts)
-route.get('/:id',getPost)
-route.delete('/:id',deletePost)
+route.get('/:id',authenticateUser,getPost)
+route.delete('/:id',authenticateUser,deletePost)
 
 
 

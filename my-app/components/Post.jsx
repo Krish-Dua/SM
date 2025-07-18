@@ -6,13 +6,13 @@ import LikeBtn from "./LikeBtn";
 import useUserStore from "../store/user";
 import { Link } from "react-router-dom";
 import SaveBtn from "./SaveBtn";
+import PostOptionsBtn from "./PostOptionsBtn";
 
 const Post = ({ post }) => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [commentCount, setCommentCount] = React.useState(0);
   const [likes, setLikes] = React.useState(post.likes);
-  const [saved, setSaved] = React.useState(post.saved);
 
   const fetchCommentCount = async () => {
     const res = await fetch(
@@ -28,7 +28,7 @@ const Post = ({ post }) => {
   };
 
   React.useEffect(() => {
-    console.log(post)
+    // console.log(post)
     fetchCommentCount();
   }, [post._id]);
 
@@ -48,8 +48,7 @@ const Post = ({ post }) => {
             <p>{post.postedBy.username}</p>
           </div>
         </Link>
-
-        <div className="cursor-pointer">. . .</div>
+        <PostOptionsBtn postedBy={post.postedBy} postId={post._id} />
       </div>
 
       {/* image */}
@@ -58,6 +57,7 @@ const Post = ({ post }) => {
           <video
             src={post.media}
             autoPlay
+            loop
             // muted
             // controls
             className="w-full object-cover"

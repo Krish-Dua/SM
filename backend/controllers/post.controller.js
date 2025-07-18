@@ -81,13 +81,24 @@ export const getPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const id = req.params.id;
+  const userId = req.user.userId;
   try {
     const post = await Post.findByIdAndDelete(id);
     if (!post) {
       return res
-        .status(404)
+        .status(404).populate("postedBy", "username")
         .json({ success: false, message: "post not found" });
     }
+    if(!post.postedBy._id === userId) {
+      return res.status(403).json({ success: false, message: "not authorized to delete this post" });
+    }
+    await Comment.deleteMany({ toPost: id });
+
+    if (post.media) {
+        let publicId = post.media.split("upload/")[1].split("/").slice(1).join("/").split(".")[0];
+     await cloudinary.uploader.destroy(publicId);
+    }
+    
     res.json({ success: true, message: "post deleted successfully" });
   } catch (error) {
     console.log(error);
@@ -189,7 +200,7 @@ export const getFeed = async (req, res) => {
   try {
     const userId = req.user.userId;
     const posts = await Post.find({})
-      .limit(10).sort({ createdAt: -1 })
+      .limit(20).sort({ createdAt: -1 })
       .populate("postedBy", "username avatar");
     res.json({ success: true, data: posts });
   } catch (error) {

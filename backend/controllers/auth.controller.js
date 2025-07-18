@@ -96,7 +96,7 @@ export const logoutUser = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select(
-      "-password -followers -following"
+      "-password"
     );
     res.json({ success: true, data: user });
   } catch (error) {

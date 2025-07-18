@@ -3,7 +3,7 @@ import React, { use } from 'react'
 import useUserStore from "../store/user";
 
 
-const SaveBtn = ({postId,saved,setSaved}) => {
+const SaveBtn = ({postId,children}) => {
 const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
 const [loading, setLoading] = React.useState(false);
@@ -21,15 +21,15 @@ if (loading) return;
       if(!data.success) {
 alert(data.message)
       }
-      else{
-      if (data.success) {
-      if (data.message==="saved") {
-        user.saved.push(postId);
-      }
-      if (data.message==="unsaved") {
-        user.saved = user.saved.filter(id => id.toString() !== postId);
-      }
-}
+    else {
+  if (data.success) {
+    if (data.message === "saved") {
+      setUser({ ...user, saved: [...user.saved, postId] });
+    }
+    if (data.message === "unsaved") {
+      setUser({ ...user, saved: user.saved.filter(id => id.toString() !== postId) });
+    }
+  }
 }
 setLoading(false);
 
@@ -39,9 +39,9 @@ setLoading(false);
     
 
   return (
-    <button onClick={handleSave} >
-      <Bookmark fill={user.saved.includes(postId)?"white":""} />
-    </button>
+    <div role='button' onClick={handleSave} >
+{children? children : <Bookmark fill={user.saved.includes(postId)?"white":""} />}
+    </div>
   )
 }
 

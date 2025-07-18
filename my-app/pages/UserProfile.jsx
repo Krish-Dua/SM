@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import {Grid,PlaySquare,Save} from "lucide-react"
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
+import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
 const UserProfile = () => {
+  const location = useLocation();
+const queryParam=new URLSearchParams(location.search);
+const tabname= queryParam.get("tab") || "all";
   const userStore = useUserStore((state) => state.user);
   const setUserStore = useUserStore((state) => state.setUser);
   const { username } = useParams();
@@ -19,8 +23,8 @@ const [user,setUser] = React.useState({
 const [userSavedPosts,setUserSavedPosts] = React.useState([]);
 const [allUserPosts,setAllUserPosts] = React.useState([]);
 const [userReels,setUserReels] = React.useState([]);
-const [selectedTab,setSelectedTab] = React.useState("all");
-  // console.log(username   , userStore,userStore.username===username)
+const [selectedTab,setSelectedTab] = React.useState(tabname);
+
 
 const fetchUserProfile = async () => {
   const response = await fetch(`http://localhost:3000/api/user/profile/${username}`, {
@@ -92,7 +96,7 @@ if(!data.success){
 
 
 useEffect(() => {
-  fetchUserProfile();
+  fetchUserProfile();``
   fetchUserPosts();
 }, [username]);
 
@@ -168,7 +172,7 @@ useEffect(() => {
 :
 <div className=" hidden sm:flex  gap-6 ">
 <span className="text-lg py-1 font-medium px-4">{user.username}</span>
-<button className=" py-1 px-4 rounded-lg bg-gray-800">follow</button>
+<FollowUnfollwBtn targetUser={user} setTargetUser={setUser} targetUserId={user._id} classname={" py-1 px-4 rounded-lg bg-gray-800"} />
 <button className="py-1  px-4 rounded-lg bg-gray-800">message</button>
 </div>
 }
@@ -207,7 +211,7 @@ useEffect(() => {
  <button className="py-1  rounded-lg w-full bg-gray-800">Settings</button>
 </div>:
  <div className="sm:hidden mt-6 flex gap-6 ">
- <button className="py-1  rounded-lg w-full bg-gray-800">follow</button>
+<FollowUnfollwBtn  targetUser={user} setTargetUser={setUser} targetUserId={user._id} classname={" py-1 px-4 rounded-lg bg-gray-800"} />
  <button className="py-1  rounded-lg w-full bg-gray-800">message</button>
 </div>
 }
@@ -254,22 +258,45 @@ useEffect(() => {
 
 
 {selectedTab==="all"&&allUserPosts.map((post)=>{
-  if(!post.media) return null; 
+ if(post.mediaType === "video")
+return (
+  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+    <source src={post.media} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>    
+)
+else
 return (
   <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
 )
+
 })}
 
 
 {selectedTab==="reel"&&userReels.map((post)=>{
-  if(!post.media) return null; 
+if(post.mediaType === "image")
+ if(post.mediaType === "video")
+return (
+  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+    <source src={post.media} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>    
+)
+else
 return (
   <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
 )
 })}
 
 {selectedTab==="saved"&&userSavedPosts.map((post)=>{
-  if(!post.media) return null; 
+ if(post.mediaType === "video")
+return (
+  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+    <source src={post.media} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>    
+)
+else
 return (
   <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
 )
