@@ -37,54 +37,54 @@ const isCreator = user._id === postedBy._id;
 
 
   return (
-    <Popover>
-      <PopoverTrigger>. . .</PopoverTrigger>
-      <PopoverContent className="flex flex-col border-0 gap-0 dark:bg-gray-800 bg-white p-0 rounded-lg shadow-lg overflow-hidden">
-       
-        {isCreator&&
+      <Popover>
+        <PopoverTrigger>. . .</PopoverTrigger>
+        <PopoverContent className="flex flex-col border-0 gap-0 dark:bg-gray-800 bg-white p-0 rounded-lg shadow-lg overflow-hidden">
+        
+          {isCreator&&
+              <button
+            onClick={handleDelete}
+            className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+          >
+            Delete Post
+          </button>
+          }
+
+  {!isCreator&&
+        <FollowUnfollwBtn  targetUserId={postedBy._id} classname={"w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"} />
+  }
+          <button
+            onClick={() => navigator.clipboard.writeText(`${window.location.href}p/${postId}`)}
+            className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+          >
+            Copy Link
+          </button>
+
+          <SaveBtn postId={postId}>
             <button
-          onClick={handleDelete}
-          className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
-        >
-          Delete Post
-        </button>
-        }
-
-{!isCreator&&
-       <FollowUnfollwBtn  targetUserId={postedBy._id} classname={"w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"} />
-}
-        <button
-          onClick={() => navigator.clipboard.writeText(`${window.location.href}p/${postId}`)}
-          className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
-        >
-          Copy Link
-        </button>
-
-        <SaveBtn postId={postId}>
-           <button
-          className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
-        >
-          {user.saved.includes(postId) ? "Unsave Post" : "Save Post"}
-        </button>
-        </SaveBtn>
+            className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+          >
+            {user.saved.includes(postId) ? "Unsave Post" : "Save Post"}
+          </button>
+          </SaveBtn>
 
 
 
-        <Link
-        to={`/p/${postId}`}
-          className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
-        >
-          Go to Post
-        </Link>
+          <Link
+          to={`/p/${postId}`}
+            className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+          >
+            Go to Post
+          </Link>
 
-        <Link
-            to={`/${postedBy.username}`}
-          className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
-          Go to creator page
-        </Link>
-      </PopoverContent>
-    </Popover>
+          <Link
+              to={`/${postedBy.username}`}
+            className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            Go to creator page
+          </Link>
+        </PopoverContent>
+      </Popover>
   );
 };
 

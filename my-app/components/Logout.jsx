@@ -1,7 +1,7 @@
 import React,{useState}from "react";
 import useUserStore from "../store/user";
 
-const Logout = () => {
+const Logout = ({classname}) => {
       const [loading, setloading] = useState(false);
     
     const user = useUserStore((state) => state.user);
@@ -23,7 +23,7 @@ const Logout = () => {
 
   return (
     <div>
-      <button onClick={handleSubmit} className="text-white bg-black p-2">Logout</button>
+      <button onClick={handleSubmit} className={`${classname}`}>Logout</button>
     </div>
   );
 };

@@ -28,7 +28,7 @@ const LikeBtn = ({postId,liked,setLikes}) => {
 
 
   return (
-    <button title="like">
+    <button title={liked ? "Unlike" : "Like"} >
                 <Heart color={liked ? "red" : "white"} fill={liked ? "red" : "none"} onClick={handleClick} />
               </button>
   )
