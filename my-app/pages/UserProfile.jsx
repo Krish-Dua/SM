@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams,useLocation } from "react-router-dom";
-import {Grid,PlaySquare,Save} from "lucide-react"
+import {Grid,PlaySquare,Save,ImageIcon,Video} from "lucide-react"
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
@@ -260,45 +260,62 @@ useEffect(() => {
 {selectedTab==="all"&&allUserPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
-  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+  <div key={post._id} className="relative" >
+  <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
-  </video>    
+  </video> 
+  <Video className="absolute right-3 top-3 shadow-2xl" />
+  </div>   
 )
 else
 return (
-  <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <div className="relative"  key={post._id}>
+  <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <ImageIcon className="absolute right-3 top-3  shadow-black"  />
+  </div>
 )
 
 })}
 
 
 {selectedTab==="reel"&&userReels.map((post)=>{
-if(post.mediaType === "image")
  if(post.mediaType === "video")
 return (
-  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+  <div key={post._id} className="relative" >
+  <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
-  </video>    
+  </video> 
+  <Video className="absolute right-3 top-3 shadow-2xl" />
+  </div>   
 )
 else
 return (
-  <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <div className="relative"  key={post._id}>
+  <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <ImageIcon className="absolute right-3 top-3  shadow-black"  />
+  </div>
 )
 })}
 
 {selectedTab==="saved"&&userSavedPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
-  <video key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+  <div key={post._id} className="relative" >
+  <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
-  </video>    
+  </video> 
+  <Video className="absolute right-3 top-3 shadow-2xl" />
+  </div>   
 )
 else
 return (
-  <img key={post._id} className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <div className="relative"  key={post._id}>
+  <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
+  <ImageIcon className="absolute right-3 top-3  shadow-black"  />
+  </div>
 )
 })}
 
