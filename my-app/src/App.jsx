@@ -8,6 +8,7 @@ import useUserStore from '../store/user'
 import { Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Explore from '../pages/Explore'
+import Suggestions from '../pages/Suggestions'
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -49,7 +50,7 @@ function App() {
         } />
           <Route path=':username' element={<UserProfile/>}/>
 
-          {/* <Route path="suggestions" element={<Suggestions />} /> */}
+          <Route path="suggestions" element={<Suggestions/>} />
         </Route>
 
         {/* Auth Route (Without Sidebar) */}

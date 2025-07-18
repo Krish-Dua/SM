@@ -20,7 +20,7 @@ const SettingsBtn = ({children,classname}) => {
       <PopoverContent className="flex flex-col border-0 gap-0 dark:bg-gray-800 bg-white p-0 rounded-lg shadow-lg overflow-hidden">
        
 
-<ChangeModeBtn classname="w-full block text-center px-5 py-3 text-base font-medium text-gray-800 dark:text-white bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-150" />
+{/* <ChangeModeBtn classname="w-full block text-center px-5 py-3 text-base font-medium text-gray-800 dark:text-white bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-150" /> */}
 
    <Link
   to={`/${user.username}?tab=saved`}

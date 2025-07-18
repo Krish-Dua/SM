@@ -96,7 +96,10 @@ if(!data.success){
 
 
 useEffect(() => {
-  fetchUserProfile();``
+  if (tabname==="saved") {
+    fetchUserSavedPosts()
+  }
+  fetchUserProfile();
   fetchUserPosts();
 }, [username]);
 

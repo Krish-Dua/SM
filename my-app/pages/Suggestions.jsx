@@ -1,19 +1,31 @@
-import React from 'react';
+import FollowUnfollwBtn from '../components/FollowUnfollwBtn';
+import React,{useState,useEffect, use} from 'react'
 import { Link } from 'react-router-dom';
-import FollowUnfollwBtn from './FollowUnfollwBtn';
+const Suggestions = () => {
+  const [suggestedUsers,SetSuggestedUsers]=useState([])
+ const fetchSuggestedUsers=async()=>{
+  const response = await fetch("http://localhost:3000/api/user/suggestions?size=15", {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if(!data.success) {
+alert(data.message)
+      }
+      else{
+       SetSuggestedUsers(data.data)
+      }
+ }  
 
- function RightSidebar({suggestedUsers}) {
+useEffect(() => {
+    fetchSuggestedUsers();
+    },[])
 
   return (
-    <aside className="hidden xl:flex w-80  p-4">
-      <div className="w-full">
-        <div className='flex justify-around' >
-        <h2 className="text-md font-semibold mb-4">Suggested for you</h2>
-<Link className='text-blue-600' to={"/suggestions"} >
-See All
-</Link>
-        </div>
-        <div className="shadow-md rounded-lg p-3">
+ <main className='max-w-md h-max mx-auto p-4 ' >
+    <h1 className='text-center font-bold mb-6 text-2xl' >Suggestions for you </h1>
+   <div className="shadow-md rounded-lg p-3">
           {suggestedUsers.map((user) => (
 
             <div key={user.username} className="mb-3 p-2 flex items-center justify-between last:mb-0  rounded-lg">
@@ -38,8 +50,8 @@ See All
             </div>
           ))}
         </div>
-      </div>
-    </aside>
+ </main>
   )
 }
-export default RightSidebar;
+
+export default Suggestions
