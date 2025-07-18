@@ -5,7 +5,7 @@ const MAX_SIZE_MB = 50;
 const MAX_DURATION_SECONDS = 60;
 
 
-const PostModal = () => {
+const PostModal = ({setOpen}) => {
   const [preview, setpreview] = useState(null)
   const [caption, setCaption] = useState("");
 const [file,setFile]= useState(null)
@@ -40,6 +40,7 @@ if(!file || !caption.trim()){
     setError(null);
     alert("Post created successfully!");
     setLoading(false);
+    setOpen(false);
 
   }
 
@@ -47,7 +48,6 @@ if(!file || !caption.trim()){
   const handleFileInput =(e)=>{
     const selectedFile = e.target.files[0]
     if (!selectedFile) return;
-console.log(selectedFile)
     const type = selectedFile.type;
 
     if (

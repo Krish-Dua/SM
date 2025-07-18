@@ -6,23 +6,24 @@ import {
   Settings,
   MessageCircleCode,
 } from "lucide-react";
-
 import React from "react";
 import { Link } from "react-router-dom";
 
 import CreateBtn from "./CreateBtn";
+import useUserStore from "../store/user";
 
 
 const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "Explore", url: "/explore", icon: LucideCompass },
-  { title: "Reels", url: "/eagle_07", icon: MonitorPlay },
+  { title: "Reels", url: "#", icon: MonitorPlay },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },
   { title: "Settings", url: "#", icon:Settings },
 ];
 
 function AppSidebar() {
+  const user = useUserStore((state) => state.user);
   return (
     <>
       <aside
@@ -43,13 +44,6 @@ function AppSidebar() {
           <div className="text-2xl flex justify-start md:justify-center text-black font-bold dark:text-gray-300 mb-6">
             E-CONN
           </div>
-
-          {/* <div className="flex justify-start md:justify-center ">
-          <div className="h-16 w-16">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfm5GBcs1EnrDgU7B3si-idhCJkOGBWUTDfw&s" className="h-full  w-full object-cover" alt="" />
-          </div>
-
-          </div> */}
 
           <ul className="space-y-2 font-medium">
             {items.map((item, index) => (
@@ -77,6 +71,22 @@ function AppSidebar() {
               >
                <CreateBtn/>
               </li>
+
+                <li>
+                  <Link 
+                    to={`/${user.username}`}
+                    className="flex items-center gap-5 px-3 py-2"
+                  >
+                    <img
+                      src={user.avatar || "/default-avatar.png"}
+                      alt="profile"
+                      className="w-8 h-8 object-cover rounded-full"
+                    />
+                    <span className="hidden lg:inline text-xl font-bold">
+                      Profile
+                    </span>
+                  </Link>
+                </li>
 
 
 

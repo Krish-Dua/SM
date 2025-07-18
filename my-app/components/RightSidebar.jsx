@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FollowUnfollwBtn from './FollowUnfollwBtn';
 
  function RightSidebar({suggestedUsers}) {
 
@@ -26,9 +27,9 @@ import { Link } from 'react-router-dom';
                 </div>
               </div>
 </Link>
-              <button className="text-xs px-3 py-1 border  border-gray-300 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300">
-                Follow
-              </button>
+
+<FollowUnfollwBtn targetUserId={user._id} classname={"text-xs px-3 py-1 border  border-gray-300 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300"} />
+            
             </div>
           ))}
         </div>

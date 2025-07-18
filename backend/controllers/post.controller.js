@@ -263,7 +263,7 @@ export const getUserSavedPosts = async (req, res) => {
         path: "saved",
         select: "media mediaType",
       })
-      .select("saved"); // Only select the saved field
+      .select("saved"); 
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });

@@ -314,7 +314,7 @@ console.log(postId)
       await user.save();
       return res.status(200).json({ success: true, message: "unsaved" });
     } else {
-      user.saved.push(postId);
+      user.saved.unshift(postId);
       await user.save();
       return res.status(200).json({ success: true, message: "saved" });
     }
