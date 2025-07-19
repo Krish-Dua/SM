@@ -9,6 +9,7 @@ import { Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Explore from '../pages/Explore'
 import Suggestions from '../pages/Suggestions'
+import PostPage from '../pages/PostPage'
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -49,6 +50,8 @@ function App() {
             <Explore />
         } />
           <Route path=':username' element={<UserProfile/>}/>
+          <Route path='p/:postId' element={<PostPage/>}/>
+
 
           <Route path="suggestions" element={<Suggestions/>} />
         </Route>

@@ -13,7 +13,6 @@ const Post = ({ post }) => {
   const setUser = useUserStore((state) => state.setUser);
   const [commentCount, setCommentCount] = React.useState(0);
   const [likes, setLikes] = React.useState(post.likes);
-
   const fetchCommentCount = async () => {
     const res = await fetch(
       `http://localhost:3000/api/post/comments/${post._id}?countOnly=true`,

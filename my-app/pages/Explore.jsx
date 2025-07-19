@@ -45,6 +45,7 @@ const Explore = () => {
   };
 
   useEffect(() => {
+    console.log(explorePosts)
     fetchExplorePosts();
   }, []);
 
