@@ -4,7 +4,7 @@ import { MessageCircleMore ,Trash} from "lucide-react";
 import "../src/App.css"
 import PostCommentBtn from "./PostCommentBtn";
 import useUserStore from "../store/user";
-
+import {toast } from 'react-toastify';
 
 
 const CommentDrawer = ({ postId ,setCommentCount}) => {
@@ -24,8 +24,12 @@ const handleDeleteComment= async (commentId) => {
   });
   const data = await response.json();
   if(!data.success) {
-    alert(data.message);
+    // alert(data.message);
+    toast.error(data.message)
   } else {
+    toast.success("Comment Deleted",{
+      autoClose:2000
+    })
     setComments(comments.filter(c => c._id !== commentId));
     setCommentCount(prev => prev - 1);
   }
@@ -41,10 +45,9 @@ const handleDeleteComment= async (commentId) => {
       });
       const data = await response.json();
       if(!data.success) {
-alert(data.message)
+        toast.error(data.message)
       }
       else{
-        console.log(data.data)
        setComments(data.data)
       }
       setloading(false);

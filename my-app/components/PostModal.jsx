@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import LoaderSpinner from "./LoaderSpinner";
+import { toast } from "react-toastify";
 const MAX_SIZE_MB = 50;
 const MAX_DURATION_SECONDS = 60;
 
@@ -32,15 +33,21 @@ if(!file || !caption.trim()){
     const data = await response.json();
     if (!data.success) {
       setError(data.message || "Failed to create post.");
+      
       return;
     }
     setCaption("");
     setFile(null);
     setpreview(null);
+    toast.success("post created",{
+      autoClose:2000,
+      hideProgressBar:true,
+      pauseOnHover:false
+    })
     setError(null);
-    alert("Post created successfully!");
     setLoading(false);
     setOpen(false);
+    
 
   }
 

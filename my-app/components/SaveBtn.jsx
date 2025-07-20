@@ -1,6 +1,7 @@
 import {Bookmark} from 'lucide-react'
 import React, { use } from 'react'
 import useUserStore from "../store/user";
+import { toast } from 'react-toastify';
 
 
 const SaveBtn = ({postId,children}) => {
@@ -19,15 +20,25 @@ if (loading) return;
       });
       const data = await response.json();
       if(!data.success) {
-alert(data.message)
+toast.error(data.message)
       }
     else {
   if (data.success) {
     if (data.message === "saved") {
       setUser({ ...user, saved: [...user.saved, postId] });
+      toast.success(data.message,{
+        autoClose:1000,
+        pauseOnHover:false,
+        hideProgressBar:true
+      })
     }
     if (data.message === "unsaved") {
       setUser({ ...user, saved: user.saved.filter(id => id.toString() !== postId) });
+      toast.success(data.message,{
+        autoClose:1000,
+        pauseOnHover:false,
+        hideProgressBar:true
+      })
     }
   }
 }

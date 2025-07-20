@@ -4,6 +4,8 @@ import {Grid,PlaySquare,Save,ImageIcon,Video} from "lucide-react"
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
+import { toast } from "react-toastify";
+import SettingsBtn from "../components/SettingsBtn";
 const UserProfile = () => {
   const location = useLocation();
 const queryParam=new URLSearchParams(location.search);
@@ -124,8 +126,10 @@ useEffect(() => {
         {userStore.username==username?
           <div className=" hidden sm:flex  gap-6 ">
 <span className="text-lg py-1 font-medium px-2">{user.username}</span>
-<EditProfileBtn/>
-<button className="py-1  px-4 rounded-lg bg-gray-800">Settings</button>
+  <EditProfileBtn setLoggedInUser={setUser} className="w-full" />
+<SettingsBtn>
+ <div className="px-4 py-2  rounded-lg w-full bg-gray-800">Settings</div>
+</SettingsBtn>
 </div>
 :
 <div className=" hidden sm:flex  gap-6 ">
@@ -165,8 +169,10 @@ useEffect(() => {
         </div>
 {userStore.username==username?
  <div className="sm:hidden mt-6 flex gap-6 ">
-  <EditProfileBtn className="w-full" />
- <button className="py-1  rounded-lg w-full bg-gray-800">Settings</button>
+  <EditProfileBtn setLoggedInUser={setUser} className="w-full" />
+  <SettingsBtn>
+ <div className="px-4 py-2  rounded-lg w-full bg-gray-800">Settings</div>
+</SettingsBtn>
 </div>:
  <div className="sm:hidden mt-6 flex gap-6 ">
 <FollowUnfollwBtn  targetUser={user} setTargetUser={setUser} targetUserId={user._id} classname={" py-1 px-4 rounded-lg bg-gray-800"} />

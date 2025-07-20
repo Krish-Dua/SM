@@ -126,7 +126,7 @@ export const updateUser = async (req, res) => {
       
       }
     let user = await User.findById(req.user.userId).select(
-      "-password -followers -following"
+      "-password"
     );
 
     if (!user) {

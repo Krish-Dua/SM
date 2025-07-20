@@ -2,14 +2,24 @@ import React from "react";
 import LeftSidebar from "../components/LeftSidebar";
 import { Outlet } from "react-router-dom";
 import Footer from "./footer";
-
+import { ToastContainer } from 'react-toastify';
 
 
 const Layout = () => {
 
   return (
     <div className="flex min-h-screen">
-
+<ToastContainer 
+position="top-center"
+autoClose={4000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+pauseOnHover
+theme="dark"
+/>
       <div>
         <LeftSidebar />
       </div>

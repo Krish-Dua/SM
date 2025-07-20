@@ -1,6 +1,7 @@
 
 import React from 'react'
 import LoaderSpinner from './LoaderSpinner';
+import { toast } from 'react-toastify';
 
 
 const PostCommentBtn = ({postId,className,setComments,setCommentCount}) => {
@@ -19,10 +20,13 @@ if (loading) return;
       });
       const data = await response.json();
       if(!data.success) {
-alert(data.message)
+        toast.error(data.message)
       }
       else{
-      alert("Comment posted successfully");
+        toast.success("comment posted",{
+          autoClose:1000,
+          hideProgressBar:true
+        })
       if (setComments) {
         setComments((prev) => [data.data, ...prev]);
       }

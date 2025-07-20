@@ -27,7 +27,6 @@ const Post = ({ post }) => {
   };
 
   React.useEffect(() => {
-    // console.log(post)
     fetchCommentCount();
   }, [post._id]);
 

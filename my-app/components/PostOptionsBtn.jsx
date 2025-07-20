@@ -8,6 +8,7 @@ import useUserStore from "../store/user";
 import { Link } from "react-router-dom";
 import SaveBtn from "./SaveBtn";
 import FollowUnfollwBtn from "./FollowUnfollwBtn";
+import { toast } from "react-toastify";
 
 const PostOptionsBtn = ({postedBy,postId}) => {
     const user = useUserStore((state) => state.user);
@@ -25,14 +26,15 @@ const isCreator = user._id === postedBy._id;
         const data = await response.json();
         if (!data.success) {
             alert(data.message);
+            toast.error(data.message)
         } else {
-            alert(data.message);
+            toast.success("post deleted",{
+              hideProgressBar:true,
+              pauseOnHover:false,
+              autoClose:1000
+            })
             window.location.reload();
         }
-    }
-
-    const handleFollowUnfollow = async () => {
-
     }
 
 

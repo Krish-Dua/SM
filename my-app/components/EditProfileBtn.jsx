@@ -10,8 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { toast } from "react-toastify";
 
-const EditProfileBtn = ({ className }) => {
+const EditProfileBtn = ({ className,setLoggedInUser }) => {
   const profileInputRef = useRef();
 
   const userStore = useUserStore((state) => state.user);
@@ -41,6 +42,10 @@ const hasChanges =
 
   if (!hasChanges) {
     setloading(false);
+    toast.info("apply changes first",{
+      autoClose:1000,
+      pauseOnHover:false
+    })
     return;
   }
 
@@ -70,13 +75,21 @@ const hasChanges =
     });
 const data = await response.json();
 if (!data.success) {
-  alert(data.message || "Failed to update profile");
+  toast.error(data.message)
 }
 else{
+  toast.success("profile updated successfully",{
+    autoClose:2000,
+    pauseOnHover:false,
+    hideProgressBar:true
+  })
   console.log(data)
   setUser(data.data);
   setChangedFields({});
   setFile(null);
+  if(setLoggedInUser){
+    setLoggedInUser(data.data)
+  }
 }
   setloading(false);
 
