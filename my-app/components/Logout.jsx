@@ -9,7 +9,7 @@ const Logout = ({classname}) => {
 
     const handleSubmit = async () => {
         setloading(true);
-        const response = await fetch("http://localhost:3000/api/auth/logout", {
+        const response = await fetch("http://localhost:3000/api/user/logout", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

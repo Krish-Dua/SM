@@ -7,6 +7,7 @@ const Login = ({ setlogin }) => {
       email: "",
       password: "",
     });
+    const [error,setError]=useState(null)
 
     const user = useUserStore((state) => state.user);
     const setUser = useUserStore((state) => state.setUser); 
@@ -26,11 +27,13 @@ const Login = ({ setlogin }) => {
     });
     const data = await response.json();
     if(!data.success) {
-alert(data.message);
+// alert(data.message);
+setError(data.message)
     }
     else{
       setUser(data.data);
   
+      setError(null)
     }
     setloading(false)
   };
@@ -124,6 +127,9 @@ alert(data.message);
                   </button>
                 </div>
               </div>
+
+{error&&<p className="text-red-600" >{error}</p>}
+
 
               <div className="!mt-8">
                 <button

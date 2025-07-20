@@ -3,6 +3,7 @@ import useUserStore from "../store/user";
 const Signup = ({ setlogin }) => {
   const [hidePass, sethidePass] = useState(false);
   const [loading, setloading] = useState(false);
+  const [error,setError]=useState(null)
   const [userFormData, setuserFormData] = useState({
     username: "",
     name: "",
@@ -19,7 +20,7 @@ const Signup = ({ setlogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
-    const response = await fetch("http://localhost:3000/api/auth/signup", {
+    const response = await fetch("http://localhost:3000/api/user/signup", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -27,14 +28,13 @@ const Signup = ({ setlogin }) => {
     });
     const data = await response.json();
     if(!data.success) {
-alert(data.message);
+// alert(data.message);
+setError(data.message)
     }
     else{
       setUser(data.data);
-  
+  setError(null)
     }
-    console.log(userFormData);
-    
 
     setloading(false);
   };
@@ -206,7 +206,8 @@ alert(data.message);
             </div>
 
           </div>
-
+{error&&<p className="text-red-600 mt-4 text-sm" >{error}
+</p>}
           <div className="mt-8">
             <button
               type="button"
