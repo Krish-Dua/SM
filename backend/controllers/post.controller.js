@@ -163,6 +163,7 @@ export const deleteComment = async (req, res) => {
   try {
     const commentId = req.params.id;
     const comment = await Comment.findByIdAndDelete(commentId);
+
     if (!comment) {
       return res
         .status(404)
