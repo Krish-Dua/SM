@@ -23,7 +23,9 @@ const navigate=useNavigate()
   const remainingPosts = explorePosts.slice(index);
   console.log(remainingPosts)
 setPostPageArray(remainingPosts)
-navigate(`/p/${postId}`)
+navigate(`/p/${postId}`,{
+  state:{fromExplore:true}
+})
   }
 
   const fetchSearchedUsers = async (input) => {

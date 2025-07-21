@@ -10,6 +10,7 @@ import Layout from '../components/Layout'
 import Explore from '../pages/Explore'
 import Suggestions from '../pages/Suggestions'
 import PostPage from '../pages/PostPage'
+import { toast } from 'react-toastify'
 
 function App() {
   const user = useUserStore((state) => state.user);

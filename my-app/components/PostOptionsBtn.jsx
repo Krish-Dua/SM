@@ -10,6 +10,7 @@ import SaveBtn from "./SaveBtn";
 import FollowUnfollwBtn from "./FollowUnfollwBtn";
 import { toast } from "react-toastify";
 import usePostStore from "../store/posts";
+import LoaderSpinner from "./LoaderSpinner";
 
 
 const PostOptionsBtn = ({postedBy,postId ,post}) => {
@@ -21,6 +22,7 @@ const navigate=useNavigate()
 const isCreator = user._id === postedBy._id;
 
     const handleDelete = async () => {
+      setLoading(true)
         const response = await fetch(`http://localhost:3000/api/post/${postId}`, {
             method: "DELETE",
             credentials: "include",
@@ -28,7 +30,6 @@ const isCreator = user._id === postedBy._id;
         });
         const data = await response.json();
         if (!data.success) {
-            alert(data.message);
             toast.error(data.message)
         } else {
             toast.success("post deleted",{
@@ -36,6 +37,7 @@ const isCreator = user._id === postedBy._id;
               pauseOnHover:false,
               autoClose:1000
             })
+            setLoading(false)
             window.location.reload();
         }
     }
@@ -51,7 +53,7 @@ const isCreator = user._id === postedBy._id;
             onClick={handleDelete}
             className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
           >
-            Delete Post
+            {loading?<LoaderSpinner/>:"Delete post"}
           </button>
           }
 
@@ -75,8 +77,10 @@ const isCreator = user._id === postedBy._id;
 
 
           <button onClick={()=>{
-            setPostPageArray([post])
-            navigate(`/p/${postId}`)
+            setPostPageArray()
+            navigate(`/p/${postId}`,{
+              state:{fromFeed:true}
+            })
           }}
             className="w-full text-center px-4 py-3 text-sm dark:text-white text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
           >

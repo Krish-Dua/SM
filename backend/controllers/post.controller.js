@@ -64,7 +64,7 @@ export const createPost = async (req, res) => {
 
 export const getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("postedBy");
     if (!post) {
       return res
         .status(404)
@@ -245,7 +245,7 @@ export const getPostByUsername = async (req, res) => {
       query.postType = req.query.type;
     }
 
-    const posts = await Post.find(query)
+    const posts = await Post.find(query).populate("postedBy")
       .sort({ createdAt: -1 });
     res.json({ success: true, data: posts,user});
   } catch (error) {
@@ -262,6 +262,10 @@ export const getUserSavedPosts = async (req, res) => {
     const user = await User.findById(userId)
       .populate({
         path: "saved",
+         populate: {
+          path: "postedBy", // this populates the postedBy field within each saved post
+          select: "username name avatar", // adjust fields as needed
+        },
       })
       .select("saved"); 
 
