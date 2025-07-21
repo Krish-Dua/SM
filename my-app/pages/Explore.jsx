@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import { CircleXIcon ,ImageIcon,Video} from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import usePostStore from "../store/posts";
 import { toast } from "react-toastify";
 
@@ -10,12 +10,21 @@ const Explore = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const explorePosts=usePostStore((state)=>state.explorePosts)
   const setExplorePosts=usePostStore((state)=>state.setExplorePosts)
+const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
 
+const navigate=useNavigate()
   
   // const [explorePosts, setExplorePosts] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [users, setUsers] = useState([]);
 
+ const handleThumbnailOnClick=(postId)=>{
+   const index = explorePosts.findIndex(post => post._id === postId);
+  const remainingPosts = explorePosts.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${postId}`)
+  }
 
   const fetchSearchedUsers = async (input) => {
     const response = await fetch(
@@ -111,7 +120,7 @@ const Explore = () => {
             {explorePosts.map((post, index) => {
               if (post.mediaType === "video")
                 return (
-                  <div key={post._id} className="relative">
+                  <div onClick={()=>handleThumbnailOnClick(post._id)} key={post._id} className="relative">
                     <video
                       className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
                       muted
@@ -124,7 +133,7 @@ const Explore = () => {
                 );
               else
                 return (
-                  <div className="relative" key={post._id}>
+                  <div onClick={()=>handleThumbnailOnClick(post._id)} className="relative" key={post._id}>
                     <img
                       className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
                       src={post.media}

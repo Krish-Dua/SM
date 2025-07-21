@@ -262,7 +262,6 @@ export const getUserSavedPosts = async (req, res) => {
     const user = await User.findById(userId)
       .populate({
         path: "saved",
-        select: "media mediaType",
       })
       .select("saved"); 
 

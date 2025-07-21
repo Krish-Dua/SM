@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
-import { useParams,useLocation } from "react-router-dom";
+import { useParams,useNavigate,useLocation } from "react-router-dom";
 import {Grid,PlaySquare,Save,ImageIcon,Video} from "lucide-react"
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
 import { toast } from "react-toastify";
 import SettingsBtn from "../components/SettingsBtn";
+import usePostStore from "../store/posts";
 const UserProfile = () => {
   const location = useLocation();
 const queryParam=new URLSearchParams(location.search);
 const tabname= queryParam.get("tab") || "all";
   const userStore = useUserStore((state) => state.user);
   const setUserStore = useUserStore((state) => state.setUser);
+const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
+const navigate=useNavigate()
   const { username } = useParams();
 const [user,setUser] = React.useState({
   followers: [],
@@ -224,7 +227,13 @@ useEffect(() => {
 {selectedTab==="all"&&allUserPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
-  <div key={post._id} className="relative" >
+  <div onClick={()=>{
+   const index = allUserPosts.findIndex(posts => posts._id === post._id);
+  const remainingPosts = allUserPosts.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} key={post._id} className="relative" >
   <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
@@ -234,7 +243,13 @@ return (
 )
 else
 return (
-  <div className="relative"  key={post._id}>
+  <div onClick={()=>{
+   const index = allUserPosts.findIndex(posts => posts._id === post._id);
+  const remainingPosts = allUserPosts.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} className="relative"  key={post._id}>
   <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
   <ImageIcon className="absolute right-3 top-3  shadow-black"  />
   </div>
@@ -246,7 +261,13 @@ return (
 {selectedTab==="reel"&&userReels.map((post)=>{
  if(post.mediaType === "video")
 return (
-  <div key={post._id} className="relative" >
+  <div onClick={()=>{
+   const index = userReels.findIndex(posts => posts._id === post._id);
+  const remainingPosts = userReels.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} key={post._id} className="relative" >
   <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
@@ -256,7 +277,13 @@ return (
 )
 else
 return (
-  <div className="relative"  key={post._id}>
+  <div onClick={()=>{
+   const index = userReels.findIndex(posts => posts._id === post._id);
+  const remainingPosts = userReels.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} className="relative"  key={post._id}>
   <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
   <ImageIcon className="absolute right-3 top-3  shadow-black"  />
   </div>
@@ -266,7 +293,13 @@ return (
 {selectedTab==="saved"&&userSavedPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
-  <div key={post._id} className="relative" >
+  <div onClick={()=>{
+   const index = userSavedPosts.findIndex(posts => posts._id === post._id);
+  const remainingPosts = userSavedPosts.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} key={post._id} className="relative" >
   <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
@@ -276,7 +309,13 @@ return (
 )
 else
 return (
-  <div className="relative"  key={post._id}>
+  <div onClick={()=>{
+   const index = userSavedPosts.findIndex(posts => posts._id === post._id);
+  const remainingPosts = userSavedPosts.slice(index);
+  console.log(remainingPosts)
+setPostPageArray(remainingPosts)
+navigate(`/p/${post._id}`)
+  }} className="relative"  key={post._id}>
   <img className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " src={post.media} alt="" />
   <ImageIcon className="absolute right-3 top-3  shadow-black"  />
   </div>
