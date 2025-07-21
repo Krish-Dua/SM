@@ -2,11 +2,17 @@ import React, { useState, useEffect, use } from "react";
 import { CircleXIcon ,ImageIcon,Video} from "lucide-react";
 
 import { Link } from "react-router-dom";
+import usePostStore from "../store/posts";
+import { toast } from "react-toastify";
 
 const Explore = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [explorePosts, setExplorePosts] = useState([]);
+  const explorePosts=usePostStore((state)=>state.explorePosts)
+  const setExplorePosts=usePostStore((state)=>state.setExplorePosts)
+
+  
+  // const [explorePosts, setExplorePosts] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -37,7 +43,7 @@ const Explore = () => {
     });
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+      toast.error(data.message)
     } else {
       console.log(data);
       setExplorePosts(data.data);
@@ -46,7 +52,9 @@ const Explore = () => {
 
   useEffect(() => {
     console.log(explorePosts)
-    fetchExplorePosts();
+    if (explorePosts.length<=0) {
+      fetchExplorePosts();
+    }
   }, []);
 
   useEffect(() => {

@@ -3,16 +3,21 @@ import useUserStore from "../store/user";
 import RightSidebar from "../components/RightSidebar";
 import HomeMainContent from "../components/HomeMainContent";
 import Header from "../components/Header";
+import { toast } from "react-toastify";
+import usePostStore from "../store/posts";
 
 
 const Home = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
-  const [posts,SetPosts]=useState([])
-  const [suggestedUsers,SetSuggestedUsers]=useState([])
+const feedPosts=usePostStore((state)=>state.feedPosts)
+const setFeedPosts=usePostStore((state)=>state.setFeedPosts)
+const homeSuggestedUsers=usePostStore((state)=>state.homeSuggestedUsers)
+const setHomeSuggestedUsers=usePostStore((state)=>state.setHomeSuggestedUsers)
 
 const fetchPosts=async ()=>{
     // setloading(true);
+    console.log(" pc")
       const response = await fetch("http://localhost:3000/api/post/feed", {
         method: "GET",
         credentials: "include",
@@ -20,10 +25,11 @@ const fetchPosts=async ()=>{
       });
       const data = await response.json();
       if(!data.success) {
-alert(data.message)
+toast.error(data.message)
       }
       else{
-       SetPosts(data.data)
+      //  SetPosts(data.data)
+      setFeedPosts(data.data)
       }
       // setLoading(false);
     }
@@ -39,13 +45,18 @@ alert(data.message)
 alert(data.message)
       }
       else{
-       SetSuggestedUsers(data.data)
+       setHomeSuggestedUsers(data.data)
       }
  }   
 
 useEffect( () => {
-  fetchPosts();
-  fetchSuggestedUsers();
+  if (feedPosts.length<=0) {
+    fetchPosts();
+  }
+  if (homeSuggestedUsers.length<=0) {
+    
+    fetchSuggestedUsers();
+  }
 
   }, [])
 
@@ -56,10 +67,10 @@ useEffect( () => {
 <Header/>
       <div className="flex min-h-screen">
           <div className="flex-1">
-            <HomeMainContent posts={posts} />
+            <HomeMainContent posts={feedPosts} />
           </div>
           <div>   
-            <RightSidebar suggestedUsers={suggestedUsers} />
+            <RightSidebar suggestedUsers={homeSuggestedUsers} />
           </div>
       </div>
     </>
