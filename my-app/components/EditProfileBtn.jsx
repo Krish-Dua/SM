@@ -68,7 +68,7 @@ const hasChanges =
 
 
 
-    const response = await fetch("http://localhost:3000/api/user/update", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/update`, {
       method: "PATCH",
       body: updatedData,
       credentials: "include",

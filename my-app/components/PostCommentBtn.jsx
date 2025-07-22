@@ -12,7 +12,7 @@ const [loading,setLoading]= React.useState(false);
 const handlePostcomment = async()=>{
 if (loading) return;
  setLoading(true);
-      const response = await fetch("http://localhost:3000/api/post/comment", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comment`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

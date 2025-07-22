@@ -12,7 +12,7 @@ const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
 
   const fetchPost=async ()=>{
     console.log("cllll")
-      const response = await fetch(`http://localhost:3000/api/post/${postId}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/${postId}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -20,7 +20,7 @@ const Signup = ({ setlogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
-    const response = await fetch("http://localhost:3000/api/user/signup", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/signup`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

@@ -22,6 +22,13 @@ const SettingsBtn = ({children,classname}) => {
 
 {/* <ChangeModeBtn classname="w-full block text-center px-5 py-3 text-base font-medium text-gray-800 dark:text-white bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-150" /> */}
 
+  <Link
+  to={`/suggestions`}
+  className="w-full block text-center xl:hidden px-5 py-3 text-base font-medium text-gray-800 dark:text-white bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-150"
+>
+  See suggestions
+</Link>
+
    <Link
   to={`/${user.username}?tab=saved`}
   className="w-full block text-center px-5 py-3 text-base font-medium text-gray-800 dark:text-white bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-150"

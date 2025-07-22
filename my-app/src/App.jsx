@@ -22,7 +22,7 @@ function App() {
   console.log(user)
     setloading(true);
     const fetchUser=async ()=>{
-      const response = await fetch("http://localhost:3000/api/user/me", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/me`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -18,7 +18,7 @@ const setHomeSuggestedUsers=usePostStore((state)=>state.setHomeSuggestedUsers)
 const fetchPosts=async ()=>{
     // setloading(true);
     console.log(" pc")
-      const response = await fetch("http://localhost:3000/api/post/feed", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/feed`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -35,7 +35,7 @@ toast.error(data.message)
     }
 
  const fetchSuggestedUsers=async()=>{
-  const response = await fetch("http://localhost:3000/api/user/suggestions", {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/suggestions`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

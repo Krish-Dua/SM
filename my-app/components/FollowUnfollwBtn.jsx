@@ -6,7 +6,7 @@ const FollowUnfollwBtn = ({targetUserId,classname,setTargetUser,targetUser}) => 
     const setUserStore = useUserStore((state) => state.setUser);
 
 const handleFollowUnfollow = async () => {
-    const response = await fetch(`http://localhost:3000/api/user/fuf/${targetUserId}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/fuf/${targetUserId}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -30,7 +30,7 @@ navigate(`/p/${postId}`,{
 
   const fetchSearchedUsers = async (input) => {
     const response = await fetch(
-      `http://localhost:3000/api/user/search/?username=${input}`,
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/search/?username=${input}`,
       {
         method: "GET",
         credentials: "include",
@@ -39,7 +39,8 @@ navigate(`/p/${postId}`,{
     );
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+      // alert(data.message);
+      setUsers([])
     } else {
       console.log(data);
       setUsers(data.data);
@@ -47,10 +48,10 @@ navigate(`/p/${postId}`,{
   };
 
   const fetchExplorePosts = async () => {
-    const response = await fetch("http://localhost:3000/api/post/exploreFeed", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/exploreFeed`, {
       method: "GET",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
     const data = await response.json();
     if (!data.success) {
@@ -59,41 +60,41 @@ navigate(`/p/${postId}`,{
       console.log(data);
       setExplorePosts(data.data);
     }
-  };
-
+  }
+  
   useEffect(() => {
     console.log(explorePosts)
     if (explorePosts.length<=0) {
       fetchExplorePosts();
     }
   }, []);
-
+  
   useEffect(() => {
     if (search.length <= 0) {
       setUsers([]);
       setIsSearchActive(false);
       return;
     }
-
+  
     setIsSearchActive(true);
-
+  
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
     }, 500);
-
+  
     return () => clearTimeout(timer);
   }, [search]);
-
+  
   useEffect(() => {
     if (debouncedSearch) {
       console.log("Call API with:", debouncedSearch);
       fetchSearchedUsers(debouncedSearch);
     }
   }, [debouncedSearch]);
-
+  
   return (
     <>
-      <main className="max-w-5xl py-4 px-4 h-max mx-auto">
+      <main className="max-w-5xl sm:py-4 sm:px-4 h-max mx-auto">
         <header className="flex justify-center">
           <div className="w-[80%] relative  mb-6">
             <input
@@ -102,7 +103,7 @@ navigate(`/p/${postId}`,{
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="bg-slate-900 border-0  text-lg w-full py-2 pl-2 pr-12 rounded-xl"
+              className="bg-slate-900 border-0 mt-4 sm:mt-0 text-lg w-full py-2 pl-2 pr-12 rounded-xl"
               type="text"
             />
             {isSearchActive && (
@@ -116,7 +117,7 @@ navigate(`/p/${postId}`,{
             )}
           </div>
         </header>
-
+  
         {!isSearchActive ? (
           <section className="grid grid-cols-3 w-full gap-1 ">
             {explorePosts.map((post, index) => {
@@ -179,5 +180,6 @@ navigate(`/p/${postId}`,{
     </>
   );
 };
-
+  
 export default Explore;
+    

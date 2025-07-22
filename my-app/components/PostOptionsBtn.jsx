@@ -23,7 +23,7 @@ const isCreator = user._id === postedBy._id;
 
     const handleDelete = async () => {
       setLoading(true)
-        const response = await fetch(`http://localhost:3000/api/post/${postId}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/${postId}`, {
             method: "DELETE",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

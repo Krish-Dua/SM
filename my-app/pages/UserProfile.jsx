@@ -32,7 +32,7 @@ const [selectedTab,setSelectedTab] = React.useState(tabname);
 
 
 const fetchUserProfile = async () => {
-  const response = await fetch(`http://localhost:3000/api/user/profile/${username}`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/profile/${username}`, {
     method: "GET",
   credentials: "include",
   headers: {
@@ -50,7 +50,7 @@ else{
 }
 
 const fetchUserPosts = async()=>{
-const response = await fetch(`http://localhost:3000/api/post/postedBy/${username}`,{
+const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/postedBy/${username}`,{
   method: "GET",
   credentials: "include",
   headers: {
@@ -66,7 +66,7 @@ if(!data.success){
 }
 }
 const fetchUserReels = async()=>{
-const response = await fetch(`http://localhost:3000/api/post/postedBy/${username}/?type=reel`,{
+const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/postedBy/${username}/?type=reel`,{
   method: "GET",
   credentials: "include",
   headers: {
@@ -83,7 +83,7 @@ if(!data.success){
 }
 
 const fetchUserSavedPosts = async()=>{
-const response = await fetch(`http://localhost:3000/api/post/saved`,{
+const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/saved`,{
   method: "GET",
   credentials: "include",
   headers: {
@@ -115,7 +115,7 @@ useEffect(() => {
 
 <header className="w-full flex mb-8 sm:mb-20 items-center gap-6">
         {/* profile image  */}
-        <div className=" h-18 w-18 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden mr-2 sm:mr-10 md:mr-20">
+        <div className=" h-20 w-20 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden ml-2  sm:ml-0 mr-1 sm:mr-10 md:mr-20">
           <img
             src={user.avatar|| "/default-avatar.png"}
             className="object-cover w-full h-full"
@@ -143,7 +143,7 @@ useEffect(() => {
 }
       
 
-          <div className="flex  gap-8" >
+          <div className="flex  gap-6 sm:gap-8" >
             <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
               <span className="">{allUserPosts.length}</span>
               <span className="text-gray-400">Posts</span>
@@ -166,19 +166,19 @@ useEffect(() => {
         </section>
       </header>
 
-      <div className="sm:hidden">
+      <div className="sm:hidden ml-2 sm:ml-0">
           <p className="font-bold">{user.name}</p>
           <p className="text-gray-300">{user.bio}</p>
         </div>
 {userStore.username==username?
- <div className="sm:hidden mt-6 flex gap-6 ">
+ <div className="sm:hidden mt-6 mb-4 flex gap-6 ">
   <EditProfileBtn setLoggedInUser={setUser} className="w-full" />
-  <SettingsBtn>
+  <SettingsBtn classname={"w-full"} >
  <div className="px-4 py-2  rounded-lg w-full bg-gray-800">Settings</div>
 </SettingsBtn>
 </div>:
- <div className="sm:hidden mt-6 flex gap-6 ">
-<FollowUnfollwBtn  targetUser={user} setTargetUser={setUser} targetUserId={user._id} classname={" py-1 px-4 rounded-lg bg-gray-800"} />
+ <div className="sm:hidden mt-6 mb-4 flex gap-6 ">
+<FollowUnfollwBtn  targetUser={user} setTargetUser={setUser} targetUserId={user._id} classname={" py-1 px-4 w-full rounded-lg bg-gray-800"} />
  <button className="py-1  rounded-lg w-full bg-gray-800">message</button>
 </div>
 }

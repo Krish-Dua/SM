@@ -79,8 +79,8 @@ mongoose.connect(process.env.MONGODB_URI).then(async(connection) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: "http://localhost:5173", 
-    credentials: true
+  origin:[process.env.FRONTEND_URLL,process.env.FRONTEND_URL],
+  credentials:true
 }));
 app.use(cookieParser());
 
@@ -93,4 +93,5 @@ app.get('/', (req, res)=>{
     res.send('Hello World!');
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+app.listen(port, "0.0.0.0",() => console.log(`Example app listening on port ${port}!`));

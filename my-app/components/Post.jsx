@@ -15,7 +15,7 @@ const Post = ({ post }) => {
   const [likes, setLikes] = React.useState(post.likes);
   const fetchCommentCount = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/post/comments/${post._id}?countOnly=true`,
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${post._id}?countOnly=true`,
       {
         method: "GET",
         credentials: "include",
