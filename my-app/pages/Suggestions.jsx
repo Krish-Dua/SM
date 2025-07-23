@@ -23,7 +23,7 @@ const Suggestions = () => {
     },[])
   
     return (
-      <main className='max-w-md h-max mx-auto p-4 ' >
+      <main className='max-w-md h-max mx-auto p-4 mb-10 ' >
         <h1 className='text-center font-bold mb-6 text-2xl' >Suggestions for you </h1>
         <div className="shadow-md rounded-lg p-3">
           {suggestedUsers.map((user) => (

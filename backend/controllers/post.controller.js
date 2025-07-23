@@ -221,7 +221,7 @@ export const getExploreFeed = async (req, res) => {
          postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
       },
       },
-      { $sample: { size: 21 } },
+      { $sample: { size:39 } },
 
     ]);
     await Post.populate(posts, { path: "postedBy", select: "username avatar name" });

@@ -1,22 +1,30 @@
 import React from 'react'
 import Post from './Post'
-import { toast } from 'react-toastify';
+import Reel from './Reel'
+
 const HomeMainContent = ({posts}) => {
   return (
-    <div className='max-w-2xl h-max  mx-auto'>
+    <div className='max-w-2xl h-max mb-20  mx-auto'>
 
-<div  onClick={()=>{
-toast.success("yoyoji",{
-  // position:"top-right"
-})
-}} className="text-2xl flex justify-center text-black font-bold dark:text-gray-300 mb-3">
+<div className="text-2xl flex justify-center mt-2 text-black font-bold dark:text-gray-300 mb-3">
             E-CONN
           </div>
 <div className=''>
 
 {posts.map((post)=>{ 
   return(
-<Post post={post} key={post._id}/>)
+post.postType==="reel"?
+(
+<Reel key={post._id} reel={post}/>
+)
+:
+(
+<Post post={post} key={post._id}/>
+
+)
+
+
+)
 })}
 
 </div>

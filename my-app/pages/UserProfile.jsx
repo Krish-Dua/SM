@@ -221,7 +221,7 @@ useEffect(() => {
 </section>
 
 {/* posts grid layout  */}
-<section className="grid grid-cols-3 w-full gap-1 ">
+<section className="grid grid-cols-3 mb-10 w-full gap-1 ">
 
 
 {selectedTab==="all"&&allUserPosts.map((post)=>{
