@@ -11,6 +11,7 @@ import Explore from '../pages/Explore'
 import Suggestions from '../pages/Suggestions'
 import PostPage from '../pages/PostPage'
 import { toast } from 'react-toastify'
+import ReelPage from '../pages/ReelPage'
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -47,13 +48,10 @@ function App() {
         {/* Protected Routes with Sidebar */}
         <Route path="/" element={user ? <Layout /> : <Navigate to="/auth" />}>
           <Route index element={<Home />} />
-          <Route path="explore" element={
-            <Explore />
-        } />
+          <Route path="explore" element={<Explore /> } />
           <Route path=':username' element={<UserProfile/>}/>
           <Route path='p/:postId' element={<PostPage/>}/>
-
-
+          <Route path='/reels' element={<ReelPage/>}/>
           <Route path="suggestions" element={<Suggestions/>} />
         </Route>
 

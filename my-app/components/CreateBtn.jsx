@@ -20,6 +20,8 @@ import ReelModal from "./ReelModal";
 const CreateBtn = () => {
 
   const [postModalOpen, setpostModalOpen] = React.useState(false);
+  const [reelModalOpen, setreelModalOpen] = React.useState(false);
+
 
   return (
     <Popover>
@@ -47,7 +49,7 @@ const CreateBtn = () => {
         <DialogTitle>
  Create Post 
         </DialogTitle>
-         <PostModal setOpen={setpostModalOpen} />
+         <PostModal postType={"post"} setOpen={setpostModalOpen} />
       </DialogContent>
     </Dialog>
 
@@ -55,7 +57,7 @@ const CreateBtn = () => {
         {/* <Link to="/create?type=reel">
           <p className=" px-6 py-1  hover:bg-gray-700 rounded-xl">Reel</p>
         </Link> */}
-   <Dialog>
+   <Dialog open={reelModalOpen} onOpenChange={setreelModalOpen} >
       <DialogTrigger asChild>
         <button className="mb-2 px-6 py-1 hover:bg-gray-700 rounded-xl">Reel</button>
       </DialogTrigger>
@@ -63,7 +65,9 @@ const CreateBtn = () => {
         <DialogTitle>
  Create Reel 
         </DialogTitle>
-         <ReelModal/>
+         {/* <ReelModal/> */}
+         <PostModal postType={"reel"} setOpen={setreelModalOpen} />
+
       </DialogContent>
     </Dialog>
 

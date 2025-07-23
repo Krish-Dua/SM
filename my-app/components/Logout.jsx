@@ -1,5 +1,17 @@
 import React,{useState}from "react";
 import useUserStore from "../store/user";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import LoaderSpinner from "./LoaderSpinner";
 
 const Logout = ({classname}) => {
       const [loading, setloading] = useState(false);
@@ -22,9 +34,27 @@ const Logout = ({classname}) => {
     }
 
   return (
-    <div>
-      <button onClick={handleSubmit} className={`${classname}`}>Logout</button>
-    </div>
+     <AlertDialog>
+      <AlertDialogTrigger asChild>
+              <button className={`${classname}`}>Logout</button>
+
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You will be logged out of your account.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }} >{loading ? <LoaderSpinner size={20} /> : "Continue"}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

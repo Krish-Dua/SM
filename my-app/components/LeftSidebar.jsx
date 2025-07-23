@@ -17,7 +17,7 @@ import SettingsBtn from "./SettingsBtn";
 const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "Explore", url: "/explore", icon: LucideCompass },
-  { title: "Reels", url: "/p/687a2ca9ea8c7d6b89adf8ee", icon: MonitorPlay },
+  { title: "Reels", url: "/reels", icon: MonitorPlay },
   { title: "Messages", url: "#", icon: MessageCircleCode },
   { title: "Notifications", url: "#", icon: Calendar },
 ];

@@ -51,7 +51,7 @@ setLoading(false);
 
   return (
     <div role='button' onClick={handleSave} >
-{children? children : <Bookmark fill={user.saved.includes(postId)?"white":""} />}
+{children? children : <Bookmark fill={user.saved.includes(postId)?"white":"transparent"} />}
     </div>
   )
 }

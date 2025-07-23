@@ -200,9 +200,11 @@ export const getComments = async (req, res) => {
 export const getFeed = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const posts = await Post.find({})
+    const {postType="post"}=req.query
+    const posts = await Post.find({postType:postType})
       .limit(20).sort({ createdAt: -1 })
       .populate("postedBy", "username avatar");
+      console.log(posts)
     res.json({ success: true, data: posts });
   } catch (error) {
     console.log(error);
@@ -222,6 +224,7 @@ export const getExploreFeed = async (req, res) => {
       { $sample: { size: 21 } },
 
     ]);
+    await Post.populate(posts, { path: "postedBy", select: "username avatar name" });
     res.json({ success: true, data: posts });
   } catch (error) {
     console.log(error);

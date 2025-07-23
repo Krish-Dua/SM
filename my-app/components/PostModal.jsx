@@ -6,11 +6,11 @@ const MAX_SIZE_MB = 50;
 const MAX_DURATION_SECONDS = 60;
 
 
-const PostModal = ({setOpen}) => {
+const PostModal = ({setOpen,postType}) => {
   const [preview, setpreview] = useState(null)
   const [caption, setCaption] = useState("");
 const [file,setFile]= useState(null)
-const [error,setError]= useState(null)
+const [error,setError]= useState(postType)
 const [loading ,setLoading]= useState(false)
 
 
@@ -24,7 +24,7 @@ if(!file || !caption.trim()){
     formData.append("media", file); 
     formData.append("caption", caption);
     formData.append("mediaType", file.type.startsWith("video/") ? "video" : "image");
-    formData.append("postType", "post"); 
+    formData.append("postType", postType); 
     const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/create`, {
       method: "POST",
       credentials: "include",
@@ -39,7 +39,7 @@ if(!file || !caption.trim()){
     setCaption("");
     setFile(null);
     setpreview(null);
-    toast.success("post created",{
+    toast.success(`${postType} Created`,{
       autoClose:2000,
       hideProgressBar:true,
       pauseOnHover:false
@@ -52,48 +52,58 @@ if(!file || !caption.trim()){
   }
 
 
-  const handleFileInput =(e)=>{
-    const selectedFile = e.target.files[0]
+  const handleFileInput = (e) => {
+    const selectedFile = e.target.files[0];
     if (!selectedFile) return;
+
     const type = selectedFile.type;
 
-    if (
-      !type.startsWith("image/") &&
-      !type.startsWith("video/")
-    ) {
+    if (!type.startsWith("image/") && !type.startsWith("video/")) {
       setError("Only image or video files are allowed.");
       setFile(null);
       setpreview(null);
       return;
     }
-     if (selectedFile.size / 1024 / 1024 > MAX_SIZE_MB) {
-    setError(`File size should not exceed ${MAX_SIZE_MB} MB.`);
-    setFile(null);
-    setpreview(null);
-    return;
-  }
-  if (type.startsWith("video/")) {
-    const video = document.createElement("video");
-    video.preload = "metadata";
 
-    video.onloadedmetadata = () => {
-      URL.revokeObjectURL(video.src);
+    if (postType === "reel" && !type.startsWith("video/")) {
+      setError("Only video files are allowed for reels.");
+      setFile(null);
+      setpreview(null);
+      return;
+    }
 
-      if (video.duration > MAX_DURATION_SECONDS) {
-        setError(`Video duration exceeds ${MAX_DURATION_SECONDS} seconds.`);
-        setFile(null);
-        setpreview(null);
-        return;
+    if (selectedFile.size / 1024 / 1024 > MAX_SIZE_MB) {
+      setError(`File size should not exceed ${MAX_SIZE_MB} MB.`);
+      setFile(null);
+      setpreview(null);
+      return;
+    }
+
+    if (type.startsWith("video/")) {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(video.src); // Clean up the object URL
+
+        if (video.duration > MAX_DURATION_SECONDS) {
+          setError(`Video duration should not exceed ${MAX_DURATION_SECONDS} seconds.`);
+          setFile(null);
+          setpreview(null);
+        } else {
+          setError(null);
+          setFile(selectedFile);
+          setpreview(URL.createObjectURL(selectedFile));
+        }
       }
-
+      video.src = URL.createObjectURL(selectedFile);
+    } else {
+      // It's an image
+      setError(null);
+      setFile(selectedFile);
+      setpreview(URL.createObjectURL(selectedFile));
+    }
   };
-
-  }
-setError(null);
-
-    setFile(selectedFile);
-    setpreview(URL.createObjectURL(selectedFile));
-}
 
 
 
@@ -112,12 +122,21 @@ preview?
   setpreview(null)
   setFile(null)
 }}>Discard</button>
-{
-file.type.startsWith("image/")?
-<img src={preview} className="h-70 object-cover w-full aspect-square" alt="" />
-:
-<video className="h-70 object-cover w-full aspect-square" autoPlay muted controls controlsList="nodownload nofullscreen noremoteplayback"  src={preview}></video>
-}
+{file.type.startsWith("image/") ? (
+  <img src={preview} className="h-70 object-cover w-full aspect-square" alt="preview" />
+) : (
+  postType==="post"?(
+  <video className="h-70 object-cover w-full aspect-square" autoPlay muted controls controlsList="nodownload nofullscreen noremoteplayback" src={preview}></video>
+  ):(
+      <video
+            src={preview}
+            className="h-80 w-full aspect-9/16 rounded-lg"
+            loop
+            muted
+            playsInline
+          />
+  )
+)}
 </div>
 :
 <label
@@ -144,7 +163,7 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
     <span className="font-semibold">Click to upload</span>
   </p>
   <p className="text-xs text-gray-500 dark:text-gray-400">
-    upload image or video  only
+    {postType==="post"?"upload image or video only":"upload portrait video only"}
   </p>
 </div>
 <input id="dropzone-file" required accept="image/*,video/*" onChange={(e)=>{

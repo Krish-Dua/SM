@@ -13,7 +13,7 @@ const Footer = () => {
     { title: "Home", url: "/", icon: Home },
     { title: "Explore", url: "/explore", icon: LucideCompass },
     { title: "Create", url: "#", icon: PlusSquareIcon },
-    { title: "Reels", url: "/eagle_07", icon: MonitorPlay },
+    { title: "Reels", url: "/reels", icon: MonitorPlay },
   ];
   const user = useUserStore((state) => state.user);
 

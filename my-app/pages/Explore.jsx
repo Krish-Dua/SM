@@ -94,7 +94,7 @@ navigate(`/p/${postId}`,{
   
   return (
     <>
-      <main className="max-w-5xl sm:py-4 sm:px-4 h-max mx-auto">
+      <main className="max-w-5xl mb-19 sm:py-4 sm:px-4 h-max sm:h-max mx-auto">
         <header className="flex justify-center">
           <div className="w-[80%] relative  mb-6">
             <input
