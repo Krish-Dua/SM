@@ -12,7 +12,7 @@ import usePostStore from "../store/posts";
 import DeletePostBtn from "./DeletePostBtn";
 
 
-const PostOptionsBtn = ({postedBy,postId ,post}) => {
+const PostOptionsBtn = ({postedBy,postId}) => {
     const user = useUserStore((state) => state.user);
     const setUser = useUserStore((state) => state.setUser);
 const setPostPageArray=usePostStore((state)=>state.setPostPageArray)

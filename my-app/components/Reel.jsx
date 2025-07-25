@@ -4,6 +4,7 @@ import LikeBtn from './LikeBtn';
 import CommentDrawer from './CommentDrawer';
 import SaveBtn from './SaveBtn';
 import useUserStore from '../store/user';
+import PostOptionsBtn from './PostOptionsBtn';
 const Reel = ({ reel }) => {
   const user = useUserStore((state) => state.user);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -60,6 +61,8 @@ const fetchCommentCount = async () => {
 </div>
             {/* <button className="text-white text-2xl">➤</button> */}
             <SaveBtn postId={reel._id} />
+
+            <PostOptionsBtn postedBy={reel.postedBy} postId={reel._id} />
           </div>
 
           <div className="absolute left-4 bottom-4 right-16 flex flex-col gap-2">

@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { useParams,useNavigate,useLocation } from "react-router-dom";
-import {Grid,PlaySquare,Save,ImageIcon,Video} from "lucide-react"
+import {Grid,PlaySquare,Save,ImageIcon,Video,Camera,SaveIcon} from "lucide-react"
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
-import { toast } from "react-toastify";
 import SettingsBtn from "../components/SettingsBtn";
 import usePostStore from "../store/posts";
 const UserProfile = () => {
@@ -221,10 +220,16 @@ useEffect(() => {
 </section>
 
 {/* posts grid layout  */}
-<section className="grid grid-cols-3 mb-10 w-full gap-1 ">
+<section className="grid grid-cols-3 mb-10 w-full gap-1 relative ">
 
 
-{selectedTab==="all"&&allUserPosts.map((post)=>{
+{selectedTab==="all"&&(allUserPosts.length===0?(
+  <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+    <Camera size={56} />
+<p className="font-bold text-gray-300 text-lg ">No posts Yet</p>
+  </div>
+
+):( allUserPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
   <div onClick={()=>{
@@ -255,10 +260,16 @@ navigate(`/p/${post._id}`)
   </div>
 )
 
-})}
+})))}
 
 
-{selectedTab==="reel"&&userReels.map((post)=>{
+{selectedTab==="reel"&&(userReels.length===0?(
+  <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+    <Camera size={56} />
+<p className="font-bold text-gray-300 text-lg ">No posts Yet</p>
+  </div>
+
+):( userReels.map((post)=>{
  if(post.mediaType === "video")
 return (
   <div onClick={()=>{
@@ -268,7 +279,7 @@ return (
 setPostPageArray(remainingPosts)
 navigate(`/p/${post._id}`)
   }} key={post._id} className="relative" >
-  <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "muted>
+  <video  className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center " muted>
     <source src={post.media} type="video/mp4" />
     Your browser does not support the video tag.
   </video> 
@@ -288,9 +299,14 @@ navigate(`/p/${post._id}`)
   <ImageIcon className="absolute right-3 top-3  shadow-black"  />
   </div>
 )
-})}
+})))}
 
-{selectedTab==="saved"&&userSavedPosts.map((post)=>{
+{selectedTab==="saved"&& (userSavedPosts.length===0?(
+  <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+    <SaveIcon size={56} />
+<p className="font-bold text-gray-300 text-lg ">No Saved Posts</p>
+  </div>
+):( userSavedPosts.map((post)=>{
  if(post.mediaType === "video")
 return (
   <div onClick={()=>{
@@ -320,7 +336,7 @@ navigate(`/p/${post._id}`)
   <ImageIcon className="absolute right-3 top-3  shadow-black"  />
   </div>
 )
-})}
+})))}
 
 
 

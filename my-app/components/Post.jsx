@@ -49,7 +49,7 @@ const Post = ({ post }) => {
             <p>{post.postedBy.username}</p>
           </div>
         </Link>
-        <PostOptionsBtn post={post} postedBy={post.postedBy} postId={post._id} />
+        <PostOptionsBtn postedBy={post.postedBy} postId={post._id} />
       </div>
 
       {/* image */}
