@@ -10,7 +10,7 @@ export const createPost = async (req, res) => {
   const postedBy = req.user.userId;
   const { mediaType, caption ,postType} = req.body;
   let media = req.file
-  console.log(mediaType, media, caption, postType);
+  
   try {
     if (!mediaType || !media || !caption || !postType) {
       return res
@@ -33,7 +33,7 @@ export const createPost = async (req, res) => {
                 }
               );
     
-              stream.end(req.file.buffer); // Push buffer into stream
+              stream.end(req.file.buffer); 
             });
           };
     
@@ -120,13 +120,13 @@ export const likeUnlikePost = async (req, res) => {
     const isLiked = post.likes.includes(userId);
 
     if (isLiked) {
-      //unlike
+      
       await Post.findByIdAndUpdate(postId, {
         $pull: { likes: userId },
       });
       return res.status(200).json({ success: true, message: "unliked" });
     } else {
-      //like
+      
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: userId },
       });
@@ -199,38 +199,64 @@ export const getComments = async (req, res) => {
 
 export const getFeed = async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const {postType="post"}=req.query
-    const posts = await Post.find({postType:postType})
-      .limit(20).sort({ createdAt: -1 })
-      .populate("postedBy", "username avatar");
-      console.log(posts)
-    res.json({ success: true, data: posts });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "server error at get feed" });
-  }
-};
-export const getExploreFeed = async (req, res) => {
-  try {
+    const { exclude = [], limit=5}= req.body;
+
+    const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
+console.log("cllled",limit)
     const posts = await Post.aggregate([
       {
         $match: {
-         postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
+          postType: "post", 
+          _id: { $nin: excludeIds }, 
+          postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
+        },
       },
-      },
-      { $sample: { size:39 } },
+      { $sample: { size: limit } }, 
 
     ]);
     await Post.populate(posts, { path: "postedBy", select: "username avatar name" });
+
+    return res.json({ success: true, data:posts });
+  } catch (error) {
+    console.error("Error fetching reels:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+export const getExploreFeed = async (req, res) => {
+  const { exclude = [] ,size=24,postType} = req.body; 
+
+  try {
+    const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
+let matchStage= {
+  postedBy: { $ne: new mongoose.Types.ObjectId(req.user.userId) },
+  _id: { $nin: excludeIds },
+};
+if(postType) {
+  matchStage.postType = postType;
+}
+    const posts = await Post.aggregate([
+      {
+        $match:matchStage
+      },
+      { $sample: { size } }, 
+    ]);
+
+    
+    await Post.populate(posts
+      , {
+      path: "postedBy",
+      // select: "username avatar name",
+    }
+  );
+
     res.json({ success: true, data: posts });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
-      .json({ success: false, message: "server error at get explore feed" });
+      .json({ success: false, message: "Server error at getExploreFeed" });
   }
 };
 
@@ -266,8 +292,8 @@ export const getUserSavedPosts = async (req, res) => {
       .populate({
         path: "saved",
          populate: {
-          path: "postedBy", // this populates the postedBy field within each saved post
-          select: "username name avatar", // adjust fields as needed
+          path: "postedBy", 
+          select: "username name avatar", 
         },
       })
       .select("saved"); 
@@ -275,7 +301,7 @@ export const getUserSavedPosts = async (req, res) => {
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
-    res.json({ success: true, data: user.saved }); // Return only the saved posts
+    res.json({ success: true, data: user.saved }); 
   } catch (error) {
     console.log(error);
     return res
@@ -283,3 +309,29 @@ export const getUserSavedPosts = async (req, res) => {
       .json({ success: false, message: "server error at get user saved posts" });
   }
 };
+
+
+export const getReels =async (req, res) => {
+  try {
+    const { exclude = [], limit=5}= req.body;
+
+    const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
+console.log("cllled",limit)
+    const reels = await Post.aggregate([
+      {
+        $match: {
+          postType: "reel", 
+          _id: { $nin: excludeIds }, 
+          postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
+        },
+      },
+      { $sample: { size: limit } }, 
+    ]);
+    await Post.populate(reels, { path: "postedBy", select: "username avatar name" });
+
+    return res.json({ success: true, data:reels });
+  } catch (error) {
+    console.error("Error fetching reels:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}

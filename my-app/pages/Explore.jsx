@@ -1,5 +1,5 @@
-import React, { useState, useEffect, use } from "react";
-import { CircleXIcon ,ImageIcon,Video} from "lucide-react";
+import React, { useState, useEffect, use, useRef } from "react";
+import { CircleXIcon ,ImageIcon,PoundSterlingIcon,Video} from "lucide-react";
 
 import { Link, useNavigate } from "react-router-dom";
 import usePostStore from "../store/posts";
@@ -14,17 +14,21 @@ const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
 
 const navigate=useNavigate()
   
-  // const [explorePosts, setExplorePosts] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+const observerRef=useRef(null)
 
- const handleThumbnailOnClick=(postId)=>{
-   const index = explorePosts.findIndex(post => post._id === postId);
-  const remainingPosts = explorePosts.slice(index);
+ const handleThumbnailOnClick=(postId,postType)=>{
+  //  const index = explorePosts.findIndex(post => post._id === postId);
+  // const remainingPosts = explorePosts.slice(index);
+   const remainingPosts = explorePosts.filter(post => post._id === postId);
   console.log(remainingPosts)
 setPostPageArray(remainingPosts)
+console.log(postType)
 navigate(`/p/${postId}`,{
-  state:{fromExplore:true}
+  state:{fromExplore:true,postType}
 })
   }
 
@@ -48,20 +52,60 @@ navigate(`/p/${postId}`,{
   };
 
   const fetchExplorePosts = async () => {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/exploreFeed`, {
-      method: "GET",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = await response.json();
-    if (!data.success) {
-      toast.error(data.message)
-    } else {
-      console.log(data);
-      setExplorePosts(data.data);
-    }
+     if (loading || !hasMore) return;
+     try {
+       setLoading(true);
+       const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/exploreFeed`, {
+         method: "POST",
+         credentials: "include",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({
+           exclude: explorePosts.map((p) => p._id), 
+           size: 21,
+         }),
+       });
+       const data = await response.json();
+       if (!data.success) {
+         toast.error(data.message);
+       } else {
+         console.log(data.data)
+         if (data.data.length === 0) {
+           setHasMore(false);
+         } else {
+           setExplorePosts([...explorePosts, ...data.data]);
+         }
+       }
+     } catch (err) {
+       toast.error("Error loading more posts");
+     } finally {
+       setLoading(false);
+     }
   }
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+    const loader = document.querySelector("#feed-loader");
+    if (!loader || !hasMore) return
   
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          fetchExplorePosts();
+        }
+      },
+      { rootMargin: "100px" }
+    );
+  
+    observerRef.current.observe(loader);
+ return () => {
+    if (observerRef.current) observerRef.current.disconnect();
+  };
+},[fetchExplorePosts,hasMore,loading])
+
+  
+
+
+
+
   useEffect(() => {
     console.log(explorePosts)
     if (explorePosts.length<=0) {
@@ -121,9 +165,9 @@ navigate(`/p/${postId}`,{
         {!isSearchActive ? (
           <section className="grid grid-cols-3 w-full gap-1 ">
             {explorePosts.map((post, index) => {
-              if (post.mediaType === "video")
+              if (post.mediaType === "video") 
                 return (
-                  <div onClick={()=>handleThumbnailOnClick(post._id)} key={post._id} className="relative">
+                  <div onClick={()=>handleThumbnailOnClick(post._id,post.postType)} key={post._id} className="relative">
                     <video
                       className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
                       muted
@@ -136,7 +180,7 @@ navigate(`/p/${postId}`,{
                 );
               else
                 return (
-                  <div onClick={()=>handleThumbnailOnClick(post._id)} className="relative" key={post._id}>
+                  <div onClick={()=>handleThumbnailOnClick(post._id,post.postType)} className="relative" key={post._id}>
                     <img
                       className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
                       src={post.media}
@@ -176,6 +220,9 @@ navigate(`/p/${postId}`,{
             })}
           </section>
         )}
+        <div id="feed-loader" className="text-center py-4 text-gray-500">
+          {loading ? "Loading more posts..." : !hasMore ? "No more posts" : ""}
+        </div>
       </main>
     </>
   );

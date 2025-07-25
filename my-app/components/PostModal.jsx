@@ -10,7 +10,7 @@ const PostModal = ({setOpen,postType}) => {
   const [preview, setpreview] = useState(null)
   const [caption, setCaption] = useState("");
 const [file,setFile]= useState(null)
-const [error,setError]= useState(postType)
+const [error,setError]= useState()
 const [loading ,setLoading]= useState(false)
 
 

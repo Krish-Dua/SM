@@ -164,7 +164,7 @@ else{
             >
               <img
                 className="h-full w-full object-cover rounded-full"
-                src={profilePic}
+                src={profilePic || "/default-avatar.png"}
                 alt=""
               />
               <div className="absolute top-23 w-full h-full  bg-black opacity-50 flex items-center justify-start flex-col">

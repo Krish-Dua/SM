@@ -41,6 +41,7 @@ const fetchCommentCount = async () => {
             src={reel.media}
             className="h-full w-full rounded-lg"
             loop
+            autoPlay
             playsInline
           />
             <div className="absolute right-4 bottom-24 flex flex-col gap-4 items-center">

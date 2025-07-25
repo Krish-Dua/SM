@@ -1,32 +1,55 @@
+import { useEffect, useState, useRef, useCallback } from "react";
 import Reel from "../components/Reel";
-import { useEffect, useState } from "react";
 
-const ReelPage = () => {
-  const [reels, setReels] = useState([]);
-  const [loading, setLoading] = useState(true);
+const ReelPage = ({ arr }) => {
+  const [reels, setReels] = useState(arr || []);
+  const [loading, setLoading] = useState(false);
+  const [loadedIds, setLoadedIds] = useState(arr ? arr.map((r) => r._id) : []);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
+
+  const fetchReels = useCallback(async () => {
+    if (!hasMore || loading) return;
+
+    try {
+      setLoading(true);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/reels`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          exclude: reels.map((r) => r._id)  ,
+          limit: 3,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        if (data.data.length === 0) {
+          setHasMore(false); // ✅ No more reels
+        } else {
+          setReels((prev) => {
+            // const existingIds = new Set(prev.map((r) => r._id));
+            // const newReels = data.data.filter((r) => !existingIds.has(r._id));
+            return [...prev, ...data.data];
+          });
+
+          setLoadedIds((prev) => [...prev, ...data.data.map((r) => r._id)]);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching reels:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [loadedIds, hasMore, loading]);
 
   useEffect(() => {
-    const fetchReels = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/feed?postType=reel`, {
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.success) {
-            console.log(data.data)
-                      setReels(data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching reels:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (reels.length === 0) fetchReels();
+  }, [fetchReels, reels.length]);
 
-    fetchReels();
-  }, []);
 
-  // Autoplay logic
   useEffect(() => {
     const videos = document.querySelectorAll("video");
     const observer = new IntersectionObserver(
@@ -43,21 +66,49 @@ const ReelPage = () => {
     );
 
     videos.forEach((video) => observer.observe(video));
-
-    return () => {
-      videos.forEach((video) => observer.unobserve(video));
-    };
+    return () => videos.forEach((video) => observer.unobserve(video));
   }, [reels]);
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen text-white">Loading reels...</div>;
-  }
+  // Infinite Scroll Observer
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    const lastReel = document.querySelector(".last-reel");
+    if (!lastReel || !hasMore) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          fetchReels();
+        }
+      },
+      { rootMargin: "100px" }
+    );
+
+    observerRef.current.observe(lastReel);
+
+    return () => {
+      if (observerRef.current) observerRef.current.disconnect();
+    };
+  }, [fetchReels, reels, loading, hasMore]);
 
   return (
-    <div className="h-screen overflow-y-auto snap-y mb-10  snap-mandatory bg-black">
-      {reels.map((reel,ind) => (
- <Reel key={reel._id} reel={reel}/>
+    <div className="h-screen overflow-y-auto snap-y snap-mandatory bg-black">
+      {reels.map((reel, ind) => (
+        <div key={reel._id} className={ind === reels.length - 1 ? "last-reel" : ""}>
+          <Reel reel={reel} />
+        </div>
       ))}
+
+      {loading && (
+        <div className="flex justify-center items-center py-4 text-white">
+          Loading more reels...
+        </div>
+      )}
+
+      {!hasMore && (
+        <div className="text-center text-gray-400 py-4">No more reels</div>
+      )}
     </div>
   );
 };

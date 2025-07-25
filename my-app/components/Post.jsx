@@ -7,12 +7,15 @@ import useUserStore from "../store/user";
 import { Link } from "react-router-dom";
 import SaveBtn from "./SaveBtn";
 import PostOptionsBtn from "./PostOptionsBtn";
+const CAPTION_MAX_LENGTH = 60;
 
 const Post = ({ post }) => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [commentCount, setCommentCount] = React.useState(0);
   const [likes, setLikes] = React.useState(post.likes);
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
   const fetchCommentCount = async () => {
     const res = await fetch(
       `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${post._id}?countOnly=true`,
@@ -52,7 +55,16 @@ const Post = ({ post }) => {
       {/* image */}
       <div className="overflow-hidden">
         {post.media && post.mediaType === "video" ?(
-          <video
+post.postType==="reel"?(  <video
+            src={post.media}
+            autoPlay
+            loop
+            // muted
+            // controls
+            className="w-full max-h-dvh object-cover"
+            style={{ aspectRatio:"auto" }}
+          />
+):(  <video
             src={post.media}
             autoPlay
             loop
@@ -61,6 +73,10 @@ const Post = ({ post }) => {
             className="w-full object-cover"
             style={{ aspectRatio: "auto", maxHeight: "550px" }}
           />
+)
+        
+
+
         )
         :
         (
@@ -100,9 +116,36 @@ const Post = ({ post }) => {
       </div>
 
       {/* cap  */}
-      <div className="px-2">
+      {/* <div className="px-2">
         <p>{post.caption}</p>
-      </div>
+      </div> */}
+
+ <div className="text-white break-words text-sm">
+              {post.caption.length > CAPTION_MAX_LENGTH && !isExpanded ? (
+                <>
+                  {post.caption.slice(0, CAPTION_MAX_LENGTH)}...
+                  <button
+                    onClick={() => setIsExpanded(true)}
+                    className="text-gray-400 ml-1"
+                  >
+                    more
+                  </button>
+                </>
+              ) : (
+                <>
+                  {post.caption}
+                  {post.caption.length > CAPTION_MAX_LENGTH && (
+                    <button
+                      onClick={() => setIsExpanded(false)}
+                      className="text-gray-400 ml-1"
+                    >
+                      less
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+
 
       {/* add comment  */}
       <PostCommentBtn setCommentCount={setCommentCount} postId={post._id} />
