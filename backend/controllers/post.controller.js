@@ -202,7 +202,6 @@ export const getFeed = async (req, res) => {
     const { exclude = [], limit=5}= req.body;
 
     const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
-console.log("cllled",limit)
     const posts = await Post.aggregate([
       {
         $match: {
@@ -316,7 +315,6 @@ export const getReels =async (req, res) => {
     const { exclude = [], limit=5}= req.body;
 
     const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
-console.log("cllled",limit)
     const reels = await Post.aggregate([
       {
         $match: {

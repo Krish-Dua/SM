@@ -12,6 +12,7 @@ import Suggestions from '../pages/Suggestions'
 import PostPage from '../pages/PostPage'
 import { toast } from 'react-toastify'
 import ReelPage from '../pages/ReelPage'
+import socket from './lib/socket'
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -40,7 +41,21 @@ function App() {
     }
     fetchUser();
   }, [])
-  
+  useEffect(() => {
+    if (user?._id) {
+      socket.connect();
+      socket.emit("joinRoom", user._id);
+
+      socket.on("newNotification", (notification) => {
+        console.log("New notification:", notification);
+      });
+    }
+
+    return () => {
+      socket.off("newNotification");
+      socket.disconnect();
+    };
+  }, [user?._id]); 
 
   return (
   <>
