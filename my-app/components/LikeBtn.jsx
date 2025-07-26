@@ -29,12 +29,12 @@ const LikeBtn = ({postId,liked,setLikes}) => {
         // setLikes((prev) => [...prev,user._id]);
          setLikes((prev) => {
           const updated = [...prev, user._id];
-          if (fromExplore) {
+          // if (fromExplore) {
             updateExplorePostLikes(postId, updated);
-          }
-          if (fromFeed) {
+          // }
+          // if (fromFeed) {
             updateFeedPostLikes(postId,updated)
-          }
+          // }
           return updated;
         });
       }
@@ -42,12 +42,12 @@ const LikeBtn = ({postId,liked,setLikes}) => {
         // setLikes((prev) => prev.filter((id) => id !== user._id));
          setLikes((prev) => {
           const updated = prev.filter((id) => id !== user._id);
-          if (fromExplore) {
+          // if (fromExplore) {
             updateExplorePostLikes(postId, updated);
-          }
-          if (fromFeed) {
+          // }
+          // if (fromFeed) {
             updateFeedPostLikes(postId,updated)
-          }
+          // }
           return updated;
         });
       }
