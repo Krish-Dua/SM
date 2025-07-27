@@ -2,9 +2,9 @@ import Post from "../models/post.model.js";
 import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
-
+import Notification from "../models/notification.model.js";
 import {v2 as cloudinary} from 'cloudinary';
-
+import {io} from "../index.js"
 
 export const createPost = async (req, res) => {
   const postedBy = req.user.userId;
@@ -112,11 +112,11 @@ export const likeUnlikePost = async (req, res) => {
   const userId = req.user.userId;
   const postId = req.params.id;
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate("postedBy", "_id");
     if (!post) {
       return res.status(400).json({ success: true, message: "post not found" });
     }
-
+const postedBy=post.postedBy._id
     const isLiked = post.likes.includes(userId);
 
     if (isLiked) {
@@ -130,7 +130,20 @@ export const likeUnlikePost = async (req, res) => {
       await Post.findByIdAndUpdate(postId, {
         $push: { likes: userId },
       });
-      return res.status(200).json({ success: true, message: "liked" });
+       res.status(200).json({ success: true, message: "liked" });
+
+          const notification = await Notification.create({
+        sender:userId,
+        receiver:postedBy,
+        post:postId,
+        type:"like",
+      })
+const populatedNotification=await notification.populate([{
+  path:"sender",select:"username avatar"
+},{
+  path:"post",select:"media"
+}])
+io.to(postedBy.toString()).emit("newNotification",populatedNotification)
     }
   } catch (error) {
     console.log(error);
@@ -144,6 +157,12 @@ export const createComment = async (req, res) => {
   try {
     const { toPost, content } = req.body;
     const commentedBy = req.user.userId;
+    const post = await Post.findById(toPost);
+    if (!post) {
+        return res.status(404).json({ success: false, message: "Post not found" });
+    }
+    const postedBy = post.postedBy._id;
+
     let comment = await Comment.create({
       commentedBy,
       toPost,
@@ -151,6 +170,20 @@ export const createComment = async (req, res) => {
     });
     comment = await comment.populate("commentedBy", "username avatar");
     res.json({ success: true, data: comment });
+
+    const notification = await Notification.create({
+        sender:commentedBy,
+        receiver:postedBy,
+        post:toPost,
+        type:"comment",
+      })
+const populatedNotification=await notification.populate([{
+  path:"sender",select:"username avatar"
+},{
+  path:"post",select:"media"
+}])
+io.to(postedBy.toString()).emit("newNotification",populatedNotification)
+
   } catch (error) {
     console.log(error);
     return res

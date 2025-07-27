@@ -3,7 +3,8 @@ import bcryptjs from "bcryptjs";
 import { genTokenAndSetCookie } from "../services/genTokenAndSetCookie.js";
 import mongoose from "mongoose";
 import {v2 as cloudinary} from 'cloudinary';
-
+import Notification from "../models/notification.model.js";
+import {io} from "../index.js"
 
 export const signupUser = async (req, res) => {
   const { email, password, username, name } = req.body;
@@ -220,7 +221,20 @@ export const followUnfollowUser = async (req, res) => {
         $push: { followers: userId },
       });
 
-      return res.status(200).json({ success: true, message: "Followed user" });
+     res.status(200).json({ success: true, message: "Followed user" });
+
+const notification = await Notification.create({
+        sender:userId,
+        receiver:targetUserId,
+        type:"follow",
+      })
+const populatedNotification=await notification.populate([{
+  path:"sender",select:"username avatar"
+},{
+  path:"post",select:"media"
+}])
+io.to(targetUserId.toString()).emit("newNotification",populatedNotification)
+
     }
   } catch (error) {
     console.error(error);

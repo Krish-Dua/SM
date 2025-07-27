@@ -20,7 +20,7 @@ const port = process.env.PORT || 3001;
 const server = http.createServer(app);
 
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URLL],
     credentials: true,
