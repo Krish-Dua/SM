@@ -5,6 +5,7 @@ import {
   MonitorPlay,
   Settings,
   MessageCircleCode,
+  Heart,
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -19,7 +20,7 @@ const items = [
   { title: "Explore", url: "/explore", icon: LucideCompass },
   { title: "Reels", url: "/reels", icon: MonitorPlay },
   { title: "Messages", url: "#", icon: MessageCircleCode },
-  { title: "Notifications", url: "#", icon: Calendar },
+  { title: "Notifications", url: "/notifications", icon: Heart },
 ];
 
 function AppSidebar() {

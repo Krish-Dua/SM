@@ -68,7 +68,6 @@ navigate(`/p/${postId}`,{
        if (!data.success) {
          toast.error(data.message);
        } else {
-         console.log(data.data)
          if (data.data.length === 0) {
            setHasMore(false);
          } else {
@@ -107,7 +106,6 @@ navigate(`/p/${postId}`,{
 
 
   useEffect(() => {
-    console.log(explorePosts)
     if (explorePosts.length<=0) {
       fetchExplorePosts();
     }

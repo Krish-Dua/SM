@@ -131,6 +131,9 @@ const postedBy=post.postedBy._id
         $push: { likes: userId },
       });
        res.status(200).json({ success: true, message: "liked" });
+    
+if (userId.toString() === postedBy.toString()) {
+  return;}
 
           const notification = await Notification.create({
         sender:userId,
@@ -141,7 +144,7 @@ const postedBy=post.postedBy._id
 const populatedNotification=await notification.populate([{
   path:"sender",select:"username avatar"
 },{
-  path:"post",select:"media"
+  path:"post",select:"media postType mediaType"
 }])
 io.to(postedBy.toString()).emit("newNotification",populatedNotification)
     }
@@ -170,6 +173,12 @@ export const createComment = async (req, res) => {
     });
     comment = await comment.populate("commentedBy", "username avatar");
     res.json({ success: true, data: comment });
+ 
+    if (commentedBy.toString() === postedBy.toString()) {
+      return;
+    }
+
+
 
     const notification = await Notification.create({
         sender:commentedBy,
@@ -180,7 +189,7 @@ export const createComment = async (req, res) => {
 const populatedNotification=await notification.populate([{
   path:"sender",select:"username avatar"
 },{
-  path:"post",select:"media"
+  path:"post",select:"media mediaType postType"
 }])
 io.to(postedBy.toString()).emit("newNotification",populatedNotification)
 

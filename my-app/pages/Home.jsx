@@ -5,13 +5,15 @@ import HomeMainContent from "../components/HomeMainContent";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
 import usePostStore from "../store/posts";
-
+import useNotificationStore from "../store/notification";
 const Home = () => {
   const user = useUserStore((state) => state.user);
   const feedPosts = usePostStore((state) => state.feedPosts);
   const setFeedPosts = usePostStore((state) => state.setFeedPosts);
   const homeSuggestedUsers = usePostStore((state) => state.homeSuggestedUsers);
   const setHomeSuggestedUsers = usePostStore((state) => state.setHomeSuggestedUsers);
+const setNotications=useNotificationStore((state)=>state.setNotifications)
+const notications=useNotificationStore((state)=>state.notifications)
 
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -66,7 +68,23 @@ const Home = () => {
     }
   };
 
+  const fetchNotifications=async()=>{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/notifications`, {
+      method:"GET",
+      credentials:"include",
+      headers:{
+        "Content-Type":"application/json"
+      }} )
+      const data=await response.json();
+      if(data.success){
+setNotications(data.data)
+      }
+  }
+  
   useEffect(() => {
+    if (notications.length <= 0) {
+      fetchNotifications();
+    }
     if (feedPosts.length <= 0) fetchPosts();
     if (homeSuggestedUsers.length <= 0) fetchSuggestedUsers();
   }, []);

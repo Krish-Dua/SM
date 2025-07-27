@@ -223,6 +223,9 @@ export const followUnfollowUser = async (req, res) => {
 
      res.status(200).json({ success: true, message: "Followed user" });
 
+     if (userId.toString() === targetUserId.toString()) {
+  return; }
+
 const notification = await Notification.create({
         sender:userId,
         receiver:targetUserId,
@@ -231,7 +234,7 @@ const notification = await Notification.create({
 const populatedNotification=await notification.populate([{
   path:"sender",select:"username avatar"
 },{
-  path:"post",select:"media"
+  path:"post",select:"media mediaType postType"
 }])
 io.to(targetUserId.toString()).emit("newNotification",populatedNotification)
 

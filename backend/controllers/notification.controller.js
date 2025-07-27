@@ -7,7 +7,7 @@ try {
     const userId = req.user.userId
 const notifications=await Notification.find({receiver:userId})
 .populate("sender","username avatar")
-.populate("post","media")
+.populate("post","media postType mediaType")
 .sort({createdAt:-1})
 .limit(30)
 

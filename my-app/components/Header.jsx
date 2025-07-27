@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
     const items = [
-        { title: "Notifications", url: "#", icon: Heart },
+        { title: "Notifications", url: "/notifications", icon: Heart },
         { title: "Messages", url: "#", icon: MessageCircle },
       ];
   return (

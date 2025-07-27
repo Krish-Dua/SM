@@ -14,6 +14,7 @@ import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
 import SettingsBtn from "../components/SettingsBtn";
 import usePostStore from "../store/posts";
+import { toast } from "react-toastify";
 const UserProfile = () => {
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
@@ -112,9 +113,8 @@ const UserProfile = () => {
     );
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+      toast.error(data.message);
     } else {
-      console.log(data.data);
       setUserSavedPosts(data.data);
     }
   };
@@ -252,7 +252,6 @@ const UserProfile = () => {
               onClick={() => {
                 setSelectedTab("saved");
                 if (!userSavedPosts.length) {
-                  console.log("yo");
                   fetchUserSavedPosts();
                 }
               }}
