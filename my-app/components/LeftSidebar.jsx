@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import CreateBtn from "./CreateBtn";
 import useUserStore from "../store/user";
 import SettingsBtn from "./SettingsBtn";
+import NotificationBtn from "./NotificationBtn";
 
 
 const items = [
@@ -52,18 +53,21 @@ function AppSidebar() {
               key={index}                     
                 className=" hover:bg-gray-200 dark:hover:bg-gray-800 rounded-xl mb-3 transition"
               >
+{item.title==="Notifications" ?(<NotificationBtn/>):(
                 <Link
                   to={item.url}
                   className="flex items-center  gap-5 px-3 py-2"
                 >  
                   <item.icon
-                    size={26}
+                    size={30}
                     className="text-gray-700 dark:text-gray-400"
                   />
                   <span className="hidden lg:inline text-xl font-bold">
                     {item.title}
                   </span>
                 </Link>
+)
+}
               </li>
             ))}
             

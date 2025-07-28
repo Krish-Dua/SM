@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import SaveBtn from "./SaveBtn";
 import PostOptionsBtn from "./PostOptionsBtn";
 const CAPTION_MAX_LENGTH = 60;
+import { formatTime } from "@/lib/dayjs";
 
 const Post = ({ post }) => {
   const user = useUserStore((state) => state.user);
@@ -18,7 +19,9 @@ const Post = ({ post }) => {
 
   const fetchCommentCount = async () => {
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${post._id}?countOnly=true`,
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${
+        post._id
+      }?countOnly=true`,
       {
         method: "GET",
         credentials: "include",
@@ -47,6 +50,9 @@ const Post = ({ post }) => {
               />
             </div>
             <p>{post.postedBy.username}</p>
+            <span className="text-xs text-gray-400">
+              {formatTime(post.createdAt)}
+            </span>
           </div>
         </Link>
         <PostOptionsBtn postedBy={post.postedBy} postId={post._id} />
@@ -54,43 +60,39 @@ const Post = ({ post }) => {
 
       {/* image */}
       <div className="overflow-hidden">
-        {post.media && post.mediaType === "video" ?(
-post.postType==="reel"?(  <video
-            src={post.media}
-            autoPlay
-            loop
-            // muted
-            // controls
-            className="w-full max-h-dvh object-cover"
-            style={{ aspectRatio:"auto" }}
-          />
-):(  <video
-            src={post.media}
-            autoPlay
-            loop
-            // muted
-            // controls
-            className="w-full object-cover"
-            style={{ aspectRatio: "auto", maxHeight: "550px" }}
-          />
-)
-        
-
-
-        )
-        :
-        (
-           <img
+        {post.media && post.mediaType === "video" ? (
+          post.postType === "reel" ? (
+            <video
+              src={post.media}
+              autoPlay
+              loading="lazy"
+              loop
+              // muted
+              // controls
+              className="w-full max-h-dvh object-cover"
+              style={{ aspectRatio: "auto" }}
+            />
+          ) : (
+            <video
+              src={post.media}
+              autoPlay
+              loop
+              loading="lazy"
+              // muted
+              // controls
+              className="w-full object-cover"
+              style={{ aspectRatio: "auto", maxHeight: "550px" }}
+            />
+          )
+        ) : (
+          <img
             src={post.media}
             alt={post.postedBy.username}
             className="w-full object-cover"
             style={{ aspectRatio: "auto", maxHeight: "550px" }}
+            loading="lazy"
           />
-        )
-        
-        
-        }
-      
+        )}
       </div>
 
       {/* L and c  */}
@@ -120,32 +122,31 @@ post.postType==="reel"?(  <video
         <p>{post.caption}</p>
       </div> */}
 
- <div className="text-white break-words text-sm">
-              {post.caption.length > CAPTION_MAX_LENGTH && !isExpanded ? (
-                <>
-                  {post.caption.slice(0, CAPTION_MAX_LENGTH)}...
-                  <button
-                    onClick={() => setIsExpanded(true)}
-                    className="text-gray-400 ml-1"
-                  >
-                    more
-                  </button>
-                </>
-              ) : (
-                <>
-                  {post.caption}
-                  {post.caption.length > CAPTION_MAX_LENGTH && (
-                    <button
-                      onClick={() => setIsExpanded(false)}
-                      className="text-gray-400 ml-1"
-                    >
-                      less
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-
+      <div className="text-white px-2 break-words text-sm">
+        {post.caption.length > CAPTION_MAX_LENGTH && !isExpanded ? (
+          <>
+            {post.caption.slice(0, CAPTION_MAX_LENGTH)}...
+            <button
+              onClick={() => setIsExpanded(true)}
+              className="text-gray-400 ml-1"
+            >
+              more
+            </button>
+          </>
+        ) : (
+          <>
+            {post.caption}
+            {post.caption.length > CAPTION_MAX_LENGTH && (
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="text-gray-400 ml-1"
+              >
+                less
+              </button>
+            )}
+          </>
+        )}
+      </div>
 
       {/* add comment  */}
       <PostCommentBtn setCommentCount={setCommentCount} postId={post._id} />

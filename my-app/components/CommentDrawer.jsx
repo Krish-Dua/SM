@@ -5,7 +5,8 @@ import "../src/App.css"
 import PostCommentBtn from "./PostCommentBtn";
 import useUserStore from "../store/user";
 import {toast } from 'react-toastify';
-
+import { formatTime } from "@/lib/dayjs";
+import { Link } from "react-router-dom";
 
 const CommentDrawer = ({ postId ,setCommentCount}) => {
 const user= useUserStore((state)=>state.user)
@@ -82,8 +83,11 @@ const handleDeleteComment= async (commentId) => {
                   />
                 </div>
                 <div>
-                  <div className="flex gap-10 items-center " >
-                  <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p>
+                  <div className="flex gap-14 items-center " >
+                    <div className="flex items-center gap-4" >
+                <Link to={c.commentedBy.username} > <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p></Link>                   <span className="text-xs text-gray-400" >{formatTime(c.createdAt)}</span>
+                </div>
+
                   {user._id===c.commentedBy._id?<Trash onClick={()=>{
                     handleDeleteComment(c._id)
                   }} size={17} />: <></>}

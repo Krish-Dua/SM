@@ -1,6 +1,7 @@
 import React from 'react'
 import {Heart,MessageCircle} from 'lucide-react'
 import { Link } from 'react-router-dom'
+import NotificationBtn from './NotificationBtn';
 
 const Header = () => {
     const items = [
@@ -17,6 +18,7 @@ const Header = () => {
                  key={index}                     
                    className="transition"
                  >
+                  {items.title==="Notifications"?(<NotificationBtn/>):(
                    <Link
                      to={item.url}
                      className="flex items-center p-1"
@@ -25,7 +27,8 @@ const Header = () => {
                        size={26}
                        className="text-black dark:text-gray-300"
                      />
-                   </Link>
+                   </Link>)
+}
                  </li>
                ))}
              </ul>
