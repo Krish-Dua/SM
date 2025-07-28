@@ -18,7 +18,7 @@ const Header = () => {
                  key={index}                     
                    className="transition"
                  >
-                  {items.title==="Notifications"?(<NotificationBtn/>):(
+                  {item.title==="Notifications"?(<NotificationBtn/>):(
                    <Link
                      to={item.url}
                      className="flex items-center p-1"

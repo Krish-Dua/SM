@@ -15,6 +15,7 @@ import ReelPage from '../pages/ReelPage'
 import socket from './lib/socket'
 import useNotificationStore from '../store/notification'
 import Notifications from '../pages/Notifications'
+import LoaderSpinner from '../components/LoaderSpinner'
 function App() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
@@ -74,9 +75,19 @@ addNotification(notification)
     };
   }, [user?._id]); 
 
+if (loading) {
+  return(
+    <div className=' h-screen flex flex-col gap-4 items-center justify-center text-white bg-black'>
+      <h1 className='text-7xl' >E-Conn</h1>
+      <LoaderSpinner size={30}/>
+    </div>
+  )
+}
+
+
   return (
   <>
-    <Routes>
+    <Routes >
         {/* Protected Routes with Sidebar */}
         <Route path="/" element={user ? <Layout /> : <Navigate to="/auth" />}>
           <Route index element={<Home />} />
