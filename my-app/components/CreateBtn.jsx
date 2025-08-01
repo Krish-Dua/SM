@@ -16,7 +16,7 @@ import PostModal from "./PostModal";
 import ReelModal from "./ReelModal";
 
 
-const CreateBtn = () => {
+const CreateBtn = ({isCompact}) => {
 
   const [postModalOpen, setpostModalOpen] = React.useState(false);
   const [reelModalOpen, setreelModalOpen] = React.useState(false);
@@ -30,7 +30,7 @@ const CreateBtn = () => {
             size={26}
             className="text-gray-700 dark:text-gray-400"
           />
-          <span className="hidden lg:inline text-xl font-bold">Create</span>
+          {!isCompact&&<span className="hidden lg:inline text-xl font-bold">Create</span>}
         </div>
       </PopoverTrigger>
       <PopoverContent className="dark:bg-gray-900 w-fit  dark:text-white border-0 flex flex-col gap-2">

@@ -44,7 +44,7 @@ useEffect(()=>{
                 <Link to={`/${n.sender.username}`}>
                   <div className="">
                     <div>
-                      <div className="flex w-full items-center gap-4 sm:gap-8">
+                      <div className="flex w-full items-center gap-4 sm:gap-6">
                         <div className="h-13  w-13 rounded-full overflow-hidden bg-slate-200">
                           <img
                             src={n.sender.avatar || "/default-avatar.png"}
@@ -53,7 +53,7 @@ useEffect(()=>{
                           />
                         </div>
                         <p className="text-md flex items-center gap-1 sm:gap-3 font-medium flex-wrap sm:max-w-full max-w-[65%] dark:text-white text-black">
-                          <span className="mr-2">{n.sender.username}</span>{" "}
+                          <span className="">{n.sender.username}</span>{" "}
                           <span>started following you</span>
                           <span className="text-xs text-gray-400" >{formatTime(n.createdAt)}</span>
 
@@ -120,7 +120,7 @@ useEffect(()=>{
                 }} >
                   <div className="">
                     <div>
-                      <div className="flex w-full items-center gap-4 sm:gap-8">
+                      <div className="flex w-full items-center gap-4 sm:gap-6">
                         <div className="h-13  w-13 rounded-full overflow-hidden bg-slate-200">
                           <img
                             src={n.sender.avatar || "/default-avatar.png"}
@@ -129,7 +129,7 @@ useEffect(()=>{
                           />
                         </div>
                         <p className="text-md flex items-center gap-1 sm:gap-3 flex-wrap sm:max-w-full max-w-[65%] font-medium dark:text-white text-black">
-                          <span className="mr-2">{n.sender.username}</span>{" "}
+                          <span className="">{n.sender.username}</span>{" "}
                           <span>{`commented your ${n.post.postType}`}</span>
                           <span className="text-xs text-gray-400" >{formatTime(n.createdAt)}</span>
 

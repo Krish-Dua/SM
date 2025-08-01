@@ -12,12 +12,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import LoaderSpinner from "./LoaderSpinner";
+import useNotificationStore from "../store/notification";
+import usePostStore from "../store/posts";
+
 
 const Logout = ({classname}) => {
       const [loading, setloading] = useState(false);
     
-    const user = useUserStore((state) => state.user);
     const setUser = useUserStore((state) => state.setUser); 
+    const setNotifications=useNotificationStore((state)=>state.setNotifications);
+    const setFeedPosts=usePostStore((state)=>state.setFeedPosts)
+    const setExplorePosts=usePostStore((state)=>state.setExplorePosts)
+    const setHomeSuggestedUsers=usePostStore((state)=>state.setHomeSuggestedUsers)
+    const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
+
+
 
     const handleSubmit = async () => {
         setloading(true);
@@ -28,6 +37,11 @@ const Logout = ({classname}) => {
         });
         const data = await response.json();
       setUser()
+      setNotifications([])
+      setFeedPosts([])
+      setExplorePosts([])
+      setHomeSuggestedUsers([])
+      setPostPageArray([])
         
     
         setloading(false);

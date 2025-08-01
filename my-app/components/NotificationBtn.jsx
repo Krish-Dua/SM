@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useNotificationStore from '../store/notification';
 
-const NotificationBtn = () => {
+const NotificationBtn = ({isCompact}) => {
   const notifications = useNotificationStore((state) => state.notifications);
   const unread = notifications.filter((n) => !n.isRead).length;
 
@@ -17,7 +17,8 @@ const NotificationBtn = () => {
             </span>
           )}
         </div>
-        <span className="hidden lg:inline text-xl font-bold">Notifications</span>
+        {!isCompact&&<span className="hidden lg:inline text-xl font-bold">Notifications</span>
+}
       </Link>
   );
 };
