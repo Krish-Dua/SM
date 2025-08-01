@@ -218,9 +218,9 @@ navigate(`/p/${postId}`,{
             })}
           </section>
         )}
-        <div id="feed-loader" className="text-center py-4 text-gray-500">
+       {!isSearchActive&& <div id="feed-loader" className="text-center py-4 text-gray-500">
           {loading ? "Loading more posts..." : !hasMore ? "No more posts" : ""}
-        </div>
+        </div>}
       </main>
     </>
   );

@@ -9,12 +9,21 @@ import {
   Camera,
   SaveIcon,
 } from "lucide-react";
+import "../src/App.css"
+
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
 import SettingsBtn from "../components/SettingsBtn";
 import usePostStore from "../store/posts";
 import { toast } from "react-toastify";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import FollowerFollowingList from "../components/FollowerFollowingList";
 const UserProfile = () => {
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
@@ -175,16 +184,38 @@ const UserProfile = () => {
               <span className="">{allUserPosts.length}</span>
               <span className="text-gray-400">Posts</span>
             </div>
-            <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
+           
+      <Dialog >
+      <DialogTrigger asChild>
+         <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
               <span className="">{user.followers.length}</span>
               <span className="text-gray-400">followers</span>
             </div>
-            <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%]  dark:bg-black border-0  text-white">
+        <DialogTitle>
+ Followers
+        </DialogTitle>
+      <FollowerFollowingList userId={user._id} query="followers" />
+      </DialogContent>
+    </Dialog>
+
+ <Dialog >
+      <DialogTrigger asChild>
+         <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
               <span className="">{user.following.length}</span>
               <span className="text-gray-400">following</span>
             </div>
-          </div>
-
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] dark:bg-black border-0  text-white">
+        <DialogTitle>
+ following
+        </DialogTitle>
+      <FollowerFollowingList userId={user._id} query="following" />
+      </DialogContent>
+    </Dialog>
+            
+</div>
           <div className="sm:block hidden">
             <p className="font-bold">{user.name}</p>
             <p className="text-gray-300">{user.bio}</p>

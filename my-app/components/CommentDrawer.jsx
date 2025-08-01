@@ -69,7 +69,7 @@ const handleDeleteComment= async (commentId) => {
 
       <DrawerContent  className="h-[80%] max-w-3xl  dark:bg-gray-950 dark:text-white mx-auto p-4">
         <h2 className="font-bold text-xl  my-2 text-center ">Comments</h2>
-       <div className="overflow-auto custom-scrollbar">
+       <div className="overflow-auto h-[80%] custom-scrollbar">
         {comments.length > 0 ? (
           comments.map((c,ind) => (
     

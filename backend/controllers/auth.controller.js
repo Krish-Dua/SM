@@ -339,3 +339,22 @@ console.log(postId)
     res.status(500).json({ success: false, message: "Server error at saving post" });
   }
 };
+
+export const getFollwersOrFollwingList = async (req, res) => {
+try {
+  const {query,userId}=req.query
+let data
+  if (query === "followers") {
+   data=await User.findById(userId).select("followers").populate("followers","username avatar name")
+   res.status(200).json({success:true,data:data.followers})
+  }else if(query === "following") {
+    data=await User.findById(userId).select("following").populate("following","username avatar name")
+    res.status(200).json({success:true,data:data.following})
+  }
+
+
+} catch (error) {
+  console.log(error);
+    res.status(500).json({success:false,message:error.message})
+}
+}
