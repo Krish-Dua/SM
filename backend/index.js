@@ -9,7 +9,8 @@ import authRouter from './routes/auth.route.js';
 import postRouter from './routes/post.route.js';
 import { v2 as cloudinary } from 'cloudinary';
 import notificationRouter from './routes/notification.route.js';
-
+import{initChatSocket} from './chat-service/index.js'
+import chatRoute from './chat-service/routes/chat.route.js'
 
 dotenv.config();
 
@@ -30,15 +31,15 @@ export const io = new Server(server, {
 
 app.set('io', io);
 
-
 io.on('connection', (socket) => {
   console.log(` User connected: ${socket.id}`);
-
   
   socket.on('joinRoom', (userId) => {
     socket.join(userId);
     console.log(`User joined room: ${userId}`);
   });
+
+  initChatSocket(socket,io)
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
@@ -69,6 +70,9 @@ app.use(cookieParser());
 app.use("/api/user", authRouter);
 app.use("/api/post", postRouter);
 app.use("/api", notificationRouter);
+app.use("/api/chat", chatRoute);
+
+
 
 
 app.get('/', (req, res) => {
