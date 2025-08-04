@@ -9,7 +9,7 @@ import {
   Camera,
   SaveIcon,
 } from "lucide-react";
-import "../src/App.css"
+import "../src/App.css";
 
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
@@ -22,8 +22,10 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
+
 import FollowerFollowingList from "../components/FollowerFollowingList";
+import { useChatStore } from "../store/chat";
 const UserProfile = () => {
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
@@ -46,7 +48,6 @@ const UserProfile = () => {
   const [allUserPosts, setAllUserPosts] = React.useState([]);
   const [userReels, setUserReels] = React.useState([]);
   const [selectedTab, setSelectedTab] = React.useState(tabname);
-
   useEffect(() => {
     setSelectedTab(tabname);
   }, [tabname]);
@@ -128,6 +129,45 @@ const UserProfile = () => {
     }
   };
 
+  const handleMessageBtnClick = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/conversation`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiverId: user._id,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data)
+    if (!data.success) {
+      alert(data.message);
+    } else {
+      const convo = data.data;
+      const loggedInUserId = userStore._id;
+
+        const formattedConversation = {
+      _id: convo._id,
+      receiver: convo.members.find((m) => m._id !== loggedInUserId),
+      lastMessage: convo.lastMessage || null,
+      updatedAt: convo.updatedAt,
+    };
+
+    const { setActiveConversation} = useChatStore.getState();
+
+    setActiveConversation(formattedConversation);
+navigate("/chat")
+    }
+
+
+
+  };
+
   useEffect(() => {
     if (tabname === "saved") {
       fetchUserSavedPosts();
@@ -173,7 +213,10 @@ const UserProfile = () => {
                 targetUserId={user._id}
                 classname={" py-1 px-4 rounded-lg bg-gray-800"}
               />
-              <button className="py-1  px-4 rounded-lg bg-gray-800">
+              <button
+                onClick={handleMessageBtnClick}
+                className="py-1  px-4 rounded-lg bg-gray-800"
+              >
                 message
               </button>
             </div>
@@ -184,38 +227,33 @@ const UserProfile = () => {
               <span className="">{allUserPosts.length}</span>
               <span className="text-gray-400">Posts</span>
             </div>
-           
-      <Dialog >
-      <DialogTrigger asChild>
-         <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
-              <span className="">{user.followers.length}</span>
-              <span className="text-gray-400">followers</span>
-            </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%]  dark:bg-black border-0  text-white">
-        <DialogTitle>
- Followers
-        </DialogTitle>
-      <FollowerFollowingList userId={user._id} query="followers" />
-      </DialogContent>
-    </Dialog>
 
- <Dialog >
-      <DialogTrigger asChild>
-         <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
-              <span className="">{user.following.length}</span>
-              <span className="text-gray-400">following</span>
-            </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] dark:bg-black border-0  text-white">
-        <DialogTitle>
- following
-        </DialogTitle>
-      <FollowerFollowingList userId={user._id} query="following" />
-      </DialogContent>
-    </Dialog>
-            
-</div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
+                  <span className="">{user.followers.length}</span>
+                  <span className="text-gray-400">followers</span>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%]  dark:bg-black border-0  text-white">
+                <DialogTitle>Followers</DialogTitle>
+                <FollowerFollowingList userId={user._id} query="followers" />
+              </DialogContent>
+            </Dialog>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
+                  <span className="">{user.following.length}</span>
+                  <span className="text-gray-400">following</span>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] dark:bg-black border-0  text-white">
+                <DialogTitle>following</DialogTitle>
+                <FollowerFollowingList userId={user._id} query="following" />
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className="sm:block hidden">
             <p className="font-bold">{user.name}</p>
             <p className="text-gray-300">{user.bio}</p>
@@ -244,7 +282,10 @@ const UserProfile = () => {
             targetUserId={user._id}
             classname={" py-1 px-4 w-full rounded-lg bg-gray-800"}
           />
-          <button className="py-1  rounded-lg w-full bg-gray-800">
+          <button
+            onClick={handleMessageBtnClick}
+            className="py-1  rounded-lg w-full bg-gray-800"
+          >
             message
           </button>
         </div>

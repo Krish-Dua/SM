@@ -29,7 +29,7 @@ React.useEffect(() => {
     <div className='max-w-[550px] h-max mb-20  mx-auto'>
 
 <div className="text-2xl flex justify-center mt-2 text-black font-bold dark:text-gray-300 mb-3">
-            E-CONN
+            CONNECTICX
           </div>
 <div className=''>
 

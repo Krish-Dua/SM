@@ -13,20 +13,20 @@ import CreateBtn from "./CreateBtn";
 import useUserStore from "../store/user";
 import SettingsBtn from "./SettingsBtn";
 import NotificationBtn from "./NotificationBtn";
-
+import logo from "../src/assets/logo.png"
 
 const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "Explore", url: "/explore", icon: LucideCompass },
   { title: "Reels", url: "/reels", icon: MonitorPlay },
-  { title: "Messages", url: "#", icon: MessageCircleCode },
+  { title: "Messages", url: "/chat", icon: MessageCircleCode },
   { title: "Notifications", url: "/notifications", icon: Heart },
 ];
 
 function AppSidebar() {
   const user = useUserStore((state) => state.user);
   const location=useLocation();
-const isChatPage=location.pathname.startsWith("/explore");
+const isChatPage=location.pathname.startsWith("/chat");
   return (
     <>
       <aside
@@ -36,11 +36,13 @@ const isChatPage=location.pathname.startsWith("/explore");
         aria-label="Sidebar"
       >
         <div className="h-full w-full px-3 py-4 overflow-y-auto">
-          <div className="text-2xl flex justify-start md:justify-center text-black font-bold dark:text-gray-300 mb-6">
-            E-CONN
-          </div>
-
-          <ul className="space-y-2 font-medium">
+          <div className="flex items-center justify-around" >
+          <img className="invert h-12 w-12" src={logo} alt="" />
+          {!isChatPage&&<div className="text-xl text-black font-bold dark:text-gray-300 hidden lg:inline">
+            CONNECTICX
+          </div>}
+</div>
+          <ul className="space-y-2 mt-5 font-medium">
             {items.map((item, index) => (
               <li
               key={index}                     
@@ -55,9 +57,9 @@ const isChatPage=location.pathname.startsWith("/explore");
                     size={30}
                     className="text-gray-700 dark:text-gray-400"
                   />
-                { !isChatPage&& <sp an className={`hidden lg:inline text-xl font-bold`}>
+                { !isChatPage&& <span className={`hidden lg:inline text-xl font-bold`}>
                     {item.title}
-                  </sp>}
+                  </span>}
                 </Link>
 )
 }

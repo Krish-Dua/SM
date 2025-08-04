@@ -27,8 +27,8 @@ See All
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium dark:text-white text-black">{user.name}</p>
-                  <p className="text-xs text-gray-300">{user.username}</p>
+                  <p className="text-sm font-medium dark:text-white text-black">{user.username}</p>
+                  <p className="text-xs text-gray-300">{user.name}</p>
                 </div>
               </div>
 </Link>

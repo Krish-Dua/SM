@@ -23,8 +23,8 @@ router.post("/conversation", authenticateUser, async (req, res) => {
         members: [userId, receiverId],
       });
     }
-
-    res.status(200).json({ success: true, data: conversation });
+  let popConvo=await conversation.populate("members", "username name avatar");
+    res.status(200).json({ success: true, data: popConvo });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

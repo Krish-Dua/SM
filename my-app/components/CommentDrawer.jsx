@@ -85,7 +85,7 @@ const handleDeleteComment= async (commentId) => {
                 <div>
                   <div className="flex gap-14 items-center " >
                     <div className="flex items-center gap-4" >
-                <Link to={c.commentedBy.username} > <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p></Link>                   <span className="text-xs text-gray-400" >{formatTime(c.createdAt)}</span>
+                <Link to={`/${c.commentedBy.username}`} > <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p></Link>                   <span className="text-xs text-gray-400" >{formatTime(c.createdAt)}</span>
                 </div>
 
                   {user._id===c.commentedBy._id?<Trash onClick={()=>{

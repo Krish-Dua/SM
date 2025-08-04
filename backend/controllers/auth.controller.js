@@ -342,16 +342,27 @@ console.log(postId)
 
 export const getFollwersOrFollwingList = async (req, res) => {
 try {
-  const {query,userId}=req.query
-let data
-  if (query === "followers") {
-   data=await User.findById(userId).select("followers").populate("followers","username avatar name")
-   res.status(200).json({success:true,data:data.followers})
-  }else if(query === "following") {
-    data=await User.findById(userId).select("following").populate("following","username avatar name")
-    res.status(200).json({success:true,data:data.following})
+  const { query, userId, limit = 100 } = req.query;
+
+  if (query !== "followers" && query !== "following") {
+    return res.status(400).json({ success: false, message: "Invalid query parameter. Must be 'followers' or 'following'." });
   }
 
+  const numLimit = parseInt(limit, 10);
+
+  const user = await User.findById(userId)
+    .select(query)
+    .populate({
+      path: query,
+      select: "username avatar name",
+      options: { limit: numLimit },
+    });
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  res.status(200).json({ success: true, data: user[query] });
 
 } catch (error) {
   console.log(error);

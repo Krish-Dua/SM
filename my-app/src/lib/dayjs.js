@@ -11,5 +11,6 @@ export const formatTime = (time) => {
     .replace(/\bmonths?\b/, 'mon')
     .replace(/\byears?\b/, 'y')
     .replace(/\s+/g, '')
-    .replace('ago', '');
+    .replace('ago', '')
+    .replace('a','');
 };

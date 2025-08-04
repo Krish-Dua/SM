@@ -6,7 +6,7 @@ import NotificationBtn from './NotificationBtn';
 const Header = () => {
     const items = [
         { title: "Notifications", url: "/notifications", icon: Heart },
-        { title: "Messages", url: "#", icon: MessageCircle },
+        { title: "Messages", url: "/chat", icon: MessageCircle },
       ];
   return (
     <header className='h-fit w-full sm:hidden p-2 fixed left-0 top-0 dark:text-white dark:bg-black bg-white'>

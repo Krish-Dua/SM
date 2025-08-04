@@ -5,6 +5,7 @@ import FollowUnfollwBtn from './FollowUnfollwBtn'
 const FollowerFollowingList = ({query,userId}) => {
 const [data,setData]= React.useState([])
 const [loading,setLoading]= React.useState(false)
+
 const fetchdata= async()=>{
     setLoading(true)
     const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/followersOrFollowing?query=${query}&userId=${userId} `,{
@@ -36,7 +37,7 @@ fetchdata()
           {data.map((user) => (
 
             <div key={user.username} className="mb-3 p-2 flex items-center justify-between last:mb-0  rounded-lg">
-             <Link to={user.username} >
+             <Link to={`/${user.username}`} >
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
                   <img 
@@ -46,8 +47,8 @@ fetchdata()
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium dark:text-white text-black">{user.name}</p>
-                  <p className="text-xs text-gray-300">{user.username}</p>
+                  <p className="text-sm font-medium dark:text-white text-black">{user.username}</p>
+                  <p className="text-xs text-gray-300">{user.user}</p>
                 </div>
               </div>
 </Link>

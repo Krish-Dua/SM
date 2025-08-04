@@ -1,5 +1,5 @@
 import './App.css'
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, act} from 'react'
 import {Route,Routes} from 'react-router-dom'
 import Authpage from '../pages/Authpage'
 import Home from '../pages/Home'
@@ -16,7 +16,11 @@ import socket from './lib/socket'
 import useNotificationStore from '../store/notification'
 import Notifications from '../pages/Notifications'
 import LoaderSpinner from '../components/LoaderSpinner'
+import ChatPage from '../pages/ChatPage'
+import { useChatStore } from '../store/chat'
+
 function App() {
+  
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [loading, setloading] = useState(false);
@@ -32,7 +36,7 @@ const addNotification=useNotificationStore((state)=>state.addNotification)
       });
       const data = await response.json();
       if(!data.success) {
-//
+
       }
       else{
         console.log(data);
@@ -43,37 +47,53 @@ const addNotification=useNotificationStore((state)=>state.addNotification)
     fetchUser();
   }, [])
   
-  useEffect(() => {
-    if (user?._id) {
-      socket.connect();
-      socket.emit("joinRoom", user._id);
+useEffect(() => {
+  if (!user?._id) return;
 
-      socket.on("newNotification", (notification) => {
-        let msg
-        if (notification.type === "follow") {
-          msg=`${notification.sender.username} started following you}`
-        }
-        else if (notification.type === "like") {
-          msg=`${notification.sender.username} liked your post`
-        }
-        else if (notification.type === "comment") {
-          msg=`${notification.sender.username} commented on your post`
-        }
-toast.info(msg,{
-  pauseOnFocusLoss:false,
-  autoClose:4000,
-  pauseOnHover:false,
-  
-})
-addNotification(notification)
+  socket.connect();
+  socket.emit("joinRoom", user._id);
+
+  const handleReceiveMessage = (msg) => {
+    console.log("message received", msg);
+    const activeConvo = useChatStore.getState().activeConversation;
+    if (activeConvo && activeConvo._id === msg.conversationId) {
+      useChatStore.getState().addMessage(msg);
+    } 
+      useChatStore.getState().updateConversation({
+        _id: msg.conversationId,
+        receiver: msg.sender, 
+        lastMsg: msg.msg,
+        updatedAt: msg.createdAt
       });
-    }
+    
+  };
 
-    return () => {
-      socket.off("newNotification");
-      socket.disconnect();
-    };
-  }, [user?._id]); 
+  const handleNotification = (notification) => {
+    let msg;
+    if (notification.type === "follow") {
+      msg = `${notification.sender.username} started following you`;
+    } else if (notification.type === "like") {
+      msg = `${notification.sender.username} liked your post`;
+    } else if (notification.type === "comment") {
+      msg = `${notification.sender.username} commented on your post`;
+    }
+    toast.info(msg, {
+      pauseOnFocusLoss: false,
+      autoClose: 4000,
+      pauseOnHover: false,
+    });
+    addNotification(notification);
+  };
+
+  socket.on("receive_message", handleReceiveMessage);
+  socket.on("newNotification", handleNotification);
+
+  return () => {
+    socket.off("receive_message", handleReceiveMessage);
+    socket.off("newNotification", handleNotification);
+    
+  };
+}, [user?._id]);
 
 if (loading) {
   return(
@@ -97,6 +117,7 @@ if (loading) {
           <Route path='reels' element={<ReelPage/>}/>
           <Route path="suggestions" element={<Suggestions/>} />
           <Route path="notifications" element={<Notifications/>} />
+          <Route path="chat" element={<ChatPage/>} />
         </Route>
 
         {/* Auth Route (Without Sidebar) */}

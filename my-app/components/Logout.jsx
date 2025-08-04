@@ -1,4 +1,4 @@
-import React,{useState}from "react";
+import React,{use, useState}from "react";
 import useUserStore from "../store/user";
 import {
   AlertDialog,
@@ -14,6 +14,7 @@ import {
 import LoaderSpinner from "./LoaderSpinner";
 import useNotificationStore from "../store/notification";
 import usePostStore from "../store/posts";
+import { useChatStore } from "../store/chat";
 
 
 const Logout = ({classname}) => {
@@ -25,6 +26,7 @@ const Logout = ({classname}) => {
     const setExplorePosts=usePostStore((state)=>state.setExplorePosts)
     const setHomeSuggestedUsers=usePostStore((state)=>state.setHomeSuggestedUsers)
     const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
+const {resetChatState}=useChatStore()
 
 
 
@@ -42,7 +44,7 @@ const Logout = ({classname}) => {
       setExplorePosts([])
       setHomeSuggestedUsers([])
       setPostPageArray([])
-        
+        resetChatState()
     
         setloading(false);
     }
