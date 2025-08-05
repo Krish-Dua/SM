@@ -49,7 +49,7 @@ const ConversationList = () => {
 </header>
  
 <p className='px-4 font-bold text-xl'>Messages :-</p>
-<div className='flex flex-col mb-9 gap-2'>
+<div className='flex flex-col mb-15 gap-2'>
 {
     conversations.map((convo)=>(
       

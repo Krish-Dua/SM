@@ -5,7 +5,7 @@ import React, { use, useEffect } from 'react'
 
 const ChatPage = () => {
 
-  const {clearActiveConversation}=useChatStore()
+  const {clearActiveConversation ,activeConversation}=useChatStore()
 
 useEffect(()=>{
 return()=>{
@@ -14,19 +14,20 @@ return()=>{
 },[])
 
   return (
-    <main className='flex items-center w-full h-[100dvh] justify-center' >
+     <main className="flex items-center w-full h-[100dvh] justify-center">
+      {/* Desktop: Always show both */}
+      <section className="hidden md:flex h-[100dvh] w-[30%] lg:border-r border-gray-800">
+        <ConversationList />
+      </section>
 
+      <section className="hidden md:flex w-full flex-1 h-[100dvh]">
+        <ChatBox />
+      </section>
 
-<section className=' h-full w-[30%]' >
-<ConversationList/>
-</section>
-
-
-<section className='flex-1 h-full ' >
-<ChatBox/>
-</section>
-
-
+      {/* Mobile view */}
+      <section className="block md:hidden w-full h-full">
+        {activeConversation ? <ChatBox /> : <ConversationList />}
+      </section>
     </main>
   )
 }

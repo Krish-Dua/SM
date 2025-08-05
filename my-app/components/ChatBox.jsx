@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useChatStore } from '../store/chat'
 import '../src/App.css'
 import useUserStore from '../store/user'
-import { ArrowLeft ,MessageCircleCode} from 'lucide-react'
+import { ArrowLeft ,MessageCircleCode, Search} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import {
   Dialog,
@@ -16,6 +16,8 @@ const ChatBox = () => {
   const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,sendMessage,messages}=useChatStore()
  const user= useUserStore((state)=>state.user)
   const [dialogOpen,setDialogOpen]=React.useState(false)
+    const [isSearchActive, setIsSearchActive] = React.useState(false);
+  
 
 useEffect(()=>{
   if (activeConversation) {
@@ -25,7 +27,8 @@ fetchMessages(activeConversation._id)}
 
 if (!activeConversation) {
   return(
-    <div className='flex flex-col mt-60 border-gray-500 gap-1 border-l-1 justify-center items-center'>
+    // <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' >
+    <div className='flex items-center w-full justify-center flex-col  border-gray-500 gap-1  border-l-1'>
 <MessageCircleCode size={90} />
 <p className='text-lg' >Your messages</p>
 <p className='text-xl font-bold text-blue-500 ' > Select a conversation to start a chat</p>
@@ -42,11 +45,12 @@ if (!activeConversation) {
       </DialogContent>
     </Dialog>
     </div>
+// </div>
   )
 }
 
   return (
-    <main className='h-full w-full border-gray-500 border-l-1 flex flex-col ' >
+    <main className='h-[100dvh] w-full border-0  md:border-gray-500 md:border-l-1 flex flex-col ' >
       <header className='border-b-1 flex gap-4 items-center border-gray-400 p-3' >
       <ArrowLeft onClick={()=>{
         clearActiveConversation()
@@ -86,7 +90,7 @@ if (!activeConversation) {
 
   ))}
       </section>
-   <footer className="p-4 border-t border-gray-400">
+   <footer className={` ${isSearchActive?"mb-0":"sm:mb-0 mb-10"}    p-4 border-t  border-gray-400`}>
   <div className="relative w-full">
     <textarea
       spellCheck="false"
@@ -113,6 +117,12 @@ setInput("")
   updatedAt:new Date()
  })
    }}
+   onFocus={() => {
+      setIsSearchActive(true);
+    }}
+    onBlur={() => {
+      setIsSearchActive(false);
+    }}
       type="button"
       className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 "
     >

@@ -26,15 +26,16 @@ theme="dark"
 
       
 
-      {/* Main Content - Changes Based on Route */}
+{/* <div className="flex flex-col"> */}
       <div className="flex-1 min-h-[100dvh]  w-full bg-white dark:bg-black dark:text-white">
         <Outlet /> 
       </div>
 
 {/* footer  */}
       <Footer/>
+      </div>
       
-    </div>
+    // </div>
   );
 };
 
