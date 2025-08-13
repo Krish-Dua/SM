@@ -36,7 +36,7 @@ router.get("/conversations", authenticateUser, async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
     const userId = req.user.userId;
 
-    const conversations = await Conversation.find({ members: userId })
+    const conversations = await Conversation.find({ members: userId ,lastMsg: { $exists: true }})
       .sort({ updatedAt: -1 })
       .skip((page - 1) * limit)
       .limit(Number(limit))

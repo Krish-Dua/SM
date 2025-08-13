@@ -210,7 +210,7 @@ setError(data.message)
 </p>}
           <div className="mt-8">
             <button
-              type="button"
+              type="submit"
               onClick={handleSubmit}
               disabled={loading}
               className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none"

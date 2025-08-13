@@ -87,6 +87,10 @@ useEffect(() => {
 
   socket.on("receive_message", handleReceiveMessage);
   socket.on("newNotification", handleNotification);
+socket.on("updateOnlineUsers", (users) => {
+  useChatStore.getState().setOnlineUsers(users);
+  console.log(users)
+});
 
   return () => {
     socket.off("receive_message", handleReceiveMessage);

@@ -117,14 +117,14 @@ setError(data.message)
 
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="text-sm">
-                  <button
+                  <a
                     onClick={()=>{
                       alert("coming soon!");
                     }}
                     className="text-blue-600 hover:underline font-semibold"
                   >
                     Forgot your password?
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -135,7 +135,7 @@ setError(data.message)
                 <button
                 onClick={handleSubmit}
                 disabled={loading}
-                  type="button"
+                  type="submit"
                   className="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
                 >
                   {loading?"Loading...":"Log in"}

@@ -13,7 +13,7 @@ import {
 import NewChatDialog from './NewChatDialog'
 const ChatBox = () => {
   const [input,setInput]=React.useState("")
-  const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,sendMessage,messages}=useChatStore()
+  const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,onlineUsers,sendMessage,messages}=useChatStore()
  const user= useUserStore((state)=>state.user)
   const [dialogOpen,setDialogOpen]=React.useState(false)
     const [isSearchActive, setIsSearchActive] = React.useState(false);
@@ -56,7 +56,13 @@ if (!activeConversation) {
         clearActiveConversation()
       }} />
       <Link to={`/${activeConversation?.receiver.username}`} className='flex items-center gap-4' >
+      <div className='relative h-12 w-12' >
         <img src={activeConversation?.receiver.avatar || "/default-avatar.png"} className='h-12 w-12 rounded-full object-cover' alt="" />
+{
+  onlineUsers.includes(activeConversation?.receiver._id) &&
+  <div className="h-4 w-4 bg-green-600 absolute bottom-0 right-0 rounded-full border-2 border-white"></div>
+  }
+        </div>
         <p className='text-xl font-bold'>{activeConversation?.receiver.username}</p>
         </Link>
       </header>

@@ -11,6 +11,8 @@ export const useChatStore = create((set, get) => ({
   hasMoreConversations: true,
   hasMoreMessages: true,
   typingUsers: [],
+  onlineUsers:[],
+  setOnlineUsers:(users)=>set({onlineUsers:users}),
 
   setActiveConversation: (convo) =>
     set({ activeConversation: convo, messages: [], hasMoreMessages: true }),
@@ -99,7 +101,6 @@ console.log(data)
   },
 
   addMessage: (message) =>{
-    console.log("added")
     set((state) => ({
       messages: [message,...state.messages],
     }))},
@@ -120,6 +121,7 @@ console.log(data)
 
   resetChatState: () =>
     set({
+      onlineUsers:[],
       activeConversation: null,
       conversations: [],
       messages: [],

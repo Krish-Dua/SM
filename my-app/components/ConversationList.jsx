@@ -13,7 +13,7 @@ import {
 
 
 const ConversationList = () => {
-    const {conversations,fetchConversations,setActiveConversation,activeConversation}=useChatStore()
+    const {conversations,fetchConversations,setActiveConversation,activeConversation,onlineUsers}=useChatStore()
   const user=useUserStore((state)=>state.user)
   const [dialogOpen,setDialogOpen]=useState(false)
 
@@ -57,14 +57,21 @@ const ConversationList = () => {
           setActiveConversation(convo)
          }} key={convo.receiver.username} className={`${activeConversation?.receiver._id===convo.receiver._id?"bg-slate-900":""} px-4 py-2 flex items-center justify-between`}>
               <div className="flex items-center gap-6">
-                <div className="h-15 w-15 rounded-full overflow-hidden bg-slate-200">
-                  <img 
-                    src={convo.receiver.avatar || "/default-avatar.png"} 
-                    alt={convo.receiver.name} 
-                    className="h-full w-full object-cover" 
-                  />
-                </div>
-                <div>
+               <div className="relative h-15 w-15">
+  <div className="h-15 w-15 rounded-full overflow-hidden bg-slate-200">
+    <img 
+      src={convo.receiver.avatar || "/default-avatar.png"} 
+      alt={convo.receiver.name} 
+      className="h-full w-full object-cover" 
+    />
+  </div>
+  {
+  onlineUsers.includes(convo.receiver._id) &&
+  <div className="h-4 w-4 bg-green-600 absolute bottom-0 right-0 rounded-full border-2 border-white"></div>
+  }
+  </div>
+
+                <div> 
                   <p className="text-md font-medium dark:text-white text-black">{convo.receiver.username}</p>
                   <p className="text-sm text-gray-300">{convo.lastMsg?convo.lastMsg: convo.receiver.name}</p>
                 </div>
