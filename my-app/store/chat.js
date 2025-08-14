@@ -114,9 +114,10 @@ console.log(data)
   setTyping: (userId, isTyping) =>
     set((state) => {
       const typingUsers = isTyping
-        ? [...new Set([...state.typingUsers, userId])]
+        ? [...state.typingUsers, userId]
         : state.typingUsers.filter((id) => id !== userId);
       return { typingUsers };
+    
     }),
 
   resetChatState: () =>

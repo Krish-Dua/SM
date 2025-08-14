@@ -20,12 +20,14 @@ export function initChatSocket(socket,io) {
 
 
 
-  socket.on('typing', (conversationId) => {
-    socket.to(conversationId).emit('typing', socket.id);
+  socket.on('typing', ({roomId,userId}) => {
+    socket.to(roomId).emit('typing', userId);
+    console.log("typing",roomId,userId)
   });
 
-  socket.on('stop_typing', (conversationId) => {
-    socket.to(conversationId).emit('stop_typing', socket.id);
+  socket.on('stop_typing', ({roomId,userId}) => {
+    socket.to(roomId).emit('stop_typing', userId);
+    console.log("stop typing",roomId,userId)
   });
 
 }

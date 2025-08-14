@@ -1,5 +1,5 @@
 import './App.css'
-import React,{useState,useEffect, act} from 'react'
+import React,{useState,useEffect} from 'react'
 import {Route,Routes} from 'react-router-dom'
 import Authpage from '../pages/Authpage'
 import Home from '../pages/Home'
@@ -14,13 +14,13 @@ import { toast } from 'react-toastify'
 import ReelPage from '../pages/ReelPage'
 import socket from './lib/socket'
 import useNotificationStore from '../store/notification'
-import Notifications from '../pages/Notifications'
+import Notifications from '../pages/Notifications' 
 import LoaderSpinner from '../components/LoaderSpinner'
 import ChatPage from '../pages/ChatPage'
 import { useChatStore } from '../store/chat'
 
 function App() {
-  
+
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [loading, setloading] = useState(false);
@@ -92,10 +92,22 @@ socket.on("updateOnlineUsers", (users) => {
   console.log(users)
 });
 
+socket.on("typing",(userId)=>{
+useChatStore.getState().setTyping(userId,true)
+console.log("rec typ")
+})
+socket.on("stop_typing",(userId)=>{
+  useChatStore.getState().setTyping(userId,false)
+  console.log("rec stop typ")
+})
+
+
   return () => {
     socket.off("receive_message", handleReceiveMessage);
     socket.off("newNotification", handleNotification);
-    
+    socket.off("updateOnlineUsers");
+    socket.off("typing");
+    socket.off("stop_typing");
   };
 }, [user?._id]);
 

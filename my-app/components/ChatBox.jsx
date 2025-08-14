@@ -4,6 +4,7 @@ import '../src/App.css'
 import useUserStore from '../store/user'
 import { ArrowLeft ,MessageCircleCode, Search} from 'lucide-react'
 import { Link } from 'react-router-dom'
+import socket from '@/lib/socket'
 import {
   Dialog,
   DialogContent,
@@ -13,12 +14,12 @@ import {
 import NewChatDialog from './NewChatDialog'
 const ChatBox = () => {
   const [input,setInput]=React.useState("")
-  const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,onlineUsers,sendMessage,messages}=useChatStore()
+  const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,typingUsers,onlineUsers,sendMessage,messages}=useChatStore()
  const user= useUserStore((state)=>state.user)
   const [dialogOpen,setDialogOpen]=React.useState(false)
     const [isSearchActive, setIsSearchActive] = React.useState(false);
-  
-
+  let typingTimeoutRef = React.useRef(null);
+let isTypingEmmitted = React.useRef(false);
 useEffect(()=>{
   if (activeConversation) {
 fetchMessages(activeConversation._id)}
@@ -27,7 +28,7 @@ fetchMessages(activeConversation._id)}
 
 if (!activeConversation) {
   return(
-    // <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' >
+    
     <div className='flex items-center w-full justify-center flex-col  border-gray-500 gap-1  border-l-1'>
 <MessageCircleCode size={90} />
 <p className='text-lg' >Your messages</p>
@@ -45,7 +46,7 @@ if (!activeConversation) {
       </DialogContent>
     </Dialog>
     </div>
-// </div>
+
   )
 }
 
@@ -69,6 +70,22 @@ if (!activeConversation) {
 
 
       <section className='flex-1 flex flex-col-reverse gap-4 py-6 px-2 overflow-auto custom-scrollbar'>
+{typingUsers.includes(activeConversation.receiver._id) && 
+<div
+  className={`flex items-center gap-2 w-full justify-start`}
+>
+<img
+      src={activeConversation.receiver.avatar || "/default-avatar.png"}
+      className="h-8 w-8 rounded-full object-cover"
+      alt=""
+    />
+        <div class="flex items-end gap-2" role="status" aria-live="polite" aria-label="Typing…">
+      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:0ms]"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]"></span>
+    </div>
+</div>
+}
  {messages.map((msg) => (
   <div
   key={msg._id}
@@ -95,6 +112,7 @@ if (!activeConversation) {
 </div>
 
   ))}
+  
       </section>
    <footer className={` ${isSearchActive?"mb-0":"sm:mb-0 mb-10"}    p-4 border-t  border-gray-400`}>
   <div className="relative w-full">
@@ -103,10 +121,32 @@ if (!activeConversation) {
       rows="1"
       value={input}
       onChange={(e) => {
+
         setInput(e.target.value);
+        
+        if(isTypingEmmitted.current===false && e.target.value.trim().length > 0) {
+    socket.emit("typing", {
+      roomId: activeConversation.receiver._id,
+      userId: user._id,
+    });
+    isTypingEmmitted.current = true;
+
+  }
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    
+    typingTimeoutRef.current = setTimeout(() => {
+      socket.emit("stop_typing", {
+        roomId: activeConversation.receiver._id,
+        userId: user._id
+      });
+      isTypingEmmitted.current = false;
+    }, 2000); 
       }}
       placeholder="Type a message"
-      className="bg-gray-900 w-full p-3 pr-12 rounded-2xl outline-0 text-white resize-none overflow-hidden"
+      className="bg-gray-900 w-full p-3 pr-17 rounded-2xl max-h-[150px] outline-0 text-white resize-none overflow-y-auto"
       onInput={(e) => {
         e.target.style.height = "auto";
         e.target.style.height = e.target.scrollHeight + "px";
@@ -126,11 +166,11 @@ setInput("")
    onFocus={() => {
       setIsSearchActive(true);
     }}
-    onBlur={() => {
+    onBlur={() => { 
       setIsSearchActive(false);
     }}
       type="button"
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 "
+      className="absolute right-7  top-1/2 -translate-y-1/2 text-blue-600 "
     >
       Send
     </button>}

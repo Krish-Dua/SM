@@ -13,7 +13,7 @@ import {
 
 
 const ConversationList = () => {
-    const {conversations,fetchConversations,setActiveConversation,activeConversation,onlineUsers}=useChatStore()
+    const {conversations,fetchConversations,setActiveConversation,activeConversation,typingUsers,onlineUsers}=useChatStore()
   const user=useUserStore((state)=>state.user)
   const [dialogOpen,setDialogOpen]=useState(false)
 
@@ -73,7 +73,8 @@ const ConversationList = () => {
 
                 <div> 
                   <p className="text-md font-medium dark:text-white text-black">{convo.receiver.username}</p>
-                  <p className="text-sm text-gray-300">{convo.lastMsg?convo.lastMsg: convo.receiver.name}</p>
+                  {typingUsers.includes(convo.receiver._id)?( <p className="text-sm text-blue-600">Typing...</p>):(
+                  <p className="text-sm text-gray-300">{convo.lastMsg?convo.lastMsg: convo.receiver.name}</p>)}
                 </div>
               </div>
               {/* < Dot size={50} color='blue' /> */}
