@@ -354,8 +354,8 @@ export const getUserSavedPosts = async (req, res) => {
 
 export const getReels =async (req, res) => {
   try {
-    const { exclude = [], limit=5}= req.body;
-
+    const { exclude = [], limit=10}= req.body;
+console.log(limit)
     const excludeIds = exclude.map((id) => new mongoose.Types.ObjectId(id));
     const reels = await Post.aggregate([
       {
@@ -365,7 +365,7 @@ export const getReels =async (req, res) => {
           postedBy:{$ne:new mongoose.Types.ObjectId(req.user.userId)},
         },
       },
-      { $sample: { size: limit } }, 
+      { $sample: { size: Number(limit) } }, 
     ]);
     await Post.populate(reels, { path: "postedBy", select: "username avatar name" });
 

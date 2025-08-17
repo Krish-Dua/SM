@@ -39,7 +39,7 @@ router.get("/conversations", authenticateUser, async (req, res) => {
     const conversations = await Conversation.find({ members: userId ,lastMsg: { $exists: true }})
       .sort({ updatedAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit))
+      // .limit(Number(limit))
       .populate("members", "username name avatar");
 
     res.status(200).json({ success: true, data: conversations });

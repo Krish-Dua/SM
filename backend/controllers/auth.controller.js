@@ -314,7 +314,6 @@ export const saveUnsavePost= async (req, res) => {
   try {
     const userId = req.user.userId;
     const postId = req.params.postId;
-console.log(postId)
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ success: false, message: "Invalid post ID" });
     }
@@ -355,7 +354,7 @@ try {
     .populate({
       path: query,
       select: "username avatar name",
-      options: { limit: numLimit },
+      // options: { limit: numLimit },
     });
 
   if (!user) {

@@ -20,7 +20,7 @@ export const useChatStore = create((set, get) => ({
   clearActiveConversation: () =>
     set({ activeConversation: null, messages: [], hasMoreMessages: true }),
 
-  fetchConversations: async (page = 1,limit=20) => {
+  fetchConversations: async (page = 1,limit=5) => {
     try {
       set({ loadingConversations: true });
       const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/conversations?page=${page}&limit=${limit}`, {
@@ -56,16 +56,16 @@ const formattedConversations = data.data.map(convo => {
 
   fetchMessages: async (conversationId, page = 1,limit=20) => {
     try {
+      console.log("Fetching messages for conversation:", conversationId, "Page:", page);
       set({ loadingMessages: true });
       const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/messages/${conversationId}?page=${page}&limit=${limit}`, {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Failed to fetch messages');
       const data = await res.json();
-console.log(data)
       set((state) => ({
         messages:
-          page === 1 ? data.data : [...data.data, ...state.messages],
+          page === 1 ? data.data : [ ...state.messages,...data.data],
         hasMoreMessages: data.data.length === limit,
         loadingMessages: false,
       }));

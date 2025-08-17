@@ -26,7 +26,6 @@ const observerRef=useRef(null)
    const remainingPosts = explorePosts.filter(post => post._id === postId);
   console.log(remainingPosts)
 setPostPageArray(remainingPosts)
-console.log(postType)
 navigate(`/p/${postId}`,{
   state:{fromExplore:true,postType}
 })
@@ -43,7 +42,6 @@ navigate(`/p/${postId}`,{
     );
     const data = await response.json();
     if (!data.success) {
-      // alert(data.message);
       setUsers([])
     } else {
       console.log(data);
@@ -62,6 +60,7 @@ navigate(`/p/${postId}`,{
          body: JSON.stringify({
            exclude: explorePosts.map((p) => p._id), 
            size: 21,
+           postType:"post"
          }),
        });
        const data = await response.json();

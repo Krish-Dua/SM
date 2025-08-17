@@ -10,8 +10,8 @@ const ReelPage = ({ arr }) => {
 
   const fetchReels = useCallback(async () => {
     if (!hasMore || loading) return;
-
-    try {
+console.log("Fetching reels...");
+    try { 
       setLoading(true);
       const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/reels`, {
         method: "POST",
@@ -19,7 +19,7 @@ const ReelPage = ({ arr }) => {
         credentials: "include",
         body: JSON.stringify({
           exclude: reels.map((r) => r._id)  ,
-          limit: 3,
+          limit: 8,
         }),
       });
 
@@ -74,11 +74,11 @@ const ReelPage = ({ arr }) => {
     if (observerRef.current) observerRef.current.disconnect();
 
     const lastReel = document.querySelector(".last-reel");
-    if (!lastReel || !hasMore) return;
+     if (!lastReel || !hasMore ) return
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !loading) {
+        if (entries[0].isIntersecting && !loading && hasMore && reels.length > 0) {
           fetchReels();
         }
       },

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useChatStore } from '../store/chat'
 import '../src/App.css'
 import useUserStore from '../store/user'
-import { ArrowLeft ,MessageCircleCode, Search} from 'lucide-react'
+import { ArrowLeft, MessageCircleCode } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import socket from '@/lib/socket'
 import {
@@ -12,171 +12,254 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import NewChatDialog from './NewChatDialog'
+
 const ChatBox = () => {
-  const [input,setInput]=React.useState("")
-  const {activeConversation,fetchMessages,clearActiveConversation,updateConversation,typingUsers,onlineUsers,sendMessage,messages}=useChatStore()
- const user= useUserStore((state)=>state.user)
-  const [dialogOpen,setDialogOpen]=React.useState(false)
-    const [isSearchActive, setIsSearchActive] = React.useState(false);
-  let typingTimeoutRef = React.useRef(null);
-let isTypingEmmitted = React.useRef(false);
-useEffect(()=>{
+  const [input, setInput] = useState("")
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [isSearchActive, setIsSearchActive] = useState(false)
+  const [page, setPage] = useState(1)
+
+  const {
+    activeConversation,
+    fetchMessages,
+    clearActiveConversation,
+    updateConversation,
+    typingUsers,
+    onlineUsers,
+    sendMessage,
+    messages,
+    hasMoreMessages,
+    loadingMessages
+  } = useChatStore()
+
+  const user = useUserStore((state) => state.user)
+
+  const topSentinelRef = useRef(null)
+  const typingTimeoutRef = useRef(null)
+  const isTypingEmmitted = useRef(false)
+
+  
+  // useEffect(() => {
+  //   if (activeConversation) {
+  //     fetchMessages(activeConversation._id, 1, 15)
+  //   }
+  // }, [activeConversation, fetchMessages])
+
+  
+  // useEffect(() => {
+  //   if (activeConversation && page > 1) {
+  //     fetchMessages(activeConversation._id, page,15)
+  //   }
+  // }, [page, activeConversation, fetchMessages])
+  // Reset page when conversation changes
+
+  
+useEffect(() => {
   if (activeConversation) {
-fetchMessages(activeConversation._id)}
-},[activeConversation])
-    
+    setInput("")
+    setPage(1);
+  }
+}, [activeConversation]);
 
-if (!activeConversation) {
-  return(
-    
-    <div className='flex items-center w-full justify-center flex-col  border-gray-500 gap-1  border-l-1'>
-<MessageCircleCode size={90} />
-<p className='text-lg' >Your messages</p>
-<p className='text-xl font-bold text-blue-500 ' > Select a conversation to start a chat</p>
-  <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
-      <DialogTrigger asChild>
-<button className='bg-blue-600 rounded-xl py-1 px-2' >New Chat</button>
+// Fetch messages whenever page or conversation changes
+useEffect(() => {
+  if (activeConversation) {
+    fetchMessages(activeConversation._id, page, 15);
+  }
+}, [activeConversation, page, fetchMessages]);
 
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[60%] custom-scrollbar overflow-auto  dark:bg-black border-0  text-white">
-        <DialogTitle className={"text-center"} >
-          New message
-        </DialogTitle>
-        <NewChatDialog setOpen={setDialogOpen} />
-      </DialogContent>
-    </Dialog>
-    </div>
 
-  )
-}
+  
+  useEffect(() => {
+    if (!activeConversation) return
+    const sentinel = topSentinelRef.current
+    if (!sentinel || !hasMoreMessages) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loadingMessages && hasMoreMessages) {
+          setPage((prev) => prev + 1)
+        }
+      },
+      { rootMargin: "100px" }
+    )
+
+    observer.observe(sentinel)
+    return () => {
+      if (observer && sentinel) observer.unobserve(sentinel)
+    }
+  }, [loadingMessages, hasMoreMessages, activeConversation])
+
+  
+  if (!activeConversation) {
+    return (
+      <div className="flex items-center w-full justify-center flex-col border-l border-gray-500 gap-1">
+        <MessageCircleCode size={90} />
+        <p className="text-lg">Your messages</p>
+        <p className="text-xl font-bold text-blue-500">
+          Select a conversation to start a chat
+        </p>
+
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <button className="bg-blue-600 rounded-xl py-1 px-2">
+              New Chat
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[600px] max-h-[60%] custom-scrollbar overflow-auto dark:bg-black border-0 text-white">
+            <DialogTitle className="text-center">New message</DialogTitle>
+            <NewChatDialog setOpen={setDialogOpen} />
+          </DialogContent>
+        </Dialog>
+      </div>
+    )
+  }
 
   return (
-    <main className='h-[100dvh] w-full border-0  md:border-gray-500 md:border-l-1 flex flex-col ' >
-      <header className='border-b-1 flex gap-4 items-center border-gray-400 p-3' >
-      <ArrowLeft onClick={()=>{
-        clearActiveConversation()
-      }} />
-      <Link to={`/${activeConversation?.receiver.username}`} className='flex items-center gap-4' >
-      <div className='relative h-12 w-12' >
-        <img src={activeConversation?.receiver.avatar || "/default-avatar.png"} className='h-12 w-12 rounded-full object-cover' alt="" />
-{
-  onlineUsers.includes(activeConversation?.receiver._id) &&
-  <div className="h-4 w-4 bg-green-600 absolute bottom-0 right-0 rounded-full border-2 border-white"></div>
-  }
-        </div>
-        <p className='text-xl font-bold'>{activeConversation?.receiver.username}</p>
+    <main className="h-[100dvh] w-full border-0 md:border-l md:border-gray-500 flex flex-col">
+      {/* Header */}
+      <header className="border-b border-gray-400 p-3 flex gap-4 items-center">
+        <ArrowLeft onClick={clearActiveConversation} />
+        <Link
+          to={`/${activeConversation?.receiver?.username}`}
+          className="flex items-center gap-4"
+        >
+          <div className="relative h-12 w-12">
+            <img
+              src={activeConversation?.receiver?.avatar || "/default-avatar.png"}
+              className="h-12 w-12 rounded-full object-cover"
+              alt=""
+            />
+            {onlineUsers?.includes(activeConversation?.receiver?._id) && (
+              <div className="h-4 w-4 bg-green-600 absolute bottom-0 right-0 rounded-full border-2 border-white"></div>
+            )}
+          </div>
+          <p className="text-xl font-bold">{activeConversation?.receiver?.username}</p>
         </Link>
       </header>
 
+      {/* Messages */}
+      <section className="flex-1 flex flex-col-reverse gap-4 py-6 px-2 overflow-auto custom-scrollbar">
 
-      <section className='flex-1 flex flex-col-reverse gap-4 py-6 px-2 overflow-auto custom-scrollbar'>
-{typingUsers.includes(activeConversation.receiver._id) && 
-<div
-  className={`flex items-center gap-2 w-full justify-start`}
->
-<img
-      src={activeConversation.receiver.avatar || "/default-avatar.png"}
-      className="h-8 w-8 rounded-full object-cover"
-      alt=""
-    />
-        <div class="flex items-end gap-2" role="status" aria-live="polite" aria-label="Typing…">
-      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:0ms]"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]"></span>
-    </div>
-</div>
-}
- {messages.map((msg) => (
-  <div
-  key={msg._id}
-  className={`flex items-end gap-2 w-full ${
-    msg.sender._id === user._id ? "justify-end" : "justify-start"
-  }`}
->
-  {msg.sender._id !== user._id && (
-    <img
-      src={msg.sender.avatar || "/default-avatar.png"}
-      className="h-8 w-8 rounded-full object-cover"
-      alt=""
-    />
-  )}
-  <div
-    className={`max-w-md p-2 break-words rounded-xl ${
-      msg.sender._id === user._id
-        ? "bg-blue-500 text-white"
-        : "bg-gray-800 text-white"
-    }`}
-  >
-    {msg.msg}
-  </div>
-</div>
+        {/* Typing indicator */}
+        {typingUsers?.includes(activeConversation?.receiver?._id) && (
+          <div className="flex items-center gap-2 w-full justify-start">
+            <img
+              src={activeConversation?.receiver?.avatar || "/default-avatar.png"}
+              className="h-8 w-8 rounded-full object-cover"
+              alt=""
+            />
+            <div
+              className="flex items-end gap-2"
+              role="status"
+              aria-live="polite"
+              aria-label="Typing…"
+            >
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:0ms]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]" />
+            </div>
+          </div>
+        )}
 
-  ))}
-  
-      </section>
-   <footer className={` ${isSearchActive?"mb-0":"sm:mb-0 mb-10"}    p-4 border-t  border-gray-400`}>
-  <div className="relative w-full">
-    <textarea
-      spellCheck="false"
-      rows="1"
-      value={input}
-      onChange={(e) => {
-
-        setInput(e.target.value);
+        {/* Messages list */}
+        {messages.map((msg) => (
+          <div
+            key={msg._id}
+            className={`flex items-end gap-2 w-full ${
+              msg.sender._id === user._id ? "justify-end" : "justify-start"
+            }`}
+          >
+            {msg.sender._id !== user._id && (
+              <img
+                src={msg.sender.avatar || "/default-avatar.png"}
+                className="h-8 w-8 rounded-full object-cover"
+                alt=""
+              />
+            )}
+            <div
+              className={`max-w-md p-2 break-words rounded-xl ${
+                msg.sender._id === user._id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-800 text-white"
+              }`}
+            >
+              {msg.msg}
+            </div>
+          </div>
+        ))}
+        <div ref={topSentinelRef} />
         
-        if(isTypingEmmitted.current===false && e.target.value.trim().length > 0) {
-    socket.emit("typing", {
-      roomId: activeConversation.receiver._id,
-      userId: user._id,
-    });
-    isTypingEmmitted.current = true;
+        {/* Loading + End of messages */}
+        {loadingMessages && (
+          <div className="text-center text-gray-400">Loading more messages...</div>
+        )}
+        {!hasMoreMessages && (
+          <div className="text-center text-gray-400">No more messages</div>
+        )}
+      </section>
 
-  }
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
+      {/* Footer */}
+      <footer
+        className={`${isSearchActive ? "mb-0" : "sm:mb-0 mb-10"} p-4 border-t border-gray-400`}
+      >
+        <div className="relative w-full">
+          <textarea
+            spellCheck="false"
+            rows="1"
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value)
 
-    
-    typingTimeoutRef.current = setTimeout(() => {
-      socket.emit("stop_typing", {
-        roomId: activeConversation.receiver._id,
-        userId: user._id
-      });
-      isTypingEmmitted.current = false;
-    }, 2000); 
-      }}
-      placeholder="Type a message"
-      className="bg-gray-900 w-full p-3 pr-17 rounded-2xl max-h-[150px] outline-0 text-white resize-none overflow-y-auto"
-      onInput={(e) => {
-        e.target.style.height = "auto";
-        e.target.style.height = e.target.scrollHeight + "px";
-      }}
-    />
-   {input.trim().length!=0&& <button
-   onClick={()=>{
-sendMessage(activeConversation._id,input)
-setInput("")
- updateConversation({
-  _id:activeConversation._id,
-  receiver:activeConversation.receiver,
-  lastMsg:input,
-  updatedAt:new Date()
- })
-   }}
-   onFocus={() => {
-      setIsSearchActive(true);
-    }}
-    onBlur={() => { 
-      setIsSearchActive(false);
-    }}
-      type="button"
-      className="absolute right-7  top-1/2 -translate-y-1/2 text-blue-600 "
-    >
-      Send
-    </button>}
-  </div>
-</footer>
+              if (!isTypingEmmitted.current && e.target.value.trim().length > 0) {
+                socket.emit("typing", {
+                  roomId: activeConversation?.receiver?._id,
+                  userId: user._id,
+                })
+                isTypingEmmitted.current = true
+              }
 
+              if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current)
+              }
+
+              typingTimeoutRef.current = setTimeout(() => {
+                socket.emit("stop_typing", {
+                  roomId: activeConversation?.receiver?._id,
+                  userId: user._id,
+                })
+                isTypingEmmitted.current = false
+              }, 2000)
+            }}
+            onFocus={() => setIsSearchActive(true)}
+            onBlur={() => setIsSearchActive(false)}
+            placeholder="Type a message"
+            className="bg-gray-900 w-full p-3 pr-17 rounded-2xl max-h-[150px] outline-0 text-white resize-none overflow-y-auto"
+            onInput={(e) => {
+              e.target.style.height = "auto"
+              e.target.style.height = e.target.scrollHeight + "px"
+            }}
+          />
+          {input.trim().length !== 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                sendMessage(activeConversation._id, input)
+                setInput("")
+                updateConversation({
+                  _id: activeConversation._id,
+                  receiver: activeConversation.receiver,
+                  lastMsg: input,
+                  updatedAt: new Date(),
+                })
+              }}
+              className="absolute right-7 top-1/2 -translate-y-1/2 text-blue-600"
+            >
+              Send
+            </button>
+          )}
+        </div>
+      </footer>
     </main>
   )
 }
