@@ -11,7 +11,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import notificationRouter from './routes/notification.route.js';
 import{initChatSocket} from './chat-service/index.js'
 import chatRoute from './chat-service/routes/chat.route.js'
-
+import helmet from 'helmet';
 dotenv.config();
 
 const app = express();
@@ -65,14 +65,14 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error(error));
 
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
   origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URLL],
   credentials: true,
 }));
-app.use(cookieParser());
+app.use(helmet());
 
 
 app.use("/api/user", authRouter);

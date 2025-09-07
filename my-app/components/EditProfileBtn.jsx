@@ -29,8 +29,7 @@ const EditProfileBtn = ({ className,setLoggedInUser }) => {
   });
   const [profilePic, setProfilePic] = useState(userStore.avatar);
   const [file, setFile] = useState(null);
-  //yoyo
-
+ 
   const handleSaveChanges = async () => {
 
     if (loading) return;
@@ -102,7 +101,6 @@ else{
                   }));
 
                   setChangedFields((prev) => ({
-                   
                     ...prev,
                    [e.target.id]:e.target.value !== userStore[e.target.id] ? true : false,
                   }))
