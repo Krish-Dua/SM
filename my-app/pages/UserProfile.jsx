@@ -65,7 +65,9 @@ const UserProfile = () => {
     );
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+
+      toast.error(data.message);
+      navigate("/")
     } else {
       setUser(data.data);
     }
@@ -84,7 +86,7 @@ const UserProfile = () => {
     );
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+      // alert(data.message);
     } else {
       setAllUserPosts(data.data);
     }
@@ -104,7 +106,7 @@ const UserProfile = () => {
     );
     const data = await response.json();
     if (!data.success) {
-      alert(data.message);
+      // alert(data.message);
     } else {
       setUserReels(data.data);
     }

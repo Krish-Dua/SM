@@ -18,6 +18,7 @@ import Notifications from '../pages/Notifications'
 import LoaderSpinner from '../components/LoaderSpinner'
 import ChatPage from '../pages/ChatPage'
 import { useChatStore } from '../store/chat'
+import ErrorPage from '../pages/ErrorPage'
 
 function App() {
 
@@ -134,6 +135,7 @@ if (loading) {
           <Route path="suggestions" element={<Suggestions/>} />
           <Route path="notifications" element={<Notifications/>} />
           <Route path="chat" element={<ChatPage/>} />
+          <Route path='*' element={<ErrorPage/>}/>
         </Route>
 
         {/* Auth Route (Without Sidebar) */}
