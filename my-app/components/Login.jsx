@@ -1,42 +1,77 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import useUserStore from "../store/user";
 const Login = ({ setlogin }) => {
   const [hidePass, sethidePass] = useState(true);
-   const [loading, setloading] = useState(false);
+   const [loading, setLoading] = useState(false);
     const [userFormData, setuserFormData] = useState({
       email: "",
       password: "",
     });
     const [error,setError]=useState(null)
-
-    const user = useUserStore((state) => state.user);
+    const [retryAfter,setRetryAfter]=useState(0)
+const [isBlocked,setIsBlocked]=useState(false)
     const setUser = useUserStore((state) => state.setUser); 
 
   const handleInputChange = (e) => {
     setuserFormData({ ...userFormData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setloading(true);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (isBlocked) return; 
+  setLoading(true);
+
+  try {
     const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userFormData),
     });
+
     const data = await response.json();
-    if(!data.success) {
-// alert(data.message);
-setError(data.message)
-    }
-    else{
+
+    if (response.status === 429) {
+      const retrySeconds = data.retryAfter || 120;
+      setIsBlocked(true);
+      setRetryAfter(retrySeconds);
+      setError(data.errMessage || `Too many attempts. Try again in ${retrySeconds}s.`);
+      setuserFormData({ email:"", password: "" });
+    } else if (!data.success) {
+      setError(data.message);
+      setuserFormData({ ...userFormData, password: "" });
+    } else {
       setUser(data.data);
-  
-      setError(null)
+      setError(null);
     }
-    setloading(false)
-  };
+  } catch (err) {
+    setError("Something went wrong. Please try again.");
+  }
+
+  setLoading(false);
+};
+
+useEffect(() => {
+  if (!isBlocked) return;
+
+  const interval = setInterval(() => {
+    setRetryAfter(prev => {
+      if (prev <= 1) { 
+        clearInterval(interval);
+        setIsBlocked(false);
+        setError(null);
+        return 0;
+      }
+      setError("Too many attempts. Try again after " + (prev - 1) + "s.");
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [isBlocked]);
+
+
   return (
     <div className="font-[sans-serif]">
       <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
@@ -134,7 +169,7 @@ setError(data.message)
               <div className="!mt-8">
                 <button
                 onClick={handleSubmit}
-                disabled={loading}
+                disabled={loading || isBlocked}
                   type="submit"
                   className="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
                 >

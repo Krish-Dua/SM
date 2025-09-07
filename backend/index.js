@@ -16,9 +16,8 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-
-
 const server = http.createServer(app);
+
 
 
 export const io = new Server(server, {
