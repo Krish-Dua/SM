@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import useUserStore from "../store/user";
 const Signup = ({ setlogin }) => {
-  const [hidePass, sethidePass] = useState(false);
+  const [hidePass, sethidePass] = useState(true);
   const [loading, setloading] = useState(false);
-  const [error,setError]=useState(null)
+  const [error, setError] = useState(null)
   const [userFormData, setuserFormData] = useState({
     username: "",
     name: "",
@@ -11,14 +11,31 @@ const Signup = ({ setlogin }) => {
     password: "",
   });
 
+  const USERNAME_REGEX = /^[a-zA-Z0-9._]*$/;
+  const USERNAME_MAX_LENGTH = 21;
+
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
 
   const handleInputChange = (e) => {
-    setuserFormData({ ...userFormData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "username" && value.length > USERNAME_MAX_LENGTH) return;
+    setuserFormData({ ...userFormData, [name]: value });
   };
+
+  const isUsernameValid = USERNAME_REGEX.test(userFormData.username);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isUsernameValid || userFormData.username.length >= USERNAME_MAX_LENGTH) {
+      return;
+    }
+
+    if (loading) return;
+    if (!userFormData.username || !userFormData.name || !userFormData.email || !userFormData.password) {
+      setError("All fields are required");
+      return;
+    }
     setloading(true);
     const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/signup`, {
       method: "POST",
@@ -27,13 +44,12 @@ const Signup = ({ setlogin }) => {
       body: JSON.stringify(userFormData),
     });
     const data = await response.json();
-    if(!data.success) {
-// alert(data.message);
-setError(data.message)
+    if (!data.success) {
+      setError(data.message)
     }
-    else{
+    else {
       setUser(data.data);
-  setError(null)
+      setError(null)
     }
 
     setloading(false);
@@ -78,6 +94,7 @@ setError(data.message)
                   name="username"
                   type="text"
                   required
+                  maxLength={USERNAME_MAX_LENGTH}
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500"
                   placeholder="Enter name"
                 />
@@ -206,13 +223,17 @@ setError(data.message)
             </div>
 
           </div>
-{error&&<p className="text-red-600 mt-4 text-sm" >{error}
-</p>}
+          {error && <p className="text-red-600 mt-4 text-sm">{error}</p>}
+          {userFormData.username && !isUsernameValid && (
+            <p className="text-red-600 mt-2 text-sm">Username can only contain letters, numbers, dot, and underscore.</p>
+          )}
+          {userFormData.username.length>=USERNAME_MAX_LENGTH && <p className="text-red-600 mt-4 text-sm">username can be of max 20 characters</p>}
+
           <div className="mt-8">
             <button
               type="submit"
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || (userFormData.username && !isUsernameValid)}
               className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none"
             >
               {loading ? "Loading..." : "Create an account"}

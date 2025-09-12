@@ -39,21 +39,7 @@ const ChatBox = () => {
   const isTypingEmmitted = useRef(false)
 
   
-  // useEffect(() => {
-  //   if (activeConversation) {
-  //     fetchMessages(activeConversation._id, 1, 15)
-  //   }
-  // }, [activeConversation, fetchMessages])
 
-  
-  // useEffect(() => {
-  //   if (activeConversation && page > 1) {
-  //     fetchMessages(activeConversation._id, page,15)
-  //   }
-  // }, [page, activeConversation, fetchMessages])
-  // Reset page when conversation changes
-
-  
 useEffect(() => {
   if (activeConversation) {
     setInput("")

@@ -10,7 +10,6 @@ import {
   SaveIcon,
 } from "lucide-react";
 import "../src/App.css";
-
 import useUserStore from "../store/user";
 import EditProfileBtn from "../components/EditProfileBtn";
 import FollowUnfollwBtn from "../components/FollowUnfollwBtn";
@@ -23,7 +22,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import FollowerFollowingList from "../components/FollowerFollowingList";
 import { useChatStore } from "../store/chat";
 const UserProfile = () => {
@@ -258,7 +256,7 @@ navigate("/chat")
           </div>
           <div className="sm:block hidden">
             <p className="font-bold">{user.name}</p>
-            <p className="text-gray-300">{user.bio}</p>
+            <pre className="font-sans text-gray-300">{user.bio}</pre>
           </div>
         </section>
       </header>

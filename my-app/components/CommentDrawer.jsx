@@ -5,8 +5,8 @@ import "../src/App.css"
 import PostCommentBtn from "./PostCommentBtn";
 import useUserStore from "../store/user";
 import {toast } from 'react-toastify';
-import { formatTime } from "@/lib/dayjs";
-import { Link } from "react-router-dom";
+import { CommentItem } from "./CommentItem";
+
 
 const CommentDrawer = ({ postId ,setCommentCount}) => {
 const user= useUserStore((state)=>state.user)
@@ -67,47 +67,27 @@ const handleDeleteComment= async (commentId) => {
         <button><MessageCircleMore/></button>
       </DrawerTrigger>
 
-      <DrawerContent  className="h-[80%] max-w-3xl  dark:bg-gray-950 dark:text-white mx-auto p-4">
-        <h2 className="font-bold text-xl  my-2 text-center ">Comments</h2>
-       <div className="overflow-auto h-[80%] custom-scrollbar">
-        {comments.length > 0 ? (
-          comments.map((c,ind) => (
-    
-            <div key={ind} className="mb-3 p-2 flex items-center  justify-between last:mb-0  rounded-lg">
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 rounded-full overflow-hidden bg-slate-200">
-                  <img 
-                    src={c.commentedBy.avatar || "/default-avatar.png" } 
-                    alt={c.commentedBy.username} 
-                    className="h-full w-full object-cover" 
-                  />
-                </div>
-                <div>
-                  <div className="flex gap-14 items-center " >
-                    <div className="flex items-center gap-4" >
-                <Link to={`/${c.commentedBy.username}`} > <p className="text-md font-medium dark:text-white text-black">{c.commentedBy.username}</p></Link>                   <span className="text-xs text-gray-400" >{formatTime(c.createdAt)}</span>
-                </div>
+   <DrawerContent className="h-[80%] max-w-3xl dark:bg-gray-950 dark:text-white mx-auto p-4">
+  <h2 className="font-bold text-xl my-2 text-center">Comments</h2>
+  <div className="overflow-y-auto overflow-x-hidden h-[80%] custom-scrollbar">
+    {comments.length > 0 ? (
+      comments.map((c, ind) => (
+        <CommentItem
+      key={c._id}
+      comment={c}
+      user={user}
+      onDelete={handleDeleteComment}
+    />
+      ))
+    ) : (
+      <p>No comments yet.</p>
+    )}
+  </div>
+  <div className="absolute bottom-0 left-0 right-0 p-4">
+    <PostCommentBtn setCommentCount={setCommentCount} setComments={setComments} postId={postId} />
+  </div>
+</DrawerContent>
 
-                  {user._id===c.commentedBy._id?<Trash onClick={()=>{
-                    handleDeleteComment(c._id)
-                  }} size={17} />: <></>}
-                  </div>
-                  <p className="text-sm text-gray-300">{c.content}</p>
-                </div>
-              </div>
-             
-            </div>
-            
-          ))
-          
-        ): (
-          <p>No comments yet.</p>
-        )}
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-        <PostCommentBtn setCommentCount={setCommentCount} setComments={setComments}  postId={postId} />
-        </div>
-      </DrawerContent>
     </Drawer>
   );
 };

@@ -11,10 +11,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 const EditProfileBtn = ({ className,setLoggedInUser }) => {
   const profileInputRef = useRef();
-
+const navigate = useNavigate();
   const userStore = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const [open, setOpen] = useState(false);
@@ -30,11 +32,18 @@ const EditProfileBtn = ({ className,setLoggedInUser }) => {
   const [profilePic, setProfilePic] = useState(userStore.avatar);
   const [file, setFile] = useState(null);
  
+  const USERNAME_REGEX = /^[a-zA-Z0-9._]*$/;
+const USERNAME_MAX_LENGTH = 20;
+const isUsernameValid = USERNAME_REGEX.test(formData.username);
+    const MAX_BIO_LENGTH = 200;
+
+
   const handleSaveChanges = async () => {
 
     if (loading) return;
-
-
+    if (!isUsernameValid) {
+      return;
+    }
 
 const hasChanges =
     Object.values(changedFields).some(Boolean) || !!file;
@@ -88,6 +97,9 @@ else{
   setFile(null);
   if(setLoggedInUser){
     setLoggedInUser(data.data)
+  }
+  if (changedFields.username) {
+    navigate(`/${formData.username}`)
   }
 }
   setloading(false);
@@ -208,16 +220,25 @@ else{
               >
                 Username
               </label>
+              <div className="relative" >
               <input
                 id="username"
                 type="text"
                 placeholder="Enter your username"
                 className="block w-full rounded-lg border border-gray-300 shadow-sm sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white px-3 py-2"
                 value={formData.username}
+                maxLength={USERNAME_MAX_LENGTH}
                 onChange={(e) => {
                   handleOnChange(e);
                 }}
               />
+              <div className="absolute bottom-1 right-2 text-xs text-gray-400">
+                {formData.username.length}/{USERNAME_MAX_LENGTH}
+                </div>
+              </div>
+              {formData.username && !isUsernameValid && (
+  <p className="text-red-600 mt-1 text-xs">Username can only contain letters, numbers, dot, and underscore.</p>
+)}
             </div>
             <div>
               <label
@@ -242,7 +263,7 @@ else{
                 className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1"
               >
                 Bio
-              </label>
+              </label> <div className="relative" >
               <textarea
                 id="bio"
                 placeholder="Tell us about yourself"
@@ -251,7 +272,12 @@ else{
               onChange={(e) => {
                   handleOnChange(e);
                 }}
+                maxLength={MAX_BIO_LENGTH}
               ></textarea>
+              <div className="absolute bottom-1 right-2 text-xs text-gray-400">
+                {formData.bio.length}/{MAX_BIO_LENGTH}
+                </div>
+              </div>
             </div>
           </div>
         </section>
