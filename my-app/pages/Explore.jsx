@@ -33,7 +33,7 @@ navigate(`/p/${postId}`,{
 
   const fetchSearchedUsers = async (input) => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/search/?username=${input}`,
+      `/api/user/search/?username=${input}`,
       {
         method: "GET",
         credentials: "include",
@@ -53,7 +53,7 @@ navigate(`/p/${postId}`,{
      if (loading || !hasMore) return;
      try {
        setLoading(true);
-       const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/exploreFeed`, {
+       const response = await fetch(`/api/post/exploreFeed`, {
          method: "POST",
          credentials: "include",
          headers: { "Content-Type": "application/json" },
@@ -226,4 +226,3 @@ navigate(`/p/${postId}`,{
 };
   
 export default Explore;
-    

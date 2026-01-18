@@ -24,7 +24,7 @@ const notications=useNotificationStore((state)=>state.notifications)
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/feed`, {
+      const response = await fetch(`/api/post/feed`, {
         method: "POST", 
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ const notications=useNotificationStore((state)=>state.notifications)
   }, [feedPosts, hasMore, loading, setFeedPosts]);
 
   const fetchSuggestedUsers = async () => {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/suggestions`, {
+    const response = await fetch(`/api/user/suggestions`, {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -69,7 +69,7 @@ const notications=useNotificationStore((state)=>state.notifications)
   };
 
   const fetchNotifications=async()=>{
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/notifications`, {
+    const response = await fetch(`/api/notifications`, {
       method:"GET",
       credentials:"include",
       headers:{

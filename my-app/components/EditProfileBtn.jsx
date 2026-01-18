@@ -76,7 +76,7 @@ const hasChanges =
 
 
 
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/update`, {
+    const response = await fetch(`/api/user/update`, {
       method: "PATCH",
       body: updatedData,
       credentials: "include",

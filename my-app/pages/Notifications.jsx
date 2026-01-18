@@ -14,7 +14,7 @@ const Notifications = () => {
 
 
 const markAsRead=async()=>{
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/notification/mark-all-read`,{
+  const response = await fetch(`/api/notification/mark-all-read`,{
     method:"PATCH",
     credentials:"include",
     headers: { "Content-Type": "application/json" }

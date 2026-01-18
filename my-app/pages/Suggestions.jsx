@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Suggestions = () => {
   const [suggestedUsers,SetSuggestedUsers]=useState([])
  const fetchSuggestedUsers=async()=>{
-     const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/suggestions?size=15`, {
+     const response = await fetch(`/api/user/suggestions?size=15`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" }

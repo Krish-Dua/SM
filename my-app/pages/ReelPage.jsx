@@ -13,7 +13,7 @@ const ReelPage = ({ arr }) => {
 console.log("Fetching reels...");
     try { 
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/reels`, {
+      const res = await fetch(`/api/post/reels`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

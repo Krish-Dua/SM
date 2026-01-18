@@ -23,7 +23,7 @@ export const useChatStore = create((set, get) => ({
   fetchConversations: async (page = 1,limit=5) => {
     try {
       set({ loadingConversations: true });
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/conversations?page=${page}&limit=${limit}`, {
+      const res = await fetch(`/api/chat/conversations?page=${page}&limit=${limit}`, {
         method:"GET",
         credentials: 'include',
       });
@@ -58,7 +58,7 @@ const formattedConversations = data.data.map(convo => {
     try {
       console.log("Fetching messages for conversation:", conversationId, "Page:", page);
       set({ loadingMessages: true });
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/messages/${conversationId}?page=${page}&limit=${limit}`, {
+      const res = await fetch(`/api/chat/messages/${conversationId}?page=${page}&limit=${limit}`, {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Failed to fetch messages');
@@ -78,7 +78,7 @@ const formattedConversations = data.data.map(convo => {
   sendMessage: async (conversationId, msg) => {
     try {
       set({ sendingMessage: true });
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/messages`, {
+      const res = await fetch(`/api/chat/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

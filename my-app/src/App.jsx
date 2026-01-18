@@ -28,9 +28,10 @@ function App() {
 const addNotification=useNotificationStore((state)=>state.addNotification)
 
   useEffect( () => {
+    console.log(import.meta.env.VITE_BACKEND_BASE_URL)
     setloading(true);
     const fetchUser=async ()=>{
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/me`, {
+      const response = await fetch(`/api/user/me`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

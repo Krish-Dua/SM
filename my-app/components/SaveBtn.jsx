@@ -13,7 +13,7 @@ const [loading, setLoading] = React.useState(false);
     const handleSave = async()=>{
 if (loading) return;
  setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/save/${postId}`, {
+      const response = await fetch(`/api/user/save/${postId}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

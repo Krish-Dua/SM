@@ -19,7 +19,7 @@ const Post = ({ post }) => {
 
   const fetchCommentCount = async () => {
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${
+      `/api/post/comments/${
         post._id
       }?countOnly=true`,
       {

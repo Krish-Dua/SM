@@ -52,7 +52,7 @@ const UserProfile = () => {
 
   const fetchUserProfile = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/profile/${username}`,
+      `/api/user/profile/${username}`,
       {
         method: "GET",
         credentials: "include",
@@ -73,7 +73,7 @@ const UserProfile = () => {
 
   const fetchUserPosts = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/postedBy/${username}`,
+      `/api/post/postedBy/${username}`,
       {
         method: "GET",
         credentials: "include",
@@ -91,9 +91,7 @@ const UserProfile = () => {
   };
   const fetchUserReels = async () => {
     const response = await fetch(
-      `${
-        import.meta.env.VITE_BACKEND_BASE_URL
-      }/api/post/postedBy/${username}/?type=reel`,
+      `/api/post/postedBy/${username}/?type=reel`,
       {
         method: "GET",
         credentials: "include",
@@ -112,7 +110,7 @@ const UserProfile = () => {
 
   const fetchUserSavedPosts = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/saved`,
+      `/api/post/saved`,
       {
         method: "GET",
         credentials: "include",
@@ -131,7 +129,7 @@ const UserProfile = () => {
 
   const handleMessageBtnClick = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/conversation`,
+      `/api/chat/conversation`,
       {
         method: "POST",
         credentials: "include",

@@ -37,7 +37,7 @@ const Signup = ({ setlogin }) => {
       return;
     }
     setloading(true);
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/signup`, {
+    const response = await fetch(`/api/user/signup`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

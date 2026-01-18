@@ -23,7 +23,7 @@ const handleSubmit = async (e) => {
   setLoading(true);
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/login`, {
+    const response = await fetch(`/api/user/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

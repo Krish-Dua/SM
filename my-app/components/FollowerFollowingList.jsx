@@ -8,7 +8,7 @@ const [loading,setLoading]= React.useState(false)
 
 const fetchdata= async()=>{
     setLoading(true)
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/followersOrFollowing?query=${query}&userId=${userId} `,{
+    const response = await fetch(`/api/user/followersOrFollowing?query=${query}&userId=${userId} `,{
         method:"GET",
         credentials:"include",
         headers:{

@@ -18,7 +18,7 @@ const LikeBtn = ({postId,liked,setLikes}) => {
   
 
       const handleClick = async () => {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/lul/${postId}`, {
+    const res = await fetch(`/api/post/lul/${postId}`, {
       method: "PATCH",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

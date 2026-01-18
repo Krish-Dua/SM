@@ -19,7 +19,7 @@ const DeletePostBtn = ({postId}) => {
     const handleDelete = async () => {
       setLoading(true);
       try {
-          const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/${postId}`, {
+          const response = await fetch(`/api/post/${postId}`, {
               method: "DELETE",
               credentials: "include",
               headers: { "Content-Type": "application/json" },

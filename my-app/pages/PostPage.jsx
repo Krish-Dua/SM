@@ -18,7 +18,7 @@ const [hasMore, setHasMore] = useState(true);
 
 
   const fetchPost=async ()=>{
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/${postId}`, {
+      const response = await fetch(`/api/post/${postId}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -38,7 +38,7 @@ const fetchRandomPosts = useCallback(async () => {
   if (loading || !hasMore) return;
   try {
     setLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/exploreFeed`, {
+    const response = await fetch(`/api/post/exploreFeed`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

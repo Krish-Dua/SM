@@ -18,7 +18,7 @@ const handleDeleteComment= async (commentId) => {
   if 
   (loading) return;
   setloading(true);
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comment/${commentId}`, {
+  const response = await fetch(`/api/post/comment/${commentId}`, {
     method: "DELETE",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ const handleDeleteComment= async (commentId) => {
 
   const fetchComments =async  () => {
      setloading(true);
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${postId}`, {
+      const response = await fetch(`/api/post/comments/${postId}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

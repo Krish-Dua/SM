@@ -32,7 +32,7 @@ const {resetChatState}=useChatStore()
 
     const handleSubmit = async () => {
         setloading(true);
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/logout`, {
+        const response = await fetch(`/api/user/logout`, {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

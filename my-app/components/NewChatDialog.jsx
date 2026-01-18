@@ -12,7 +12,7 @@ const [debouncedSearch,setDebouncedSearch]=useState("")
     
     const fetchdata= async()=>{
         setLoading(true)
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/followersOrFollowing?query=following&userId=${user._id}&limit=15`,{
+        const response = await fetch(`/api/user/followersOrFollowing?query=following&userId=${user._id}&limit=15`,{
             method:"GET",
             credentials:"include",
             headers:{
@@ -30,7 +30,7 @@ const [debouncedSearch,setDebouncedSearch]=useState("")
 
  const  handleOnClick=async(userId)=>{
           const response = await fetch(
-              `${import.meta.env.VITE_BACKEND_BASE_URL}/api/chat/conversation`,
+              `/api/chat/conversation`,
               {
                 method: "POST",
                 credentials: "include",
@@ -67,7 +67,7 @@ const [debouncedSearch,setDebouncedSearch]=useState("")
 
  const fetchSearchedUsers = async (input) => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/search/?username=${input}`,
+      `/api/user/search/?username=${input}`,
       {
         method: "GET",
         credentials: "include",

@@ -20,12 +20,7 @@ const server = http.createServer(app);
 
 
 
-export const io = new Server(server, {
-  cors: {
-    origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URLL],
-    credentials: true,
-  },
-});
+export const io = new Server(server);
 
 const onlineUsers = new Map();
 
@@ -67,10 +62,6 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
-  origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URLL],
-  credentials: true,
-}));
 app.use(helmet());
 
 

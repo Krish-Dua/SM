@@ -15,7 +15,7 @@ const Reel = ({ reel }) => {
 
 const fetchCommentCount = async () => {
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/comments/${reel._id}?countOnly=true`,
+      `/api/post/comments/${reel._id}?countOnly=true`,
       {
         method: "GET",
         credentials: "include",

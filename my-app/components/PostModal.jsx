@@ -25,7 +25,7 @@ if(!file || !caption.trim()){
     formData.append("caption", caption);
     formData.append("mediaType", file.type.startsWith("video/") ? "video" : "image");
     formData.append("postType", postType); 
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/post/create`, {
+    const response = await fetch(`/api/post/create`, {
       method: "POST",
       credentials: "include",
       body: formData,
