@@ -27,7 +27,7 @@ const navigate = useNavigate();
     name: userStore.name,
     username: userStore.username,
     email: userStore.email,
-    bio: userStore.bio,
+    bio: userStore.bio?userStore.bio:"" ,
   });
   const [profilePic, setProfilePic] = useState(userStore.avatar);
   const [file, setFile] = useState(null);
@@ -139,7 +139,7 @@ else{
         name: userStore.name,
         username: userStore.username,
         email: userStore.email,
-        bio: userStore.bio,
+        bio: userStore.bio?userStore.bio:"" ,
       });
       setProfilePic(userStore.avatar);
       setChangedFields({});

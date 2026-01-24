@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String },
-    bio: { type: String },
+    bio: { type: String,default:"" },
     saved: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Post",

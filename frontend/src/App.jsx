@@ -116,7 +116,7 @@ socket.on("stop_typing",(userId)=>{
 if (loading) {
   return(
     <div className=' h-screen flex flex-col gap-4 items-center justify-center text-white bg-black'>
-      <h1 className='text-7xl' >E-Conn</h1>
+      <h1 className='text-7xl' >CONNECTICX</h1>
       <LoaderSpinner size={30}/>
     </div>
   )

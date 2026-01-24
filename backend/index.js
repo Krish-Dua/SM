@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import http from 'http';  
@@ -13,7 +12,8 @@ import{initChatSocket} from './chat-service/index.js'
 import chatRoute from './chat-service/routes/chat.route.js'
 import helmet from 'helmet';
 dotenv.config();
-
+import path from "path";
+const _dirname = path.resolve()
 const app = express();
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
@@ -62,7 +62,10 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(helmet());
+app.use(helmet({contentSecurityPolicy:false,
+  crossOriginEmbedderPolicy:false,
+}));
+app.use(express.static(path.join(_dirname,'/frontend/dist')))
 
 
 app.use("/api/user", authRouter);
@@ -72,10 +75,9 @@ app.use("/api/chat", chatRoute);
 
 
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(_dirname, 'frontend/dist/index.html'))
+})
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
-
-server.listen(port, "0.0.0.0", () => console.log(`Server running on port ${port}!`));
+server.listen(port, () => console.log(`Server running on port ${port}!`));
