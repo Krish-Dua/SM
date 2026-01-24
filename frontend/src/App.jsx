@@ -28,7 +28,6 @@ function App() {
 const addNotification=useNotificationStore((state)=>state.addNotification)
 
   useEffect( () => {
-    console.log(import.meta.env.VITE_BACKEND_BASE_URL)
     setloading(true);
     const fetchUser=async ()=>{
       const response = await fetch(`/api/user/me`, {
@@ -41,7 +40,6 @@ const addNotification=useNotificationStore((state)=>state.addNotification)
 
       }
       else{
-        console.log(data);
         setUser(data.data);
       }
       setloading(false);
@@ -56,7 +54,6 @@ useEffect(() => {
   socket.emit("joinRoom", user._id);
 
   const handleReceiveMessage = (msg) => {
-    console.log("message received", msg);
     const activeConvo = useChatStore.getState().activeConversation;
     if (activeConvo && activeConvo._id === msg.conversationId) {
       useChatStore.getState().addMessage(msg);
@@ -91,16 +88,13 @@ useEffect(() => {
   socket.on("newNotification", handleNotification);
 socket.on("updateOnlineUsers", (users) => {
   useChatStore.getState().setOnlineUsers(users);
-  console.log(users)
 });
 
 socket.on("typing",(userId)=>{
 useChatStore.getState().setTyping(userId,true)
-console.log("rec typ")
 })
 socket.on("stop_typing",(userId)=>{
   useChatStore.getState().setTyping(userId,false)
-  console.log("rec stop typ")
 })
 
 

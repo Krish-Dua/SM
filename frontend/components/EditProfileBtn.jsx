@@ -91,7 +91,6 @@ else{
     pauseOnHover:false,
     hideProgressBar:true
   })
-  console.log(data)
   setUser(data.data);
   setChangedFields({});
   setFile(null);

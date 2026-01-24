@@ -19,7 +19,6 @@ const fetchdata= async()=>{
     if(!data.success){
     toast.error(data.message)
     }else{
-        console.log(data)
         setData(data.data)
     }
     setLoading(false)

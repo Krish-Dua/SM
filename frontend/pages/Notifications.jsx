@@ -10,7 +10,6 @@ const Notifications = () => {
   const markAllRead = useNotificationStore((state) => state.markAllRead);
   const setPostPageArray=usePostStore((state)=>state.setPostPageArray)
   const Navigate = useNavigate();
-  console.log(notifications)
 
 
 const markAsRead=async()=>{

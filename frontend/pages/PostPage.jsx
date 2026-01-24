@@ -28,7 +28,6 @@ const [hasMore, setHasMore] = useState(true);
 toast.error(data.message)
       }
       else{
-        console.log(data);
         setPostPageArray([data.data]);
       }
     }
@@ -52,7 +51,6 @@ const fetchRandomPosts = useCallback(async () => {
     if (!data.success) {
       toast.error(data.message);
     } else {
-      console.log(data.data)
       if (data.data.length === 0) {
         setHasMore(false);
       } else {

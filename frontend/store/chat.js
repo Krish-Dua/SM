@@ -31,7 +31,6 @@ export const useChatStore = create((set, get) => ({
       if (!data.success) {
         return
       }
-console.log(data)
 const loggedInUserId = useUserStore.getState().user?._id;
 const formattedConversations = data.data.map(convo => {
   const receiver = convo.members.find(user => user._id !== loggedInUserId);
@@ -56,7 +55,6 @@ const formattedConversations = data.data.map(convo => {
 
   fetchMessages: async (conversationId, page = 1,limit=20) => {
     try {
-      console.log("Fetching messages for conversation:", conversationId, "Page:", page);
       set({ loadingMessages: true });
       const res = await fetch(`/api/chat/messages/${conversationId}?page=${page}&limit=${limit}`, {
         credentials: 'include',

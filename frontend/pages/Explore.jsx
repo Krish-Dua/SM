@@ -24,8 +24,7 @@ const observerRef=useRef(null)
   //  const index = explorePosts.findIndex(post => post._id === postId);
   // const remainingPosts = explorePosts.slice(index);
    const remainingPosts = explorePosts.filter(post => post._id === postId);
-  console.log(remainingPosts)
-setPostPageArray(remainingPosts)
+  setPostPageArray(remainingPosts)
 navigate(`/p/${postId}`,{
   state:{fromExplore:true,postType}
 })
@@ -44,7 +43,6 @@ navigate(`/p/${postId}`,{
     if (!data.success) {
       setUsers([])
     } else {
-      console.log(data);
       setUsers(data.data);
     }
   };
@@ -128,7 +126,6 @@ navigate(`/p/${postId}`,{
   
   useEffect(() => {
     if (debouncedSearch) {
-      console.log("Call API with:", debouncedSearch);
       fetchSearchedUsers(debouncedSearch);
     }
   }, [debouncedSearch]);

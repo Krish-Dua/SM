@@ -10,7 +10,7 @@ const ReelPage = ({ arr }) => {
 
   const fetchReels = useCallback(async () => {
     if (!hasMore || loading) return;
-console.log("Fetching reels...");
+    
     try { 
       setLoading(true);
       const res = await fetch(`/api/post/reels`, {
