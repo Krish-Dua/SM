@@ -1,7 +1,7 @@
 import React from "react";
 import LeftSidebar from "../components/LeftSidebar";
 import { Outlet } from "react-router-dom";
-import Footer from "./footer";
+import Footer from "./Footer";
 import { ToastContainer } from 'react-toastify';
 
 
