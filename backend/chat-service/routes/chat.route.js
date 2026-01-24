@@ -26,7 +26,7 @@ router.post("/conversation", authenticateUser, async (req, res) => {
   let popConvo=await conversation.populate("members", "username name avatar");
     res.status(200).json({ success: true, data: popConvo });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
@@ -44,7 +44,7 @@ router.get("/conversations", authenticateUser, async (req, res) => {
 
     res.status(200).json({ success: true, data: conversations });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
@@ -62,7 +62,7 @@ router.get("/messages/:conversationId", authenticateUser, async (req, res) => {
 
     res.status(200).json({ success: true, data: messages });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 });

@@ -26,13 +26,13 @@ const onlineUsers = new Map();
 
 
 io.on('connection', (socket) => {
-  console.log(` User connected: ${socket.id}`);
   
+
   socket.on('joinRoom', (userId) => {
     socket.join(userId);
     onlineUsers.set(socket.id, userId);
     io.emit('updateOnlineUsers', Array.from(onlineUsers.values()));
-    console.log(`User joined room: ${userId}`);
+    
   });
 
   initChatSocket(socket,io)
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
       const userId = onlineUsers.get(socket.id); 
     if (userId) {
       onlineUsers.delete(socket.id); 
-      console.log(`User ${userId} disconnected`);
+      
     }
     io.emit('updateOnlineUsers', Array.from(onlineUsers.values()));
 
