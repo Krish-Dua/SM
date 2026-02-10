@@ -65,7 +65,7 @@ const ConversationList = () => {
                   <img
                     src={convo.receiver.avatar || "/default-avatar.png"}
                     alt={convo.receiver.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-center"
                   />
                 </div>
                 {onlineUsers.includes(convo.receiver._id) && (

@@ -2,6 +2,7 @@ import React from 'react'
 import {Heart,MessageCircle} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import NotificationBtn from './NotificationBtn';
+import logo from "../src/assets/logo.png"
 
 const Header = () => {
     const items = [
@@ -9,9 +10,12 @@ const Header = () => {
         { title: "Messages", url: "/chat", icon: MessageCircle },
       ];
   return (
-    <header className='h-fit w-full sm:hidden p-2 fixed left-0 top-0 dark:text-white dark:bg-black bg-white'>
+    <header className='h-fit w-full sm:hidden p-2 fixed left-0 top-0 border-b-2 border-slate-800 dark:text-white dark:bg-black bg-white'>
 <main className='mt-2 flex items-center justify-between px-2'>
-    <section className='text-2xl font-bold'>E-conn</section>
+  <Link to="/" >
+    <div className="flex items-center justify-around" >
+              <img className="invert h-12 w-12" src={logo} alt="" />
+    </div></Link>
     <ul className="flex items-center gap-6 justify-around  font-medium">
                {items.map((item, index) => (
                  <li

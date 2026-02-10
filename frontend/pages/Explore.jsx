@@ -163,7 +163,7 @@ navigate(`/p/${postId}`,{
                 return (
                   <div onClick={()=>handleThumbnailOnClick(post._id,post.postType)} key={post._id} className="relative">
                     <video
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       muted
                     >
                       <source src={post.media} type="video/mp4" />
@@ -176,7 +176,7 @@ navigate(`/p/${postId}`,{
                 return (
                   <div onClick={()=>handleThumbnailOnClick(post._id,post.postType)} className="relative" key={post._id}>
                     <img
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       src={post.media}
                       alt=""
                     />
@@ -199,7 +199,7 @@ navigate(`/p/${postId}`,{
                       <img
                         src={user.avatar || "/default-avatar.png"}
                         alt={user.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-center"
                       />
                     </div>
                     <div>

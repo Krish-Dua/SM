@@ -23,7 +23,7 @@ See All
                   <img 
                     src={user.avatar || "/default-avatar.png"} 
                     alt={user.name} 
-                    className="h-full w-full object-cover" 
+                    className="h-full w-full object-center" 
                   />
                 </div>
                 <div>

@@ -71,7 +71,7 @@ const fetchCommentCount = async () => {
                 <img
                   src={reel.postedBy.avatar || '/default-avatar.png'}
                   alt={reel.postedBy.username}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-center"
                 />
               </div>
               <div>

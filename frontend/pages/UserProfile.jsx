@@ -181,7 +181,7 @@ navigate("/chat")
         <div className=" h-20 w-20 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden ml-2  sm:ml-0 mr-1 sm:mr-10 md:mr-20">
           <img
             src={user.avatar || "/default-avatar.png"}
-            className="object-cover w-full h-full"
+            className="object-center w-full h-full"
             alt=""
           />
         </div>
@@ -362,7 +362,7 @@ navigate("/chat")
                     className="relative"
                   >
                     <video
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       muted
                     >
                       <source src={post.media} type="video/mp4" />
@@ -387,7 +387,7 @@ navigate("/chat")
                     key={post._id}
                   >
                     <img
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       src={post.media}
                       alt=""
                     />
@@ -421,7 +421,7 @@ navigate("/chat")
                     className="relative"
                   >
                     <video
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       muted
                     >
                       <source src={post.media} type="video/mp4" />
@@ -446,7 +446,7 @@ navigate("/chat")
                     key={post._id}
                   >
                     <img
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       src={post.media}
                       alt=""
                     />
@@ -480,7 +480,7 @@ navigate("/chat")
                     className="relative"
                   >
                     <video
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       muted
                     >
                       <source src={post.media} type="video/mp4" />
@@ -505,7 +505,7 @@ navigate("/chat")
                     key={post._id}
                   >
                     <img
-                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-center "
+                      className="w-full h-[20vh] md:h-[25vh] xl:h-[40vh] object-contain "
                       src={post.media}
                       alt=""
                     />

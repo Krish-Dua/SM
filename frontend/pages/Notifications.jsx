@@ -48,7 +48,7 @@ useEffect(()=>{
                           <img
                             src={n.sender.avatar || "/default-avatar.png"}
                             alt={n.sender.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-center"
                           />
                         </div>
                         <p className="text-md flex items-center gap-1 sm:gap-3 font-medium flex-wrap sm:max-w-full max-w-[65%] dark:text-white text-black">
@@ -77,7 +77,7 @@ useEffect(()=>{
                           <img
                             src={n.sender.avatar || "/default-avatar.png"}
                             alt={n.sender.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-center"
                           />
                         </div>
                         <p className="text-md flex items-center gap-1 sm:gap-3 font-medium flex-wrap sm:max-w-full max-w-[65%] dark:text-white text-black">
@@ -103,7 +103,7 @@ useEffect(()=>{
                     <img
                       src={n.post.media}
                       alt={n.sender.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-center"
                     />
                   )}
                 </div>

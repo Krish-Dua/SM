@@ -46,7 +46,7 @@ const Post = ({ post }) => {
               <img
                 src={post.postedBy.avatar || "/default-avatar.png"}
                 alt={post.postedBy.username}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-center"
               />
             </div>
             <p>{post.postedBy.username}</p>
@@ -69,7 +69,8 @@ const Post = ({ post }) => {
               loop
               // muted
               // controls
-              className="w-full max-h-dvh object-cover"
+
+              className="w-full max-h-dvh object-contain"
               style={{ aspectRatio: "auto" }}
             />
           ) : (
@@ -88,7 +89,7 @@ const Post = ({ post }) => {
           <img
             src={post.media}
             alt={post.postedBy.username}
-            className="w-full object-cover"
+            className="w-full object-contain"
             style={{ aspectRatio: "auto", maxHeight: "550px" }}
             loading="lazy"
           />

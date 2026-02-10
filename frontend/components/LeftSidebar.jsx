@@ -35,13 +35,15 @@ const isChatPage=location.pathname.startsWith("/chat");
       }`}
         aria-label="Sidebar"
       >
+        
         <div className="h-full w-full px-3 py-4 overflow-y-auto">
+          <Link to="/" >
           <div className="flex items-center justify-around" >
           <img className="invert h-12 w-12" src={logo} alt="" />
           {!isChatPage&&<div className="text-xl text-black font-bold dark:text-gray-300 hidden lg:inline">
             CONNECTICX
           </div>}
-</div>
+</div></Link>
           <ul className="space-y-2 mt-5 font-medium">
             {items.map((item, index) => (
               <li
@@ -93,7 +95,7 @@ const isChatPage=location.pathname.startsWith("/chat");
                     <img
                       src={user.avatar || "/default-avatar.png"}
                       alt="profile"
-                      className="w-8 h-8 object-cover rounded-full"
+                      className="w-8 h-8 object-center rounded-full"
                     />
                   {!isChatPage && <span className="hidden lg:inline text-xl font-bold">
                       Profile
