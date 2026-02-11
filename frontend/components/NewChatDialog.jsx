@@ -107,11 +107,11 @@ if (debouncedSearch) {
     },[debouncedSearch])
 
   return (
-  <main className='flex flex-col w-full gap-4 ' >
+  <main className='flex flex-col text-black  dark:text-white w-full gap-4 ' >
     <div>
     <input value={search} onChange={(e)=>{
         setSearch(e.target.value)
-    }} className='bg-gray-900 w-full rounded-lg p-2 outline-0 text-white ' placeholder='Search...' type="text" />
+    }} className='dark:bg-gray-900 border-2 border-black text-black dark:text-white w-full rounded-lg p-2 outline-0 ' placeholder='Search...' type="text" />
     </div>
 
 <p>Suggested :-</p>
@@ -134,7 +134,7 @@ if (debouncedSearch) {
                 </div>
                 <div>
                   <p className="text-md font-medium dark:text-white text-black">{user.username}</p>
-                  <p className="text-sm text-gray-300">{user.name}</p>
+                  <p className="text-sm text-gray-900 dark:text-gray-300">{user.name}</p>
                 </div>
               </div>
               {/* < Dot size={50} color='blue' /> */}

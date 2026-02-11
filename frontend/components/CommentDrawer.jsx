@@ -67,8 +67,8 @@ const handleDeleteComment= async (commentId) => {
         <button><MessageCircleMore/></button>
       </DrawerTrigger>
 
-   <DrawerContent className="h-[80%] max-w-3xl dark:bg-gray-950 dark:text-white mx-auto p-4">
-  <h2 className="font-bold text-xl my-2 text-center">Comments</h2>
+   <DrawerContent className="h-[80%] max-w-3xl bg-white dark:bg-gray-950 text-black dark:text-white mx-auto p-4">
+  <h2 className="font-bold text-xl my-2 text-center text-black dark:text-white">Comments</h2>
   <div className="overflow-y-auto overflow-x-hidden h-[80%] custom-scrollbar">
     {comments.length > 0 ? (
       comments.map((c, ind) => (
@@ -80,10 +80,10 @@ const handleDeleteComment= async (commentId) => {
     />
       ))
     ) : (
-      <p>No comments yet.</p>
+      <p className="text-gray-600 dark:text-gray-400">No comments yet.</p>
     )}
   </div>
-  <div className="absolute bottom-0 left-0 right-0 p-4">
+  <div className="absolute bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
     <PostCommentBtn setCommentCount={setCommentCount} setComments={setComments} postId={postId} />
   </div>
 </DrawerContent>

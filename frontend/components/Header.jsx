@@ -14,7 +14,7 @@ const Header = () => {
 <main className='mt-2 flex items-center justify-between px-2'>
   <Link to="/" >
     <div className="flex items-center justify-around" >
-              <img className="invert h-12 w-12" src={logo} alt="" />
+              <img className="dark:invert h-12 w-12" src={logo} alt="" />
     </div></Link>
     <ul className="flex items-center gap-6 justify-around  font-medium">
                {items.map((item, index) => (

@@ -50,8 +50,8 @@ setLoading(false);
     
 
   return (
-    <div role='button' onClick={handleSave} >
-{children? children : <Bookmark fill={user.saved.includes(postId)?"white":"transparent"} />}
+    <div role='button' onClick={handleSave} className="text-black dark:text-white hover:opacity-80 transition cursor-pointer">
+      {children? children : <Bookmark fill={user.saved.includes(postId)?"currentColor":"transparent"} />}
     </div>
   )
 }

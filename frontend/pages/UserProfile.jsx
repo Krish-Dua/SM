@@ -175,7 +175,7 @@ navigate("/chat")
   }, [username]);
 
   return (
-    <main className="max-w-4xl py-8 px-1 sm:px-4 h-max mx-auto ">
+    <main className="max-w-4xl py-8 px-1 sm:px-4 h-max mx-auto bg-white dark:bg-black text-black dark:text-white transition-colors">
       <header className="w-full flex mb-8 sm:mb-20 items-center gap-6">
         {/* profile image  */}
         <div className=" h-20 w-20 sm:h-42 sm:w-42  shrink-0 rounded-full my-auto overflow-hidden ml-2  sm:ml-0 mr-1 sm:mr-10 md:mr-20">
@@ -195,7 +195,7 @@ navigate("/chat")
               </span>
               <EditProfileBtn setLoggedInUser={setUser} className="w-full" />
               <SettingsBtn>
-                <div className="px-4 py-2  rounded-lg w-full bg-gray-800">
+                <div className="px-4 py-2  rounded-lg w-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition">
                   Settings
                 </div>
               </SettingsBtn>
@@ -209,11 +209,11 @@ navigate("/chat")
                 targetUser={user}
                 setTargetUser={setUser}
                 targetUserId={user._id}
-                classname={" py-1 px-4 rounded-lg bg-gray-800"}
+                classname={" py-1 px-4 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"}
               />
               <button
                 onClick={handleMessageBtnClick}
-                className="py-1  px-4 rounded-lg bg-gray-800"
+                className="py-1  px-4 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
               >
                 message
               </button>
@@ -223,18 +223,18 @@ navigate("/chat")
           <div className="flex  gap-6 sm:gap-8">
             <div className="flex gap-1 sm:gap-2 flex-col md:flex-row">
               <span className="">{allUserPosts.length}</span>
-              <span className="text-gray-400">Posts</span>
+              <span className="text-gray-600 dark:text-gray-400">Posts</span>
             </div>
 
             <Dialog>
               <DialogTrigger asChild>
                 <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
                   <span className="">{user.followers.length}</span>
-                  <span className="text-gray-400">followers</span>
+                  <span className="text-gray-600 dark:text-gray-400">followers</span>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%]  dark:bg-black border-0  text-white">
-                <DialogTitle>Followers</DialogTitle>
+              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] bg-white dark:bg-black border-0 text-black dark:text-white">
+                <DialogTitle className="text-black dark:text-white">Followers</DialogTitle>
                 <FollowerFollowingList userId={user._id} query="followers" />
               </DialogContent>
             </Dialog>
@@ -243,31 +243,31 @@ navigate("/chat")
               <DialogTrigger asChild>
                 <div className="flex gap-1 cursor-pointer sm:gap-2 flex-col md:flex-row">
                   <span className="">{user.following.length}</span>
-                  <span className="text-gray-400">following</span>
+                  <span className="text-gray-600 dark:text-gray-400">following</span>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] dark:bg-black border-0  text-white">
-                <DialogTitle>following</DialogTitle>
+              <DialogContent className="sm:max-w-[600px] custom-scrollbar overflow-auto max-h-[80%] bg-white dark:bg-black border-0 text-black dark:text-white">
+                <DialogTitle className="text-black dark:text-white">following</DialogTitle>
                 <FollowerFollowingList userId={user._id} query="following" />
               </DialogContent>
             </Dialog>
           </div>
           <div className="sm:block hidden">
-            <p className="font-bold">{user.name}</p>
-            <pre className="font-sans text-gray-300">{user.bio}</pre>
+            <p className="font-bold text-black dark:text-white">{user.name}</p>
+            <pre className="font-sans text-gray-700 dark:text-gray-300">{user.bio}</pre>
           </div>
         </section>
       </header>
 
       <div className="sm:hidden ml-2 sm:ml-0">
-        <p className="font-bold">{user.name}</p>
-        <p className="text-gray-300">{user.bio}</p>
+        <p className="font-bold text-black dark:text-white">{user.name}</p>
+        <p className="text-gray-700 dark:text-gray-300">{user.bio}</p>
       </div>
       {userStore.username == username ? (
         <div className="sm:hidden mt-6 mb-4 flex gap-6 ">
           <EditProfileBtn setLoggedInUser={setUser} className="w-full" />
           <SettingsBtn classname={"w-full"}>
-            <div className="px-4 py-2  rounded-lg w-full bg-gray-800">
+            <div className="px-4 py-2  rounded-lg w-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition">
               Settings
             </div>
           </SettingsBtn>
@@ -278,11 +278,11 @@ navigate("/chat")
             targetUser={user}
             setTargetUser={setUser}
             targetUserId={user._id}
-            classname={" py-1 px-4 w-full rounded-lg bg-gray-800"}
+            classname={" py-1 px-4 w-full rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"}
           />
           <button
             onClick={handleMessageBtnClick}
-            className="py-1  rounded-lg w-full bg-gray-800"
+            className="py-1  rounded-lg w-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
           >
             message
           </button>
@@ -290,14 +290,14 @@ navigate("/chat")
       )}
 
       {/* tabs section */}
-      <section className="tabs h-15 w-full mb-5 ">
+      <section className="tabs h-15 w-full mb-5 border-b border-gray-300 dark:border-gray-700">
         <div className="flex gap-7 w-full h-full items-center justify-evenly mid:justify-center">
           <button
             onClick={() => {
               setSelectedTab("all");
             }}
-            className={`flex gap-2 h-full items-center justify-center ${
-              selectedTab === "all" ? "border-b-1" : ""
+            className={`flex gap-2 h-full items-center justify-center text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition ${
+              selectedTab === "all" ? "border-b-2 border-black dark:border-white text-black dark:text-white" : ""
             }`}
           >
             <Grid />
@@ -310,8 +310,8 @@ navigate("/chat")
                 fetchUserReels();
               }
             }}
-            className={`flex gap-2 h-full items-center justify-center ${
-              selectedTab === "reel" ? "border-b-1" : ""
+            className={`flex gap-2 h-full items-center justify-center text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition ${
+              selectedTab === "reel" ? "border-b-2 border-black dark:border-white text-black dark:text-white" : ""
             }`}
           >
             <PlaySquare />
@@ -325,8 +325,8 @@ navigate("/chat")
                   fetchUserSavedPosts();
                 }
               }}
-              className={`flex gap-2 h-full items-center justify-center ${
-                selectedTab === "saved" ? "border-b-1" : ""
+              className={`flex gap-2 h-full items-center justify-center text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition ${
+                selectedTab === "saved" ? "border-b-2 border-black dark:border-white text-black dark:text-white" : ""
               }`}
             >
               <Save />
@@ -340,10 +340,11 @@ navigate("/chat")
       <section className="grid grid-cols-3 mb-10 w-full gap-1 relative ">
         {selectedTab === "all" &&
           (allUserPosts.length === 0 ? (
-            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20 text-gray-600 dark:text-gray-400">
               <Camera size={56} />
-              <p className="font-bold text-gray-300 text-lg ">No posts Yet</p>
+              <p className="font-bold text-lg ">No posts Yet</p>
             </div>
+            
           ) : (
             allUserPosts.map((post) => {
               if (post.mediaType === "video")
@@ -399,9 +400,9 @@ navigate("/chat")
 
         {selectedTab === "reel" &&
           (userReels.length === 0 ? (
-            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20 text-gray-600 dark:text-gray-400">
               <Camera size={56} />
-              <p className="font-bold text-gray-300 text-lg ">No posts Yet</p>
+              <p className="font-bold text-lg ">No posts Yet</p>
             </div>
           ) : (
             userReels.map((post) => {
@@ -458,9 +459,9 @@ navigate("/chat")
 
         {selectedTab === "saved" &&
           (userSavedPosts.length === 0 ? (
-            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20">
+            <div className="absolute flex flex-col gap-4 items-center justify-center w-full mt-10 sm:mt-20 text-gray-600 dark:text-gray-400">
               <SaveIcon size={56} />
-              <p className="font-bold text-gray-300 text-lg ">No Saved Posts</p>
+              <p className="font-bold text-lg ">No Saved Posts</p>
             </div>
           ) : (
             userSavedPosts.map((post) => {

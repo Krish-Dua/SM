@@ -42,10 +42,10 @@ const CreateBtn = ({isCompact}) => {
         </Link> */}
           <Dialog open={postModalOpen} onOpenChange={setpostModalOpen}  >
       <DialogTrigger asChild>
-        <button className="mb-2 px-6 py-1 hover:bg-gray-700 rounded-xl">Post</button>
+        <button className="mb-2 px-6 py-1 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-xl">Post</button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0  text-white">
-        <DialogTitle>
+      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0 text-black dark:text-white">
+        <DialogTitle className="text-black dark:text-white">
  Create Post 
         </DialogTitle>
          <PostModal postType={"post"} setOpen={setpostModalOpen} />
@@ -58,10 +58,10 @@ const CreateBtn = ({isCompact}) => {
         </Link> */}
    <Dialog open={reelModalOpen} onOpenChange={setreelModalOpen} >
       <DialogTrigger asChild>
-        <button className="mb-2 px-6 py-1 hover:bg-gray-700 rounded-xl">Reel</button>
+        <button className="mb-2 px-6 py-1  hover:bg-slate-200 dark:hover:bg-gray-700 rounded-xl">Reel</button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0  text-white">
-        <DialogTitle>
+      <DialogContent className="sm:max-w-[600px]  dark:bg-black border-0 text-black dark:text-white">
+        <DialogTitle className="text-black dark:text-white">
  Create Reel 
         </DialogTitle>
          {/* <ReelModal/> */}

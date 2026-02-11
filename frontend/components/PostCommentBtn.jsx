@@ -46,9 +46,9 @@ if (loading) return;
           onChange={(e) => setComment(e.target.value)}
           placeholder="Add a comment"
           type="text"
-          className="outline-none flex-1 dark:border-gray-600 border-black border-b-1"
+          className="outline-none flex-1 text-black dark:text-white border-b border-gray-300 dark:border-gray-600 placeholder:text-gray-500 dark:placeholder:text-gray-400"
         />
-        {comment.trim() && <button onClick={handlePostcomment} className="px-4">{
+        {comment.trim() && <button onClick={handlePostcomment} className="px-4 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition">{
           loading ? <LoaderSpinner size={24} /> : "Post"
           }</button>}
       </div>

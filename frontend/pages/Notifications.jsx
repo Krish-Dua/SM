@@ -61,7 +61,7 @@ useEffect(()=>{
                     </div>
                   </div>
                 </Link>
-                <FollowUnfollwBtn classname={"bg-blue-600 w-13 text-xs p-1 rounded-sm"} targetUserId={n.sender._id} />
+                <FollowUnfollwBtn classname={"bg-blue-600 w-13 text-xs p-1 rounded-sm text-white"} targetUserId={n.sender._id} />
               </>
             )}  
             {n.type === "like" && (

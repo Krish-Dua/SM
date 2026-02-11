@@ -37,20 +37,20 @@ const Post = ({ post }) => {
   }, [post._id]);
 
   return (
-    <div className="w-full flex flex-col gap-3 py-8 border-b-1 border-slate-400">
+    <div className="w-full flex flex-col gap-3 py-8 border-b border-slate-300 dark:border-slate-700 bg-white dark:bg-black text-black dark:text-white">
       {/* header */}
       <div className="flex justify-between px-2 items-center">
         <Link to={`/${post.postedBy.username}`}>
           <div className="flex gap-4 items-center">
-            <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
+            <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
               <img
                 src={post.postedBy.avatar || "/default-avatar.png"}
                 alt={post.postedBy.username}
                 className="h-full w-full object-center"
               />
             </div>
-            <p>{post.postedBy.username}</p>
-            <span className="text-xs text-gray-400">
+            <p className="text-black dark:text-white">{post.postedBy.username}</p>
+            <span className="text-xs text-gray-600 dark:text-gray-400">
               {formatTime(post.createdAt)}
             </span>
           </div>
@@ -111,7 +111,7 @@ const Post = ({ post }) => {
 
       {/* L and C count  */}
       <div>
-        <div className="flex gap-2 px-2">
+        <div className="flex gap-2 px-2 text-black dark:text-white">
           <p>{likes.length} Likes</p>
           <Dot />
           <p>{commentCount ? commentCount : 0} Comments</p>
@@ -123,13 +123,13 @@ const Post = ({ post }) => {
         <p>{post.caption}</p>
       </div> */}
 
-      <div className="text-white px-2 break-words text-sm">
+      <div className="px-2 break-words text-sm text-black dark:text-white">
         {post.caption.length > CAPTION_MAX_LENGTH && !isExpanded ? (
           <>
             {post.caption.slice(0, CAPTION_MAX_LENGTH)}...
             <button
               onClick={() => setIsExpanded(true)}
-              className="text-gray-400 ml-1"
+              className="text-blue-600 dark:text-blue-400 ml-1 hover:underline"
             >
               more
             </button>
@@ -140,7 +140,7 @@ const Post = ({ post }) => {
             {post.caption.length > CAPTION_MAX_LENGTH && (
               <button
                 onClick={() => setIsExpanded(false)}
-                className="text-gray-400 ml-1"
+                className="text-blue-600 dark:text-blue-400 ml-1 hover:underline"
               >
                 less
               </button>

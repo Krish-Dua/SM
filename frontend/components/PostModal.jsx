@@ -110,7 +110,7 @@ if(!file || !caption.trim()){
 
 
   return (
-    <main className="w-full flex flex-col gap-6">
+    <main className="w-full flex flex-col gap-6 bg-white dark:bg-black text-black dark:text-white p-4 rounded-lg">
       {/* file input  */}
       <div className="flex items-center justify-center w-full">
 {
@@ -118,7 +118,7 @@ if(!file || !caption.trim()){
 
 preview?
 <div className="w-full ">
-<button className="text-blue-800 cursor-pointer" onClick={()=>{
+<button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer transition" onClick={()=>{
   setpreview(null)
   setFile(null)
 }}>Discard</button>
@@ -141,7 +141,7 @@ preview?
 :
 <label
 htmlFor="dropzone-file"
-className="flex flex-col items-center justify-center w-full h-70 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+className="flex flex-col items-center justify-center w-full h-70 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
 >
 <div className="flex flex-col items-center justify-center pt-5 pb-6">
   <svg
@@ -184,12 +184,12 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
           required
           value={caption}
           placeholder="Enter caption here"
-          className="resize-none w-full h-20 p-1 overflow-y-auto outline-0 border-white border-1 bg-gray-800"
+          className="resize-none w-full h-20 p-1 overflow-y-auto outline-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 rounded"
           id=""
         ></textarea>
       </div>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>}
 
 
 
@@ -197,7 +197,7 @@ className="flex flex-col items-center justify-center w-full h-70 border-2 border
       <div className="flex justify-end">
         <Button type="submit" onClick={()=>{
 handleSubmit()
-        }} className="dark:bg-white dark:hover:bg-white dark:text-black">
+        }} className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white">
            {loading ? (
     <span className="flex items-center gap-2">
       <LoaderSpinner />

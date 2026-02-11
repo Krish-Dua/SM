@@ -93,7 +93,7 @@ const ReelPage = ({ arr }) => {
   }, [fetchReels, reels, loading, hasMore]);
 
   return (
-    <div className="h-screen overflow-y-auto snap-y snap-mandatory bg-black">
+    <div className="h-screen overflow-y-auto snap-y snap-mandatory bg dark:bg-black">
       {reels.map((reel, ind) => (
         <div key={reel._id} className={ind === reels.length - 1 ? "last-reel" : ""}>
           <Reel reel={reel} />

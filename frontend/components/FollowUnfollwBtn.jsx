@@ -42,7 +42,7 @@ const handleFollowUnfollow = async () => {
     }
 }
   return (
-    <button onClick={handleFollowUnfollow} className={`${classname}  `} >
+    <button onClick={handleFollowUnfollow} className={`${classname}`} >
       {userStore.following.includes(targetUserId) ? "Unfollow" : "Follow"}
     </button>
   )

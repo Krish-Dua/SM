@@ -57,9 +57,9 @@ const LikeBtn = ({postId,liked,setLikes}) => {
 
 
   return (
-    <button title={liked ? "Unlike" : "Like"} >
-                <Heart color={liked ? "red" : "white"} fill={liked ? "red" : "none"} onClick={handleClick} />
-              </button>
+    <button title={liked ? "Unlike" : "Like"} className="text-black dark:text-white hover:opacity-80 transition">
+      <Heart color={liked ? "red" : "currentColor"} fill={liked ? "red" : "none"} onClick={handleClick} />
+    </button>
   )
 }
 

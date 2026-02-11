@@ -12,9 +12,9 @@ import { Trash } from "lucide-react";
     : comment.content.slice(0, maxLength);
 
   return (
-    <div className="mb-3 p-2 flex items-start last:mb-0 rounded-lg">
+    <div className="mb-3 p-2 flex items-start last:mb-0 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
       <div className="flex gap-4 w-full">
-        <div className="h-14 w-14 rounded-full overflow-hidden shrink-0 bg-slate-200">
+        <div className="h-14 w-14 rounded-full overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-700">
           <img
             src={comment.commentedBy.avatar || "/default-avatar.png"}
             alt={comment.commentedBy.username}
@@ -25,26 +25,26 @@ import { Trash } from "lucide-react";
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <Link to={`/${comment.commentedBy.username}`}>
-                <p className="text-md font-medium dark:text-white text-black">
+                <p className="text-md font-medium text-black dark:text-white">
                   {comment.commentedBy.username}
                 </p>
               </Link>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
                 {formatTime(comment.createdAt)}
               </span>
             </div>
             {user._id === comment.commentedBy._id && (
-              <Trash onClick={() => onDelete(comment._id)} className="active:fill-white" size={17} />
+              <Trash onClick={() => onDelete(comment._id)} className="text-black dark:text-white hover:text-red-600 dark:hover:text-red-400 active:fill-current transition cursor-pointer" size={17} />
             )}
           </div>
 
-          <pre className="text-sm max-w-[90%] font-sans break-all whitespace-pre-wrap text-gray-300">
+          <pre className="text-sm max-w-[90%] font-sans break-all whitespace-pre-wrap text-gray-700 dark:text-gray-300">
             {displayedText}
           </pre>
 
           {isLong && (
             <button
-              className="text-xs text-blue-400 mt-1 hover:underline"
+              className="text-xs text-blue-600 dark:text-blue-400 mt-1 hover:underline"
               onClick={() => setExpanded(!expanded)}
             >
               {expanded ? "See less" : "See more"}

@@ -132,7 +132,7 @@ navigate(`/p/${postId}`,{
   
   return (
     <>
-      <main className="max-w-5xl mb-10 sm:py-4 sm:px-4 h-max sm:h-max mx-auto">
+      <main className="max-w-5xl mb-10 sm:py-4 sm:px-4 h-max sm:h-max mx-auto bg-white dark:bg-black text-black dark:text-white transition-colors">
         <header className="flex justify-center">
           <div className="w-[80%] relative  mb-6">
             <input
@@ -141,7 +141,7 @@ navigate(`/p/${postId}`,{
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="bg-slate-900 border-0 mt-4 sm:mt-0 text-lg w-full py-2 pl-2 pr-12 rounded-xl"
+              className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition border border-gray-300 dark:border-gray-700 mt-4 sm:mt-0 text-lg w-full py-2 pl-2 pr-12 rounded-xl"
               type="text"
             />
             {isSearchActive && (
@@ -150,7 +150,7 @@ navigate(`/p/${postId}`,{
                   setSearch("");
                   setUsers([]);
                 }}
-                className="absolute right-2 bottom-2"
+                className="absolute right-2 bottom-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-gray-800 dark:hover:text-gray-200"
               />
             )}
           </div>
@@ -186,16 +186,16 @@ navigate(`/p/${postId}`,{
             })}
           </section>
         ) : (
-          <section>
+          <section className="bg-white dark:bg-black">
             {users.map((user, index) => {
               return (
                 <Link
                   key={user.username}
                   to={`/${user.username}`}
-                  className="mb-3 p-2 flex items-center justify-between last:mb-0  rounded-lg"
+                  className="mb-3 p-2 flex items-center justify-between last:mb-0 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition"
                 >
                   <div className="flex items-center gap-6">
-                    <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
+                    <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
                       <img
                         src={user.avatar || "/default-avatar.png"}
                         alt={user.name}
@@ -203,10 +203,10 @@ navigate(`/p/${postId}`,{
                       />
                     </div>
                     <div>
-                      <p className="text-sm font-medium dark:text-white text-black">
+                      <p className="text-sm font-medium text-black dark:text-white">
                         {user.name}
                       </p>
-                      <p className="text-xs text-gray-300">{user.username}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">{user.username}</p>
                     </div>
                   </div>
                 </Link>
@@ -214,7 +214,7 @@ navigate(`/p/${postId}`,{
             })}
           </section>
         )}
-       {!isSearchActive&& <div id="feed-loader" className="text-center py-4 text-gray-500">
+       {!isSearchActive&& <div id="feed-loader" className="text-center py-4 text-gray-600 dark:text-gray-400">
           {loading ? "Loading more posts..." : !hasMore ? "No more posts" : ""}
         </div>}
       </main>

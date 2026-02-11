@@ -39,7 +39,7 @@ const isChatPage=location.pathname.startsWith("/chat");
         <div className="h-full w-full px-3 py-4 overflow-y-auto">
           <Link to="/" >
           <div className="flex items-center justify-around" >
-          <img className="invert h-12 w-12" src={logo} alt="" />
+          <img className="dark:invert h-12 w-12" src={logo} alt="" />
           {!isChatPage&&<div className="text-xl text-black font-bold dark:text-gray-300 hidden lg:inline">
             CONNECTICX
           </div>}

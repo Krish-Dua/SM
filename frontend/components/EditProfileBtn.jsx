@@ -151,7 +151,7 @@ else{
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className={`py-1  px-4 rounded-lg bg-gray-800 ${className} `}>
+        <button className={`py-1  px-4 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition ${className} `}>
           Edit Profile
         </button>
       </SheetTrigger>

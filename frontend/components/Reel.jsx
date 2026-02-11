@@ -37,7 +37,7 @@ const fetchCommentCount = async () => {
           key={reel._id}
           className="h-[90dvh] mb-6 w-full snap-start flex justify-center items-center relative"
         >
-            <div className="aspect-[9/16] relative rounded-lg border-1 overflow-hidden border-gray-500 h-full max-h-screen flex justify-center items-center">
+            <div className="aspect-[9/16] relative rounded-lg border border-gray-400 dark:border-gray-700 overflow-hidden h-full max-h-screen flex justify-center items-center bg-black">
           <video
             src={reel.media}
             className="h-full w-full rounded-lg"
@@ -45,29 +45,38 @@ const fetchCommentCount = async () => {
             autoPlay
             playsInline
           />
-            <div className="absolute right-4 bottom-24 flex flex-col gap-4 items-center">
-            {/* <button className="text-white text-2xl">❤️</button> */}
-            <div className='flex flex-col items-center ' >
-            <LikeBtn postId={reel._id} liked={likes.includes(user._id)}
-            setLikes={setLikes} />
-          <p>{likes.length}</p>
-
+            <div className="absolute right-4 bottom-24 flex flex-col gap-6 items-center">
+            {/* Like button */}
+            <div className='flex flex-col items-center gap-2' >
+              <div className="bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-full p-3 hover:bg-white/60 dark:hover:bg-black/60 transition">
+                <LikeBtn postId={reel._id} liked={likes.includes(user._id)}
+                setLikes={setLikes} />
+              </div>
+              <p className="text-white dark:text-white text-xs font-medium drop-shadow-lg">{likes.length}</p>
             </div>
-            {/* <button className="text-white text-2xl">💬</button> */}
-            <div className='flex flex-col items-center ' >
-          <CommentDrawer setCommentCount={setCommentCount} postId={reel._id} />
-          <p>{commentCount ? commentCount : 0}</p>
 
-</div>
-            {/* <button className="text-white text-2xl">➤</button> */}
-            <SaveBtn postId={reel._id} />
+            {/* Comment button */}
+            <div className='flex flex-col items-center gap-2' >
+              <div className="bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-full p-3 hover:bg-white/60 dark:hover:bg-black/60 transition">
+                <CommentDrawer setCommentCount={setCommentCount} postId={reel._id} />
+              </div>
+              <p className="text-white dark:text-white text-xs font-medium drop-shadow-lg">{commentCount ? commentCount : 0}</p>
+            </div>
 
-            <PostOptionsBtn postedBy={reel.postedBy} postId={reel._id} />
+            {/* Save button */}
+            <div className="bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-full p-3 hover:bg-white/60 dark:hover:bg-black/60 transition">
+              <SaveBtn postId={reel._id} />
+            </div>
+
+            {/* Options button */}
+            <div className="bg-white/40 dark:bg-black/40 backdrop-blur-sm rounded-full p-3 hover:bg-white/60 dark:hover:bg-black/60 transition">
+              <PostOptionsBtn postedBy={reel.postedBy} postId={reel._id} />
+            </div>
           </div>
 
           <div className="absolute left-4 bottom-4 right-16 flex flex-col gap-2">
             <Link to={`/${reel.postedBy.username}`} className="flex items-center gap-4">
-              <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200">
+              <div className="h-10 w-10 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
                 <img
                   src={reel.postedBy.avatar || '/default-avatar.png'}
                   alt={reel.postedBy.username}
@@ -76,7 +85,7 @@ const fetchCommentCount = async () => {
               </div>
               <div>
                 <div className="flex gap-10 items-center ">
-                  <p className="text-md font-medium dark:text-white text-black">
+                  <p className="text-md font-medium text-white">
                     {reel.postedBy.username}
                   </p>
                 </div>
@@ -90,7 +99,7 @@ const fetchCommentCount = async () => {
                   {caption.slice(0, CAPTION_MAX_LENGTH)}...
                   <button
                     onClick={() => setIsExpanded(true)}
-                    className="text-gray-400 ml-1"
+                    className="text-gray-300 ml-1 hover:text-white transition"
                   >
                     more
                   </button>
@@ -101,7 +110,7 @@ const fetchCommentCount = async () => {
                   {caption.length > CAPTION_MAX_LENGTH && (
                     <button
                       onClick={() => setIsExpanded(false)}
-                      className="text-gray-400 ml-1"
+                      className="text-gray-300 ml-1 hover:text-white transition"
                     >
                       less
                     </button>
