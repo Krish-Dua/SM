@@ -13,6 +13,7 @@ import CreateBtn from "./CreateBtn";
 import useUserStore from "../store/user";
 import SettingsBtn from "./SettingsBtn";
 import NotificationBtn from "./NotificationBtn";
+import { useChatStore } from '../store/chat';
 import logo from "../src/assets/logo.png"
 
 const items = [
@@ -55,10 +56,13 @@ const isChatPage=location.pathname.startsWith("/chat");
                   to={item.url}
                   className="flex items-center  gap-5 px-3 py-2"
                 >  
-                  <item.icon
-                    size={30}
-                    className="text-gray-700 dark:text-gray-400"
-                  />
+                  <div className="relative">
+                    <item.icon
+                      size={30}
+                      className="text-gray-700 dark:text-gray-400"
+                    />
+                    {item.title === 'Messages' && <MessageBadgeSidebar />}
+                  </div>
                 { !isChatPage&& <span className={`hidden lg:inline text-xl font-bold`}>
                     {item.title}
                   </span>}
@@ -114,3 +118,14 @@ const isChatPage=location.pathname.startsWith("/chat");
 }
 
 export default AppSidebar;
+
+function MessageBadgeSidebar() {
+  const conversations = useChatStore((state) => state.conversations);
+  const total = (conversations || []).reduce((s, c) => s + (c.unreadCount || 0), 0);
+  if (total === 0) return null;
+  return (
+    <span className="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full text-xs font-bold transform -translate-y-1/2 translate-x-1/2 bg-red-500 text-white">
+      {total}
+    </span>
+  );
+}

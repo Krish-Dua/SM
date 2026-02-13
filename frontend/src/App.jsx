@@ -57,13 +57,24 @@ useEffect(() => {
     const activeConvo = useChatStore.getState().activeConversation;
     if (activeConvo && activeConvo._id === msg.conversationId) {
       useChatStore.getState().addMessage(msg);
-    } 
+      // update conversation preview without increasing unread
       useChatStore.getState().updateConversation({
         _id: msg.conversationId,
-        receiver: msg.sender, 
+        receiver: msg.sender,
         lastMsg: msg.msg,
-        updatedAt: msg.createdAt
+        updatedAt: msg.createdAt,
+        unreadCount: 0,
       });
+    } else {
+      // increment unread for that conversation and update preview
+      useChatStore.getState().incrementUnread(msg.conversationId);
+      useChatStore.getState().updateConversation({
+        _id: msg.conversationId,
+        receiver: msg.sender,
+        lastMsg: msg.msg,
+        updatedAt: msg.createdAt,
+      });
+    }
     
   };
 
@@ -96,6 +107,11 @@ useChatStore.getState().setTyping(userId,true)
 socket.on("stop_typing",(userId)=>{
   useChatStore.getState().setTyping(userId,false)
 })
+
+socket.on('messages_read', ({ conversationId }) => {
+  // other participant read messages in this conversation
+  useChatStore.getState().markReadLocal(conversationId);
+});
 
 
   return () => {

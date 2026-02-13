@@ -39,10 +39,15 @@ router.get("/conversations", authenticateUser, async (req, res) => {
     const conversations = await Conversation.find({ members: userId ,lastMsg: { $exists: true }})
       .sort({ updatedAt: -1 })
       .skip((page - 1) * limit)
-      // .limit(Number(limit))
       .populate("members", "username name avatar");
 
-    res.status(200).json({ success: true, data: conversations });
+    // compute unreadCount per conversation for current user
+    const convoWithUnread = await Promise.all(conversations.map(async (convo) => {
+      const unreadCount = await Message.countDocuments({ conversationId: convo._id, readBy: { $ne: userId } });
+      return { ...convo.toObject(), unreadCount };
+    }));
+
+    res.status(200).json({ success: true, data: convoWithUnread });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
@@ -76,6 +81,7 @@ router.post("/messages", authenticateUser, async (req, res) => {
       conversationId,
       sender: senderId,
       msg,
+      readBy: [senderId],
     });
     const popMsg = await message.populate("sender", "avatar username");
 
@@ -103,7 +109,37 @@ router.post("/messages", authenticateUser, async (req, res) => {
       io.to(receiver._id.toString()).emit("receive_message", popMsg);
     }
 
+    // emit for sender as well so clients can update unread/preview immediately
+    io.to(senderId.toString()).emit("receive_message", popMsg);
+
     res.status(200).json({ success: true, data: popMsg });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// mark all messages in a conversation as read by current user
+router.post('/conversations/:conversationId/read', authenticateUser, async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const userId = req.user.userId;
+
+    const result = await Message.updateMany(
+      { conversationId, readBy: { $ne: userId } },
+      { $push: { readBy: userId } }
+    );
+
+    // notify the other participant that messages were read
+    const conversation = await Conversation.findById(conversationId).populate('members', '_id');
+    if (conversation) {
+      const other = conversation.members.find((m) => m._id.toString() !== userId.toString());
+      if (other) {
+        io.to(other._id.toString()).emit('messages_read', { conversationId, readerId: userId });
+      }
+    }
+
+    res.status(200).json({ success: true, modifiedCount: result.modifiedCount });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });

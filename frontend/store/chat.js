@@ -15,7 +15,24 @@ export const useChatStore = create((set, get) => ({
   setOnlineUsers:(users)=>set({onlineUsers:users}),
 
   setActiveConversation: (convo) =>
-    set({ activeConversation: convo, messages: [], hasMoreMessages: true }),
+    (async () => {
+      try {
+        // mark messages as read on server for this conversation
+        await fetch(`/api/chat/conversations/${convo._id}/read`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+        // update unreadCount locally
+        set((state) => ({
+          activeConversation: convo,
+          messages: [],
+          hasMoreMessages: true,
+          conversations: state.conversations.map(c => c._id === convo._id ? { ...c, unreadCount: 0 } : c)
+        }));
+      } catch (err) {
+        set({ activeConversation: convo, messages: [], hasMoreMessages: true });
+      }
+    })(),
 
   clearActiveConversation: () =>
     set({ activeConversation: null, messages: [], hasMoreMessages: true }),
@@ -38,7 +55,8 @@ const formattedConversations = data.data.map(convo => {
     _id: convo._id,
     receiver,
     lastMsg: convo.lastMsg || null,
-    updatedAt: convo.updatedAt
+    updatedAt: convo.updatedAt,
+    unreadCount: convo.unreadCount || 0,
   };
 });
       set((state) => ({
@@ -103,10 +121,23 @@ const formattedConversations = data.data.map(convo => {
       messages: [message,...state.messages],
     }))},
 
+  incrementUnread: (conversationId) =>
+    set((state) => ({
+      conversations: state.conversations.map(c => c._id === conversationId ? { ...c, unreadCount: (c.unreadCount || 0) + 1 } : c)
+    })),
+
+  markReadLocal: (conversationId) =>
+    set((state) => ({
+      conversations: state.conversations.map(c => c._id === conversationId ? { ...c, unreadCount: 0 } : c)
+    })),
+
   updateConversation: (conversation) =>
     set((state) => {
       const filtered = state.conversations.filter((c) => c._id !== conversation._id);
-      return { conversations: [conversation, ...filtered] };
+      // preserve existing unreadCount if incoming conversation doesn't include it
+      const existing = state.conversations.find((c) => c._id === conversation._id);
+      const unreadCount = conversation.unreadCount !== undefined ? conversation.unreadCount : (existing ? existing.unreadCount : 0);
+      return { conversations: [{ ...conversation, unreadCount }, ...filtered] };
     }),
 
   setTyping: (userId, isTyping) =>

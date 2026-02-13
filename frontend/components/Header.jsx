@@ -3,6 +3,7 @@ import {Heart,MessageCircle} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import NotificationBtn from './NotificationBtn';
 import logo from "../src/assets/logo.png"
+import { useChatStore } from '../store/chat';
 
 const Header = () => {
     const items = [
@@ -27,12 +28,14 @@ const Header = () => {
                      to={item.url}
                      className="flex items-center p-1"
                    >  
-                     <item.icon
-                       size={26}
-                       className="text-black dark:text-gray-300"
-                     />
-                   </Link>)
-}
+                     <div className="relative">
+                       <item.icon
+                         size={26}
+                         className="text-black dark:text-gray-300"
+                       />
+                       {item.title === 'Messages' && <MessageUnreadBadgeInline />}
+                     </div>
+                    </Link>)}
                  </li>
                ))}
              </ul>
@@ -42,3 +45,14 @@ const Header = () => {
 }
 
 export default Header
+
+function MessageUnreadBadgeInline() {
+  const conversations = useChatStore((state) => state.conversations);
+  const total = (conversations || []).reduce((s, c) => s + (c.unreadCount || 0), 0);
+  if (total === 0) return null;
+  return (
+    <span className="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full text-xs font-bold transform -translate-y-1/2 translate-x-1/2 bg-red-500 text-white">
+      {total}
+    </span>
+  );
+}

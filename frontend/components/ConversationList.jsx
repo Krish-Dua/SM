@@ -86,7 +86,12 @@ const ConversationList = () => {
                 )}
               </div>
             </div>
-            {/* < Dot size={50} color='blue' /> */}
+            {/* unread badge */}
+            {convo.unreadCount > 0 && (
+              <div className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                {convo.unreadCount}
+              </div>
+            )}
           </div>
         ))}
       </div>
