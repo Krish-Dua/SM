@@ -20,6 +20,13 @@ CONNECTICX is a full-stack social media app where users can sign up, publish pos
 
 This project combines a React + Vite frontend with an Express + MongoDB backend and Socket.IO event channels for live updates.
 
+## 🔗 Live Link
+- 🌍 Live App: https://connecticx.onrender.com
+
+## Test Credentials
+Email: demo@example.com
+Passowrd: demo@1234
+
 ## ✨ Features
 - 🔐 Authentication with JWT stored in secure HTTP-only cookies
 - 👤 User profile management (name, bio, username, avatar)
@@ -109,8 +116,7 @@ npm run build
 npm start
 ```
 
-## 🔗 Live Link
-- 🌍 Live App: `https://connecticx.onrender.com`
+
 
 ## 🧪 Core API Groups
 - `/api/user/*` -> auth, profile, follow/unfollow, suggestions, save
@@ -126,4 +132,5 @@ npm start
 - Uses scalable patterns (modular routes/controllers/models + socket rooms)
 
 ## 👨‍💻 Author
+Krish Dus
 Built with passion for social product engineering and real-time web experiences 🚀
